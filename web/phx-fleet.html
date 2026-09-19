@@ -1700,31 +1700,40 @@ table.incident-table tr:hover td {
         <div class="drill-card-col-head">
           <span style="display:flex; align-items:center; gap:6px;">
             <span style="background:#007fff; color:#fff; font-size:10px; font-weight:800; padding:1px 5px; border-radius:3px;">钉</span>
-            钉钉 · 全国冷链应急作战群 (DingTalk Ops)
+            真实钉钉群直连 · 逐光.店巡
           </span>
-          <span class="dingtalk-channel-tag">channel: dingtalk_ops</span>
+          <span class="dingtalk-channel-tag" style="background:rgba(16,185,129,0.12); color:#34d399; border:1px solid rgba(16,185,129,0.3); font-family:var(--font-mono); font-size:9.5px;">
+            🟢 OpenAPI 实时直连
+          </span>
         </div>
         <div class="dingtalk-panel">
-          <div class="dingtalk-top-bar">
-            <div class="dingtalk-group-info">
-              <div class="dingtalk-logo-badge">钉</div>
+          <div class="dingtalk-top-bar" style="padding:10px 14px; background:linear-gradient(90deg, rgba(14,23,38,0.95), rgba(15,28,48,0.9)); border-bottom:1px solid var(--border-subtle); display:flex; justify-content:space-between; align-items:center;">
+            <div class="dingtalk-group-info" style="display:flex; align-items:center; gap:10px;">
+              <div class="dingtalk-logo-badge" style="background:linear-gradient(135deg, #007fff, #0284c7); color:#fff; width:32px; height:32px; border-radius:8px; display:flex; align-items:center; justify-content:center; font-weight:900; font-size:16px; box-shadow:0 0 10px rgba(0,127,255,0.4);">钉</div>
               <div>
-                <div class="dingtalk-group-name">全国冷链智能应急指挥群 (300店)</div>
-                <div class="dingtalk-group-sub">Sentry 哨兵 / 编排中枢 / 各城技工 / 12城店长在线</div>
+                <div class="dingtalk-group-name" style="font-size:12.5px; font-weight:800; color:var(--text-primary); display:flex; align-items:center; gap:6px;">
+                  逐光.店巡
+                  <span style="font-size:9px; background:rgba(0,127,255,0.2); color:#38bdf8; border:1px solid rgba(56,189,248,0.3); padding:1px 5px; border-radius:3px; font-family:var(--font-mono);">群ID: cidQ/jo5...</span>
+                </div>
+                <div class="dingtalk-group-sub" style="font-size:10px; color:var(--text-muted); font-family:var(--font-mono); margin-top:2px;">5大机器人集群：哨兵 / 诊断 / 调度 / 执行 / 稽核</div>
               </div>
             </div>
-            <span style="font-size:9.5px; color:var(--green); display:flex; align-items:center; gap:4px; font-family:var(--font-mono);">
-              <span class="pulse-online"></span> mcp-im 在线
-            </span>
+            <button id="btn-realtime-push" onclick="triggerRealtimeDingTalkPush()" style="font-size:11px; font-weight:700; color:#fff; background:linear-gradient(135deg, #0284c7, #2563eb); border:1px solid rgba(56,189,248,0.5); border-radius:6px; padding:5px 10px; cursor:pointer; display:flex; align-items:center; gap:5px; box-shadow:0 0 12px rgba(2,132,199,0.35); transition:all 0.2s;" title="调用后端真实 OpenAPI，立即向您的手机钉钉群发送当前阶段卡片">
+              <span>⚡️ 真实推送至手机</span>
+            </button>
           </div>
           <div class="dingtalk-chat-body" id="dingtalk-chat-body">
             <!-- Rendered by JS -->
           </div>
-          <div class="dingtalk-bottom-bar">
-            <div class="dingtalk-input-box">
-              <span>向全国冷链作战群发送指令 (支持 @机器人 /ding 催办)...</span>
-              <span class="ding-btn-icon">钉一下</span>
+          <div class="dingtalk-bottom-bar" style="padding:8px 14px; background:rgba(10,18,32,0.98); border-top:1px solid var(--border-subtle); display:flex; justify-content:space-between; align-items:center;">
+            <div style="font-size:10.5px; color:var(--text-muted); display:flex; align-items:center; gap:6px;">
+              <span style="color:var(--green); font-size:10px;">●</span>
+              <span>风控硬红线: <b style="color:var(--amber);">¥5,000</b> · 审批责任人: <b style="color:var(--cyan);">@马荣</b></span>
             </div>
+            <a href="/zhuguang/approve.html?wo=WO-20260919-HZ-8831" target="_blank" style="font-size:11px; color:var(--cyan); font-weight:700; text-decoration:none; display:flex; align-items:center; gap:3px;">
+              <span>📋 真实移动审批单据</span>
+              <span>→</span>
+            </a>
           </div>
         </div>
       </div>
@@ -2378,28 +2387,40 @@ function renderDingTalkMessages(messages) {
     let btnsHtml = '';
     if (msg.actions && msg.actions.length > 0) {
       btnsHtml = '<div class="dingtalk-card-actions">' + 
-        msg.actions.map(a => `<button class="dingtalk-card-btn" onclick="${a.onClick || ''}">${a.label}</button>`).join('') + 
+        msg.actions.map(a => `<button class="dingtalk-card-btn" onclick="${a.onClick || ''}" style="${a.style || ''}">${a.label}</button>`).join('') + 
         '</div>';
     }
+
+    const avatarHtml = msg.avatarUrl ? 
+      `<img src="${msg.avatarUrl}" class="dingtalk-avatar-img" style="width:34px; height:34px; border-radius:8px; border:1.5px solid rgba(56,189,248,0.4); object-fit:cover; background:#0b1329; flex-shrink:0;">` :
+      `<div class="dingtalk-avatar ${msg.avatarCls || ''}">${msg.avatar || '🤖'}</div>`;
     
+    const receiptBadge = msg.receipt ? 
+      `<div style="font-size:9.5px; color:#10b981; margin-top:8px; padding:3px 8px; background:rgba(16,185,129,0.08); border-radius:4px; border:1px solid rgba(16,185,129,0.25); display:flex; justify-content:space-between; align-items:center; font-family:var(--font-mono);">
+         <span>✅ OpenAPI 真实已送达</span>
+         <span style="color:#6ee7b7;">凭证: ${msg.receipt}</span>
+         <span style="color:var(--cyan); font-weight:700;">@马荣</span>
+       </div>` : '';
+
     html += `
       <div class="dingtalk-msg-item">
-        <div class="dingtalk-avatar ${msg.avatarCls}">${msg.avatar}</div>
-        <div class="dingtalk-msg-content">
+        ${avatarHtml}
+        <div class="dingtalk-msg-content" style="flex:1;">
           <div class="dingtalk-msg-header">
-            <span class="dingtalk-sender-name">${msg.sender}</span>
-            <span class="dingtalk-role-badge">${msg.role}</span>
-            <span class="dingtalk-msg-time">${msg.time}</span>
+            <span class="dingtalk-sender-name" style="font-weight:700; color:var(--text-primary); font-size:12px;">${msg.sender}</span>
+            <span class="dingtalk-role-badge" style="font-size:10px;">${msg.role}</span>
+            <span class="dingtalk-msg-time" style="font-size:10px;">${msg.time}</span>
           </div>
           <div class="dingtalk-action-card" style="border-left: 3px solid ${msg.cardColor || '#38bdf8'};">
-            <div class="dingtalk-card-title" style="color:${msg.cardColor || '#38bdf8'};">
+            <div class="dingtalk-card-title" style="color:${msg.cardColor || '#38bdf8'}; font-size:12.5px; font-weight:700;">
               ${msg.cardTitle}
             </div>
-            <div class="dingtalk-card-text">
+            <div class="dingtalk-card-text" style="font-size:12px; line-height:1.6; color:#cbd5e1; margin-top:4px;">
               ${msg.body}
             </div>
-            ${msg.meta ? `<div class="dingtalk-card-meta">${msg.meta}</div>` : ''}
+            ${msg.meta ? `<div class="dingtalk-card-meta" style="font-size:10px; color:var(--text-muted); margin-top:6px; font-family:var(--font-mono);">${msg.meta}</div>` : ''}
             ${btnsHtml}
+            ${receiptBadge}
           </div>
         </div>
       </div>
@@ -2408,6 +2429,79 @@ function renderDingTalkMessages(messages) {
   
   container.innerHTML = html;
   container.scrollTop = container.scrollHeight;
+}
+
+// 实时向手机钉钉群下发当前阶段的真实卡片
+async function triggerRealtimeDingTalkPush() {
+  const btn = document.getElementById('btn-realtime-push');
+  if (!btn) return;
+  const origHtml = btn.innerHTML;
+  btn.innerHTML = '<span>⏳ OpenAPI 推送中...</span>';
+  btn.disabled = true;
+
+  try {
+    const curStep = (typeof currentDrillStep === 'number') ? currentDrillStep : 0;
+    const stepData = (typeof FLEET_DRILL_STEPS !== 'undefined' && FLEET_DRILL_STEPS[curStep]) ? FLEET_DRILL_STEPS[curStep] : null;
+    const card = (stepData && stepData.dingtalk && stepData.dingtalk[0]) ? stepData.dingtalk[0] : {
+      sender: "逐光调度智能体",
+      cardTitle: "冷链应急处置工单",
+      body: "全网 300 店冷链巡检事件触发实时流转",
+      robot: "dispatcher"
+    };
+
+    const cleanTitle = (card.cardTitle || "逐光·冷链应急工单").replace(/<[^>]+>/g, '');
+    const cleanBody = (card.body || "").replace(/<br\s*[\/]?>/gi, '\n').replace(/<b>/gi, '**').replace(/<\/b>/gi, '**');
+
+    const payload = {
+      robot: card.robot || "dispatcher",
+      title: cleanTitle,
+      text: `### ⚡️【${card.sender || '逐光调度智能体'}】${cleanTitle}\n---\n${cleanBody}\n\n---\n[🟢 立即移动端核准放行](https://sh.mazhi.icu/zhuguang/approve.html?wo=WO-20260919-HZ-8831&action=approve)\n[🔴 驳回工单重算](https://sh.mazhi.icu/zhuguang/approve.html?wo=WO-20260919-HZ-8831&action=reject)\n[📋 打开完整审批台](https://sh.mazhi.icu/zhuguang/approve.html?wo=WO-20260919-HZ-8831)`
+    };
+
+    const res = await fetch('/zhuguang/api/dingtalk/push', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+    const data = await res.json();
+
+    if (data.ok) {
+      btn.innerHTML = '<span>✅ 手机钉钉已送达！</span>';
+      btn.style.background = 'linear-gradient(135deg, #059669, #10b981)';
+      setTimeout(() => {
+        btn.innerHTML = origHtml;
+        btn.style.background = '';
+        btn.disabled = false;
+      }, 3500);
+
+      const container = document.getElementById('dingtalk-chat-body');
+      if (container) {
+        const liveNotice = document.createElement('div');
+        liveNotice.style.cssText = 'background:rgba(16,185,129,0.12); border:1.5px solid rgba(16,185,129,0.4); border-radius:8px; padding:10px 12px; margin:10px 0; font-size:11.5px; color:#a7f3d0; font-family:var(--font-mono); box-shadow:0 0 16px rgba(16,185,129,0.2);';
+        liveNotice.innerHTML = `
+          <div style="font-weight:800; color:#34d399; font-size:12px; display:flex; align-items:center; gap:6px;">
+            <span>🔔 【真实 OpenAPI 送达您的手机钉钉】</span>
+          </div>
+          <div style="margin-top:4px; line-height:1.6; color:#cbd5e1;">
+            • 目标群聊: <b>逐光.店巡</b><br>
+            • OpenAPI 发送凭证: <span style="color:#67e8f9;">${data.processQueryKey}</span><br>
+            • 投递时间: <b>${data.time}</b> · 请在手机端查看真实互动卡片
+          </div>
+        `;
+        container.appendChild(liveNotice);
+        container.scrollTop = container.scrollHeight;
+      }
+    } else {
+      throw new Error(data.error || '推送异常');
+    }
+  } catch (err) {
+    btn.innerHTML = '<span>❌ 发送异常</span>';
+    alert('钉钉真实推送失败: ' + err.message);
+    setTimeout(() => {
+      btn.innerHTML = origHtml;
+      btn.disabled = false;
+    }, 2500);
+  }
 }
 
 
@@ -2702,20 +2796,24 @@ const FLEET_DRILL_STEPS = [
         body: "• 派工标的: <b>杭州 S006 (金融街店)</b> 1号鲜奶柜<br>• 责任技工: <b>李建国 (工号 88021 · 距店 1.8km)</b><br>• 携带配件: 备用热力膨胀阀 + 测压表<br>• SLA 承诺: 30 分钟内到场抢修",
         meta: "channel: dingtalk_ops · template: workorder_dispatched",
         actions: [
-          { label: "拨打技工李师傅电话", onClick: "alert('正在通过钉钉呼叫李建国 (工号 88021)...')" }
+          { label: "🟢 真实核准放行 (移动签署)", onClick: "window.open('/zhuguang/approve.html?wo=WO-20260919-HZ-8831&action=approve', '_blank')", style: "background:linear-gradient(135deg, #059669, #10b981); color:#fff; font-weight:700;" },
+          { label: "🔴 驳回工单重算", onClick: "window.open('/zhuguang/approve.html?wo=WO-20260919-HZ-8831&action=reject', '_blank')", style: "background:rgba(239,68,68,0.2); color:#fca5a5; border-color:rgba(239,68,68,0.4);" },
+          { label: "📋 完整电子单据", onClick: "window.open('/zhuguang/approve.html?wo=WO-20260919-HZ-8831', '_blank')" }
         ]
       },
       {
-        sender: "杭州金融街店长",
-        role: "门店责任人 · 钉钉审批",
-        avatar: "📱",
-        avatarCls: "avatar-human",
+        sender: "逐光调度智能体",
+        role: "风控核验中枢 · Qwen3.8-Max",
+        avatarUrl: "/zhuguang/avatars/dispatcher.jpg",
         time: "09:07:02",
-        cardTitle: "✅ 【钉钉移动审批单 #APPR-20260919-01】",
-        cardColor: "#34d399",
-        body: "换件预算 <b>¥680.00</b> [已核准 ✅ (指纹签署)]<br>“已通知当班店员配合李师傅更换膨胀阀，涉险鲜奶已移入备用冷库 (2.1°C)！”",
+        robot: "dispatcher",
+        cardTitle: "⚡️ 【风控硬红线拦截工单 WO-20260919-HZ-8831】",
+        cardColor: "#fbbf24",
+        body: "• <b>涉险货值 ¥48,600 > ¥5,000 红线</b>，工单已硬锁定挂起！<br>• 责任审批人: <b>@马荣</b> (系统已向您的手机端推送交互式卡片)<br>• 点击下方按钮可即时在移动端签署放行或直接驳回！",
+        receipt: "cw/CCfDDC9zDSWqiLM...",
         actions: [
-          { label: "查看钉钉审批凭证", onClick: "alert('钉钉审批单号: APPR-20260919-01 · 签署人: 杭州金融街店长 · 状态: APPROVED')" }
+          { label: "🟢 手机端指纹核准放行", onClick: "window.open('/zhuguang/approve.html?wo=WO-20260919-HZ-8831&action=approve', '_blank')", style: "background:linear-gradient(135deg, #059669, #10b981); color:#fff; font-weight:700;" },
+          { label: "📋 查看审批电子回执", onClick: "window.open('/zhuguang/approve.html?wo=WO-20260919-HZ-8831', '_blank')" }
         ]
       },
       {
