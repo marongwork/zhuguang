@@ -13,9 +13,19 @@ from dianxun.mcp.p0 import DEFAULT_POLICY_PATH, DEFAULT_SCENARIO_DIR
 from dianxun.replay import render_run, seal_run
 
 
+CASE_SCENARIOS = {
+    "success": "coldchain-compressor-failure.json",
+    "failure": "coldchain-device-recovered-goods-unsafe.json",
+    "sensor-false-positive": "coldchain-sensor-false-positive.json",
+    "door-left-open": "coldchain-door-left-open.json",
+    "approval-timeout": "coldchain-approval-timeout.json",
+    "workorder-query-partial": "coldchain-workorder-query-partial.json",
+}
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--case", choices=["success", "failure"], required=True)
+    parser.add_argument("--case", choices=sorted(CASE_SCENARIOS), required=True)
     parser.add_argument(
         "--output",
         type=Path,
@@ -39,11 +49,7 @@ def main() -> int:
             ).strip()
         ),
     }
-    scenario = DEFAULT_SCENARIO_DIR / (
-        "coldchain-compressor-failure.json"
-        if args.case == "success"
-        else "coldchain-device-recovered-goods-unsafe.json"
-    )
+    scenario = DEFAULT_SCENARIO_DIR / CASE_SCENARIOS[args.case]
     with tempfile.TemporaryDirectory(prefix="dianxun-replay-") as temporary:
         state, trace = Path(temporary) / "state.db", Path(temporary) / "trace.db"
         adapter = LocalDemoAdapter(

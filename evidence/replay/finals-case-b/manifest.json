@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "source_kind": "synthetic_local_run",
+  "incident_id": "INC-COLD-B",
+  "trace_id": "tr_coldchain_sensor_false_positive",
+  "scenario_id": "coldchain-sensor-false-positive",
+  "provenance": {
+    "git_commit": "bfa4b66cbd62dfeb3bc3ecf78c10abcc363d0b5e",
+    "dirty_worktree": true
+  },
+  "claim_boundary": "Local synthetic SQLite run; no AgentTeams, PolarDB, OSS or real-store evidence. Hashes detect accidental changes, not source authenticity.",
+  "files": {
+    "audit.jsonl": "f3fae9d22cccbd85a2107b62bb46c9a8217a65ce905266bf635137e24a9597d4",
+    "policy.json": "f0fb8eb893655398340fb277c8697ecc5841bde58d988a75b6996b4d920ddd73",
+    "result.json": "e7057a396216defb84a679f070e2e4768c9cb7d986fb595b42cc597065aec95d",
+    "scenario.json": "d93a807d59be1fe591208d3032f5e33b9b5d32fb7af185407e534d1996014c25",
+    "state.sqlite": "ad1992b9adc9ef17f719a07e8e37ac96eb514ea92cf889f1df3e6f2b0c76efd3",
+    "trace.jsonl": "346f987e36761999fcb9f4950b48367e4ee4458fe8f0ef170903a1bafcc546da",
+    "trace.sqlite": "ca38a4daed2059d038166f128a870b2f65b8cddf83ec4faed3739a0b76a65b26"
+  }
+}

@@ -1,0 +1,3479 @@
+<!doctype html><html lang="zh-CN"><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1"><title>店巡事件离线回放</title>
+<style>body{font:16px/1.6 system-ui;max-width:1100px;margin:40px auto;padding:0 20px;
+background:#f6f8fa;color:#17212b}details{background:white;padding:12px 18px;margin:10px 0;
+border:1px solid #dce2e8;border-radius:8px}summary{cursor:pointer}
+pre{white-space:pre-wrap;overflow-wrap:anywhere;font-size:13px}h1{font-size:28px}</style>
+<h1>店巡事件离线回放</h1><p>本地合成运行 · 查看已封存事实 · 不执行任何业务动作</p><p>事件：INC-COLD-F · 终态：CONTAINED</p><details><summary>最终结果与设备／商品状态</summary><pre>{
+  &quot;scenario_id&quot;: &quot;coldchain-workorder-query-partial&quot;,
+  &quot;result&quot;: &quot;reopened&quot;,
+  &quot;trace_id&quot;: &quot;tr_coldchain_workorder_query_partial&quot;,
+  &quot;incident&quot;: {
+    &quot;incident_id&quot;: &quot;INC-COLD-F&quot;,
+    &quot;trace_id&quot;: &quot;tr_coldchain_workorder_query_partial&quot;,
+    &quot;tenant_id&quot;: &quot;demo&quot;,
+    &quot;store_id&quot;: &quot;S03&quot;,
+    &quot;incident_type&quot;: &quot;coldchain_temperature_loss&quot;,
+    &quot;severity&quot;: &quot;critical&quot;,
+    &quot;phase&quot;: &quot;EXECUTE&quot;,
+    &quot;incident_status&quot;: &quot;CONTAINED&quot;,
+    &quot;work_status&quot;: &quot;BLOCKED&quot;,
+    &quot;trigger&quot;: &quot;scenario&quot;,
+    &quot;detected_at&quot;: &quot;2026-08-28T09:00:00+08:00&quot;,
+    &quot;anchor_time&quot;: &quot;2026-08-28T09:00:00+08:00&quot;,
+    &quot;affected_assets&quot;: [
+      &quot;FROST-S03&quot;
+    ],
+    &quot;affected_batches&quot;: [
+      &quot;BATCH-S03-DAIRY-001&quot;,
+      &quot;BATCH-S03-FRESH-001&quot;
+    ],
+    &quot;evidence_refs&quot;: [
+      &quot;ev_adccfdac79682615&quot;,
+      &quot;ev_82f2730a65b6dab4&quot;,
+      &quot;ev_e70cfbfbd6a7e9de&quot;,
+      &quot;ev_0a2da19c0e52ccc3&quot;,
+      &quot;manual_ev_000001&quot;,
+      &quot;manual_ev_000002&quot;
+    ],
+    &quot;hypotheses&quot;: [
+      {
+        &quot;hypothesis_id&quot;: &quot;INC-COLD-F:compressor-failure&quot;,
+        &quot;label&quot;: &quot;compressor_failure&quot;,
+        &quot;confidence&quot;: 0.94,
+        &quot;supporting_evidence_ids&quot;: [
+          &quot;ev_e70cfbfbd6a7e9de&quot;
+        ],
+        &quot;contradicting_evidence_ids&quot;: [],
+        &quot;missing_evidence&quot;: [],
+        &quot;next_checks&quot;: [
+          &quot;inspect_compressor&quot;,
+          &quot;confirm_recovery_samples&quot;
+        ],
+        &quot;policy_notes&quot;: [
+          &quot;cross_store_benchmark_is_supporting_only&quot;
+        ]
+      },
+      {
+        &quot;hypothesis_id&quot;: &quot;INC-COLD-F:sensor-fault&quot;,
+        &quot;label&quot;: &quot;sensor_fault&quot;,
+        &quot;confidence&quot;: 0.14,
+        &quot;supporting_evidence_ids&quot;: [],
+        &quot;contradicting_evidence_ids&quot;: [
+          &quot;ev_e70cfbfbd6a7e9de&quot;
+        ],
+        &quot;missing_evidence&quot;: [
+          &quot;backup_sensor&quot;
+        ],
+        &quot;next_checks&quot;: [
+          &quot;compare_backup_sensor&quot;,
+          &quot;request_manual_measurement&quot;
+        ],
+        &quot;policy_notes&quot;: [
+          &quot;suspect_readings_cannot_prove_product_exposure&quot;
+        ]
+      },
+      {
+        &quot;hypothesis_id&quot;: &quot;INC-COLD-F:door-left-open&quot;,
+        &quot;label&quot;: &quot;door_left_open&quot;,
+        &quot;confidence&quot;: 0.08,
+        &quot;supporting_evidence_ids&quot;: [],
+        &quot;contradicting_evidence_ids&quot;: [
+          &quot;ev_e70cfbfbd6a7e9de&quot;
+        ],
+        &quot;missing_evidence&quot;: [
+          &quot;door_event_history&quot;
+        ],
+        &quot;next_checks&quot;: [
+          &quot;inspect_door_seal&quot;
+        ],
+        &quot;policy_notes&quot;: []
+      }
+    ],
+    &quot;decisions&quot;: [
+      {
+        &quot;decision_id&quot;: &quot;phase:DIAGNOSE_DECIDE:1&quot;,
+        &quot;policy_id&quot;: &quot;incident-phase-v1&quot;,
+        &quot;selected_hypothesis_ids&quot;: [],
+        &quot;proposed_actions&quot;: [],
+        &quot;risk_level&quot;: &quot;L0&quot;,
+        &quot;approval_required&quot;: false,
+        &quot;approvers&quot;: [],
+        &quot;decision_reason&quot;: &quot;risk contained; delegate evidence-linked diagnosis&quot;,
+        &quot;evidence_ids&quot;: [],
+        &quot;created_by&quot;: &quot;Orchestrator&quot;
+      },
+      {
+        &quot;decision_id&quot;: &quot;INC-COLD-F:decision:v1&quot;,
+        &quot;policy_id&quot;: &quot;coldchain-demo:1.0.0&quot;,
+        &quot;selected_hypothesis_ids&quot;: [
+          &quot;INC-COLD-F:compressor-failure&quot;
+        ],
+        &quot;proposed_actions&quot;: [
+          &quot;create_workorder&quot;,
+          &quot;disposed:BATCH-S03-DAIRY-001&quot;,
+          &quot;transferred:BATCH-S03-FRESH-001&quot;
+        ],
+        &quot;risk_level&quot;: &quot;L2&quot;,
+        &quot;approval_required&quot;: true,
+        &quot;approvers&quot;: [
+          &quot;store_manager&quot;,
+          &quot;food_safety_owner&quot;
+        ],
+        &quot;decision_reason&quot;: &quot;top hypothesis compressor_failure plus batch-specific exposure assessment&quot;,
+        &quot;evidence_ids&quot;: [
+          &quot;ev_adccfdac79682615&quot;,
+          &quot;ev_82f2730a65b6dab4&quot;,
+          &quot;ev_e70cfbfbd6a7e9de&quot;,
+          &quot;ev_0a2da19c0e52ccc3&quot;
+        ],
+        &quot;created_by&quot;: &quot;Diagnoser&quot;
+      },
+      {
+        &quot;decision_id&quot;: &quot;phase:EXECUTE:3&quot;,
+        &quot;policy_id&quot;: &quot;incident-phase-v1&quot;,
+        &quot;selected_hypothesis_ids&quot;: [],
+        &quot;proposed_actions&quot;: [],
+        &quot;risk_level&quot;: &quot;L0&quot;,
+        &quot;approval_required&quot;: false,
+        &quot;approvers&quot;: [],
+        &quot;decision_reason&quot;: &quot;policy-bound execution plan accepted&quot;,
+        &quot;evidence_ids&quot;: [],
+        &quot;created_by&quot;: &quot;Orchestrator&quot;
+      },
+      {
+        &quot;decision_id&quot;: &quot;phase:VERIFY:4&quot;,
+        &quot;policy_id&quot;: &quot;incident-phase-v1&quot;,
+        &quot;selected_hypothesis_ids&quot;: [],
+        &quot;proposed_actions&quot;: [],
+        &quot;risk_level&quot;: &quot;L0&quot;,
+        &quot;approval_required&quot;: false,
+        &quot;approvers&quot;: [],
+        &quot;decision_reason&quot;: &quot;execution receipts available; delegate independent requery&quot;,
+        &quot;evidence_ids&quot;: [],
+        &quot;created_by&quot;: &quot;Orchestrator&quot;
+      },
+      {
+        &quot;decision_id&quot;: &quot;reopen:5&quot;,
+        &quot;policy_id&quot;: &quot;incident-phase-v1&quot;,
+        &quot;selected_hypothesis_ids&quot;: [],
+        &quot;proposed_actions&quot;: [
+          &quot;re-diagnose&quot;
+        ],
+        &quot;risk_level&quot;: &quot;L1&quot;,
+        &quot;approval_required&quot;: false,
+        &quot;approvers&quot;: [],
+        &quot;decision_reason&quot;: &quot;Auditor result reopened: [&#x27;device&#x27;]&quot;,
+        &quot;evidence_ids&quot;: [],
+        &quot;created_by&quot;: &quot;Auditor&quot;
+      },
+      {
+        &quot;decision_id&quot;: &quot;phase:EXECUTE:6&quot;,
+        &quot;policy_id&quot;: &quot;incident-phase-v1&quot;,
+        &quot;selected_hypothesis_ids&quot;: [],
+        &quot;proposed_actions&quot;: [],
+        &quot;risk_level&quot;: &quot;L0&quot;,
+        &quot;approval_required&quot;: false,
+        &quot;approvers&quot;: [],
+        &quot;decision_reason&quot;: &quot;keep containment and route unresolved goods branch&quot;,
+        &quot;evidence_ids&quot;: [],
+        &quot;created_by&quot;: &quot;Orchestrator&quot;
+      },
+      {
+        &quot;decision_id&quot;: &quot;work:BLOCKED:7&quot;,
+        &quot;policy_id&quot;: &quot;incident-work-state-v1&quot;,
+        &quot;selected_hypothesis_ids&quot;: [],
+        &quot;proposed_actions&quot;: [],
+        &quot;risk_level&quot;: &quot;L0&quot;,
+        &quot;approval_required&quot;: false,
+        &quot;approvers&quot;: [],
+        &quot;decision_reason&quot;: &quot;Auditor refused safe closure; wait for controlled goods disposition&quot;,
+        &quot;evidence_ids&quot;: [],
+        &quot;created_by&quot;: &quot;Orchestrator&quot;
+      }
+    ],
+    &quot;actions&quot;: [
+      {
+        &quot;action_id&quot;: &quot;INC-COLD-F:hold&quot;,
+        &quot;action_type&quot;: &quot;apply_sales_hold&quot;,
+        &quot;tool_name&quot;: &quot;apply_sales_hold&quot;,
+        &quot;target&quot;: &quot;S03&quot;,
+        &quot;idempotency_key&quot;: &quot;INC-COLD-F:hold:v1&quot;,
+        &quot;approval_id&quot;: null,
+        &quot;status&quot;: &quot;completed&quot;,
+        &quot;request&quot;: {
+          &quot;batch_ids&quot;: [
+            &quot;BATCH-S03-DAIRY-001&quot;,
+            &quot;BATCH-S03-FRESH-001&quot;
+          ],
+          &quot;reason&quot;: &quot;coldchain containment&quot;
+        },
+        &quot;response&quot;: {
+          &quot;audit_ref&quot;: &quot;audit_000001&quot;,
+          &quot;data&quot;: {
+            &quot;holds&quot;: [
+              {
+                &quot;batch_id&quot;: &quot;BATCH-S03-DAIRY-001&quot;,
+                &quot;hold_id&quot;: &quot;hold_000001&quot;,
+                &quot;status&quot;: &quot;active&quot;
+              },
+              {
+                &quot;batch_id&quot;: &quot;BATCH-S03-FRESH-001&quot;,
+                &quot;hold_id&quot;: &quot;hold_000002&quot;,
+                &quot;status&quot;: &quot;active&quot;
+              }
+            ]
+          },
+          &quot;error&quot;: null,
+          &quot;ok&quot;: true,
+          &quot;partial&quot;: false,
+          &quot;request_id&quot;: &quot;req_9d8801b6b80942a6&quot;,
+          &quot;source&quot;: &quot;dianxun-state-store&quot;,
+          &quot;source_ts&quot;: &quot;2026-08-28T09:00:00+08:00&quot;
+        },
+        &quot;rollback_or_compensation&quot;: {
+          &quot;automatic&quot;: false,
+          &quot;type&quot;: &quot;controlled_release_only&quot;
+        },
+        &quot;started_at&quot;: &quot;2026-08-28T09:00:00+08:00&quot;,
+        &quot;completed_at&quot;: &quot;2026-08-28T09:00:00+08:00&quot;
+      },
+      {
+        &quot;action_id&quot;: &quot;INC-COLD-F:repair&quot;,
+        &quot;action_type&quot;: &quot;create_workorder&quot;,
+        &quot;tool_name&quot;: &quot;create_workorder&quot;,
+        &quot;target&quot;: &quot;FROST-S03&quot;,
+        &quot;idempotency_key&quot;: &quot;INC-COLD-F:repair:execute:v1&quot;,
+        &quot;approval_id&quot;: &quot;approval_000001&quot;,
+        &quot;status&quot;: &quot;completed&quot;,
+        &quot;request&quot;: {
+          &quot;budget&quot;: 2500.0,
+          &quot;device_id&quot;: &quot;FROST-S03&quot;,
+          &quot;fault&quot;: &quot;compressor_failure&quot;,
+          &quot;store_id&quot;: &quot;S03&quot;
+        },
+        &quot;response&quot;: {
+          &quot;audit_ref&quot;: &quot;audit_000004&quot;,
+          &quot;compensation&quot;: &quot;cancel_or_reassign_workorder&quot;,
+          &quot;data&quot;: {
+            &quot;status&quot;: &quot;assigned&quot;,
+            &quot;workorder_id&quot;: &quot;wo_000001&quot;
+          },
+          &quot;error&quot;: null,
+          &quot;ok&quot;: true,
+          &quot;request_id&quot;: &quot;req_7fb80c9954f542e1&quot;,
+          &quot;waiting&quot;: false
+        },
+        &quot;rollback_or_compensation&quot;: {
+          &quot;type&quot;: &quot;cancel_or_reassign_workorder&quot;
+        },
+        &quot;started_at&quot;: &quot;2026-08-28T09:00:00+08:00&quot;,
+        &quot;completed_at&quot;: &quot;2026-08-28T09:01:00+08:00&quot;
+      },
+      {
+        &quot;action_id&quot;: &quot;INC-COLD-F:batch:BATCH-S03-DAIRY-001&quot;,
+        &quot;action_type&quot;: &quot;apply_batch_disposition:disposed&quot;,
+        &quot;tool_name&quot;: &quot;apply_batch_disposition&quot;,
+        &quot;target&quot;: &quot;BATCH-S03-DAIRY-001&quot;,
+        &quot;idempotency_key&quot;: &quot;INC-COLD-F:batch:BATCH-S03-DAIRY-001:execute:v1&quot;,
+        &quot;approval_id&quot;: &quot;approval_000002&quot;,
+        &quot;status&quot;: &quot;completed&quot;,
+        &quot;request&quot;: {
+          &quot;batch_ids&quot;: [
+            &quot;BATCH-S03-DAIRY-001&quot;
+          ],
+          &quot;disposition&quot;: &quot;disposed&quot;
+        },
+        &quot;response&quot;: {
+          &quot;audit_ref&quot;: &quot;audit_000009&quot;,
+          &quot;data&quot;: {
+            &quot;batch_ids&quot;: [
+              &quot;BATCH-S03-DAIRY-001&quot;
+            ],
+            &quot;disposition&quot;: &quot;disposed&quot;,
+            &quot;safe_for_sale&quot;: false
+          },
+          &quot;error&quot;: null,
+          &quot;ok&quot;: true,
+          &quot;partial&quot;: false,
+          &quot;request_id&quot;: &quot;req_093e9d3cf2024c74&quot;,
+          &quot;source&quot;: &quot;dianxun-state-store&quot;,
+          &quot;source_ts&quot;: &quot;2026-08-28T09:06:00+08:00&quot;
+        },
+        &quot;rollback_or_compensation&quot;: {
+          &quot;automatic&quot;: false,
+          &quot;type&quot;: &quot;manual_correction&quot;
+        },
+        &quot;started_at&quot;: &quot;2026-08-28T09:05:00+08:00&quot;,
+        &quot;completed_at&quot;: &quot;2026-08-28T09:06:00+08:00&quot;
+      },
+      {
+        &quot;action_id&quot;: &quot;INC-COLD-F:batch:BATCH-S03-FRESH-001&quot;,
+        &quot;action_type&quot;: &quot;apply_batch_disposition:transferred&quot;,
+        &quot;tool_name&quot;: &quot;apply_batch_disposition&quot;,
+        &quot;target&quot;: &quot;BATCH-S03-FRESH-001&quot;,
+        &quot;idempotency_key&quot;: &quot;INC-COLD-F:batch:BATCH-S03-FRESH-001:execute:v1&quot;,
+        &quot;approval_id&quot;: &quot;approval_000003&quot;,
+        &quot;status&quot;: &quot;completed&quot;,
+        &quot;request&quot;: {
+          &quot;batch_ids&quot;: [
+            &quot;BATCH-S03-FRESH-001&quot;
+          ],
+          &quot;disposition&quot;: &quot;transferred&quot;
+        },
+        &quot;response&quot;: {
+          &quot;audit_ref&quot;: &quot;audit_000010&quot;,
+          &quot;data&quot;: {
+            &quot;batch_ids&quot;: [
+              &quot;BATCH-S03-FRESH-001&quot;
+            ],
+            &quot;disposition&quot;: &quot;transferred&quot;,
+            &quot;safe_for_sale&quot;: false
+          },
+          &quot;error&quot;: null,
+          &quot;ok&quot;: true,
+          &quot;partial&quot;: false,
+          &quot;request_id&quot;: &quot;req_ca5e794cd1d148bb&quot;,
+          &quot;source&quot;: &quot;dianxun-state-store&quot;,
+          &quot;source_ts&quot;: &quot;2026-08-28T09:06:00+08:00&quot;
+        },
+        &quot;rollback_or_compensation&quot;: {
+          &quot;automatic&quot;: false,
+          &quot;type&quot;: &quot;manual_correction&quot;
+        },
+        &quot;started_at&quot;: &quot;2026-08-28T09:05:00+08:00&quot;,
+        &quot;completed_at&quot;: &quot;2026-08-28T09:06:00+08:00&quot;
+      }
+    ],
+    &quot;verifications&quot;: [
+      {
+        &quot;verification_id&quot;: &quot;INC-COLD-F:verify:device&quot;,
+        &quot;subject&quot;: &quot;device&quot;,
+        &quot;method&quot;: &quot;fresh_state_requery&quot;,
+        &quot;expected_condition&quot;: {
+          &quot;health&quot;: &quot;normal&quot;,
+          &quot;max_c&quot;: 8.0,
+          &quot;recovery_samples&quot;: 3,
+          &quot;workorder&quot;: &quot;done_with_evidence&quot;
+        },
+        &quot;observed_value&quot;: {
+          &quot;device&quot;: {
+            &quot;ambient_temp_c&quot;: 26.0,
+            &quot;device_id&quot;: &quot;FROST-S03&quot;,
+            &quot;door&quot;: {
+              &quot;state&quot;: &quot;closed&quot;
+            },
+            &quot;health&quot;: {
+              &quot;compressor_state&quot;: &quot;running&quot;,
+              &quot;model&quot;: &quot;FROST-X100&quot;,
+              &quot;state&quot;: &quot;normal&quot;
+            },
+            &quot;maintenance&quot;: {
+              &quot;summary&quot;: &quot;No open history in seed&quot;
+            },
+            &quot;power&quot;: {
+              &quot;state&quot;: &quot;on&quot;
+            },
+            &quot;store_id&quot;: &quot;S03&quot;,
+            &quot;temperature_series&quot;: [
+              {
+                &quot;device_id&quot;: &quot;FROST-S03&quot;,
+                &quot;observed_at&quot;: &quot;2026-08-28T06:30:00+08:00&quot;,
+                &quot;quality&quot;: &quot;good&quot;,
+                &quot;reading_id&quot;: &quot;seed-FROST-S03-02&quot;,
+                &quot;source&quot;: &quot;seed&quot;,
+                &quot;temp_c&quot;: 3.3
+              },
+              {
+                &quot;device_id&quot;: &quot;FROST-S03&quot;,
+                &quot;observed_at&quot;: &quot;2026-08-28T07:00:00+08:00&quot;,
+                &quot;quality&quot;: &quot;good&quot;,
+                &quot;reading_id&quot;: &quot;seed-FROST-S03-03&quot;,
+                &quot;source&quot;: &quot;seed&quot;,
+                &quot;temp_c&quot;: 3.4
+              },
+              {
+                &quot;device_id&quot;: &quot;FROST-S03&quot;,
+                &quot;observed_at&quot;: &quot;2026-08-28T07:30:00+08:00&quot;,
+                &quot;quality&quot;: &quot;good&quot;,
+                &quot;reading_id&quot;: &quot;seed-FROST-S03-04&quot;,
+                &quot;source&quot;: &quot;seed&quot;,
+                &quot;temp_c&quot;: 3.4
+              },
+              {
+                &quot;device_id&quot;: &quot;FROST-S03&quot;,
+                &quot;observed_at&quot;: &quot;2026-08-28T08:00:00+08:00&quot;,
+                &quot;quality&quot;: &quot;good&quot;,
+                &quot;reading_id&quot;: &quot;reading_000001&quot;,
+                &quot;source&quot;: &quot;scenario&quot;,
+                &quot;temp_c&quot;: 7.8
+              },
+              {
+                &quot;device_id&quot;: &quot;FROST-S03&quot;,
+                &quot;observed_at&quot;: &quot;2026-08-28T08:30:00+08:00&quot;,
+                &quot;quality&quot;: &quot;good&quot;,
+                &quot;reading_id&quot;: &quot;reading_000002&quot;,
+                &quot;source&quot;: &quot;scenario&quot;,
+                &quot;temp_c&quot;: 8.7
+              },
+              {
+                &quot;device_id&quot;: &quot;FROST-S03&quot;,
+                &quot;observed_at&quot;: &quot;2026-08-28T09:00:00+08:00&quot;,
+                &quot;quality&quot;: &quot;good&quot;,
+                &quot;reading_id&quot;: &quot;reading_000003&quot;,
+                &quot;source&quot;: &quot;scenario&quot;,
+                &quot;temp_c&quot;: 9.6
+              },
+              {
+                &quot;device_id&quot;: &quot;FROST-S03&quot;,
+                &quot;observed_at&quot;: &quot;2026-08-28T09:03:00+08:00&quot;,
+                &quot;quality&quot;: &quot;good&quot;,
+                &quot;reading_id&quot;: &quot;reading_000004&quot;,
+                &quot;source&quot;: &quot;scenario&quot;,
+                &quot;temp_c&quot;: 6.2
+              },
+              {
+                &quot;device_id&quot;: &quot;FROST-S03&quot;,
+                &quot;observed_at&quot;: &quot;2026-08-28T09:04:00+08:00&quot;,
+                &quot;quality&quot;: &quot;good&quot;,
+                &quot;reading_id&quot;: &quot;reading_000005&quot;,
+                &quot;source&quot;: &quot;scenario&quot;,
+                &quot;temp_c&quot;: 5.4
+              },
+              {
+                &quot;device_id&quot;: &quot;FROST-S03&quot;,
+                &quot;observed_at&quot;: &quot;2026-08-28T09:05:00+08:00&quot;,
+                &quot;quality&quot;: &quot;good&quot;,
+                &quot;reading_id&quot;: &quot;reading_000006&quot;,
+                &quot;source&quot;: &quot;scenario&quot;,
+                &quot;temp_c&quot;: 4.8
+              }
+            ]
+          },
+          &quot;excluded_readings&quot;: [],
+          &quot;latest_samples&quot;: [
+            {
+              &quot;device_id&quot;: &quot;FROST-S03&quot;,
+              &quot;observed_at&quot;: &quot;2026-08-28T01:03:00+00:00&quot;,
+              &quot;quality&quot;: &quot;good&quot;,
+              &quot;reading_id&quot;: &quot;reading_000004&quot;,
+              &quot;source&quot;: &quot;scenario&quot;,
+              &quot;temp_c&quot;: 6.2
+            },
+            {
+              &quot;device_id&quot;: &quot;FROST-S03&quot;,
+              &quot;observed_at&quot;: &quot;2026-08-28T01:04:00+00:00&quot;,
+              &quot;quality&quot;: &quot;good&quot;,
+              &quot;reading_id&quot;: &quot;reading_000005&quot;,
+              &quot;source&quot;: &quot;scenario&quot;,
+              &quot;temp_c&quot;: 5.4
+            },
+            {
+              &quot;device_id&quot;: &quot;FROST-S03&quot;,
+              &quot;observed_at&quot;: &quot;2026-08-28T01:05:00+00:00&quot;,
+              &quot;quality&quot;: &quot;good&quot;,
+              &quot;reading_id&quot;: &quot;reading_000006&quot;,
+              &quot;source&quot;: &quot;scenario&quot;,
+              &quot;temp_c&quot;: 4.8
+            }
+          ],
+          &quot;workorders&quot;: []
+        },
+        &quot;evidence_ids&quot;: [
+          &quot;ev_582535fe0fe469ca&quot;
+        ],
+        &quot;result&quot;: &quot;failed&quot;,
+        &quot;verifier&quot;: &quot;Auditor&quot;,
+        &quot;verified_at&quot;: &quot;2026-08-28T09:07:00+08:00&quot;
+      },
+      {
+        &quot;verification_id&quot;: &quot;INC-COLD-F:verify:batches&quot;,
+        &quot;subject&quot;: &quot;batches&quot;,
+        &quot;method&quot;: &quot;fresh_state_requery&quot;,
+        &quot;expected_condition&quot;: {
+          &quot;batch_ids&quot;: [
+            &quot;BATCH-S03-DAIRY-001&quot;,
+            &quot;BATCH-S03-FRESH-001&quot;
+          ],
+          &quot;dispositions&quot;: [
+            &quot;disposed&quot;,
+            &quot;released&quot;,
+            &quot;transferred&quot;
+          ],
+          &quot;released_goods_safe_for_sale&quot;: true
+        },
+        &quot;observed_value&quot;: {
+          &quot;batches&quot;: [
+            {
+              &quot;batch_id&quot;: &quot;BATCH-S03-DAIRY-001&quot;,
+              &quot;device_id&quot;: &quot;FROST-S03&quot;,
+              &quot;disposition&quot;: &quot;disposed&quot;,
+              &quot;policy_ref&quot;: &quot;coldchain-demo:1.0.0&quot;,
+              &quot;product_name&quot;: &quot;巴氏鲜奶&quot;,
+              &quot;quantity&quot;: 24,
+              &quot;safe_for_sale&quot;: false,
+              &quot;sku_id&quot;: &quot;MILK-001&quot;,
+              &quot;storage_max_c&quot;: 6.0,
+              &quot;storage_min_c&quot;: 0.0,
+              &quot;store_id&quot;: &quot;S03&quot;,
+              &quot;updated_at&quot;: &quot;2026-08-28T09:06:00+08:00&quot;
+            },
+            {
+              &quot;batch_id&quot;: &quot;BATCH-S03-FRESH-001&quot;,
+              &quot;device_id&quot;: &quot;FROST-S03&quot;,
+              &quot;disposition&quot;: &quot;transferred&quot;,
+              &quot;policy_ref&quot;: &quot;coldchain-demo:1.0.0&quot;,
+              &quot;product_name&quot;: &quot;鲜食三明治&quot;,
+              &quot;quantity&quot;: 18,
+              &quot;safe_for_sale&quot;: false,
+              &quot;sku_id&quot;: &quot;SANDWICH-001&quot;,
+              &quot;storage_max_c&quot;: 8.0,
+              &quot;storage_min_c&quot;: 0.0,
+              &quot;store_id&quot;: &quot;S03&quot;,
+              &quot;updated_at&quot;: &quot;2026-08-28T09:06:00+08:00&quot;
+            }
+          ],
+          &quot;disposition_receipts&quot;: [
+            {
+              &quot;action_id&quot;: &quot;INC-COLD-F:batch:BATCH-S03-DAIRY-001&quot;,
+              &quot;actor&quot;: &quot;ScenarioEngine&quot;,
+              &quot;created_at&quot;: &quot;2026-08-28T09:07:00+08:00&quot;,
+              &quot;evidence_id&quot;: &quot;manual_ev_000001&quot;,
+              &quot;evidence_type&quot;: &quot;disposition_receipt&quot;,
+              &quot;incident_id&quot;: &quot;INC-COLD-F&quot;,
+              &quot;metadata&quot;: {
+                &quot;batch_id&quot;: &quot;BATCH-S03-DAIRY-001&quot;,
+                &quot;confirmed_by&quot;: &quot;synthetic-receiver&quot;,
+                &quot;destroyed&quot;: true,
+                &quot;disposal_method&quot;: &quot;synthetic-destruction&quot;,
+                &quot;disposition&quot;: &quot;disposed&quot;,
+                &quot;executor_id&quot;: &quot;synthetic-store-operator&quot;,
+                &quot;quantity&quot;: 24,
+                &quot;receipt_ref&quot;: &quot;synthetic://INC-COLD-F/BATCH-S03-DAIRY-001&quot;,
+                &quot;source_location&quot;: &quot;FROST-S03&quot;,
+                &quot;synthetic&quot;: true
+              },
+              &quot;note&quot;: &quot;Synthetic independent physical receipt; not a store observation&quot;,
+              &quot;observed_at&quot;: &quot;2026-08-28T09:07:00+08:00&quot;,
+              &quot;sha256&quot;: &quot;aa9ecd387311cc4097f5aa32fa9249fe5eb70c7d67e1a9ecea13c6fc28b96c36&quot;,
+              &quot;uri&quot;: null
+            },
+            {
+              &quot;action_id&quot;: &quot;INC-COLD-F:batch:BATCH-S03-FRESH-001&quot;,
+              &quot;actor&quot;: &quot;ScenarioEngine&quot;,
+              &quot;created_at&quot;: &quot;2026-08-28T09:07:00+08:00&quot;,
+              &quot;evidence_id&quot;: &quot;manual_ev_000002&quot;,
+              &quot;evidence_type&quot;: &quot;disposition_receipt&quot;,
+              &quot;incident_id&quot;: &quot;INC-COLD-F&quot;,
+              &quot;metadata&quot;: {
+                &quot;batch_id&quot;: &quot;BATCH-S03-FRESH-001&quot;,
+                &quot;confirmed_by&quot;: &quot;synthetic-receiver&quot;,
+                &quot;destination_location&quot;: &quot;synthetic-backup-cabinet&quot;,
+                &quot;destination_temp_c&quot;: 4.0,
+                &quot;disposition&quot;: &quot;transferred&quot;,
+                &quot;executor_id&quot;: &quot;synthetic-store-operator&quot;,
+                &quot;quantity&quot;: 18,
+                &quot;receipt_ref&quot;: &quot;synthetic://INC-COLD-F/BATCH-S03-FRESH-001&quot;,
+                &quot;received&quot;: true,
+                &quot;source_location&quot;: &quot;FROST-S03&quot;,
+                &quot;synthetic&quot;: true
+              },
+              &quot;note&quot;: &quot;Synthetic independent physical receipt; not a store observation&quot;,
+              &quot;observed_at&quot;: &quot;2026-08-28T09:07:00+08:00&quot;,
+              &quot;sha256&quot;: &quot;924a9dd34c289790e5efedda47a47a4197cf323b4bbf252518efb99ac937b4b2&quot;,
+              &quot;uri&quot;: null
+            }
+          ]
+        },
+        &quot;evidence_ids&quot;: [
+          &quot;ev_1d29fe2416c81fc4&quot;
+        ],
+        &quot;result&quot;: &quot;passed&quot;,
+        &quot;verifier&quot;: &quot;Auditor&quot;,
+        &quot;verified_at&quot;: &quot;2026-08-28T09:07:00+08:00&quot;
+      },
+      {
+        &quot;verification_id&quot;: &quot;INC-COLD-F:verify:sales_hold&quot;,
+        &quot;subject&quot;: &quot;sales_hold&quot;,
+        &quot;method&quot;: &quot;fresh_state_requery&quot;,
+        &quot;expected_condition&quot;: {
+          &quot;terminal_batches_remain_held_unless_released&quot;: true
+        },
+        &quot;observed_value&quot;: {
+          &quot;sales_holds&quot;: [
+            {
+              &quot;action_id&quot;: &quot;INC-COLD-F:hold&quot;,
+              &quot;applied_at&quot;: &quot;2026-08-28T09:00:00+08:00&quot;,
+              &quot;approval_id&quot;: null,
+              &quot;batch_id&quot;: &quot;BATCH-S03-DAIRY-001&quot;,
+              &quot;hold_id&quot;: &quot;hold_000001&quot;,
+              &quot;incident_id&quot;: &quot;INC-COLD-F&quot;,
+              &quot;reason&quot;: &quot;coldchain temperature risk containment&quot;,
+              &quot;released_at&quot;: null,
+              &quot;sku_id&quot;: &quot;MILK-001&quot;,
+              &quot;status&quot;: &quot;active&quot;,
+              &quot;store_id&quot;: &quot;S03&quot;,
+              &quot;verification_id&quot;: null
+            },
+            {
+              &quot;action_id&quot;: &quot;INC-COLD-F:hold&quot;,
+              &quot;applied_at&quot;: &quot;2026-08-28T09:00:00+08:00&quot;,
+              &quot;approval_id&quot;: null,
+              &quot;batch_id&quot;: &quot;BATCH-S03-FRESH-001&quot;,
+              &quot;hold_id&quot;: &quot;hold_000002&quot;,
+              &quot;incident_id&quot;: &quot;INC-COLD-F&quot;,
+              &quot;reason&quot;: &quot;coldchain temperature risk containment&quot;,
+              &quot;released_at&quot;: null,
+              &quot;sku_id&quot;: &quot;SANDWICH-001&quot;,
+              &quot;status&quot;: &quot;active&quot;,
+              &quot;store_id&quot;: &quot;S03&quot;,
+              &quot;verification_id&quot;: null
+            }
+          ]
+        },
+        &quot;evidence_ids&quot;: [
+          &quot;ev_3e39d400cd726fd6&quot;
+        ],
+        &quot;result&quot;: &quot;passed&quot;,
+        &quot;verifier&quot;: &quot;Auditor&quot;,
+        &quot;verified_at&quot;: &quot;2026-08-28T09:07:00+08:00&quot;
+      },
+      {
+        &quot;verification_id&quot;: &quot;INC-COLD-F:verify:approval&quot;,
+        &quot;subject&quot;: &quot;approval&quot;,
+        &quot;method&quot;: &quot;fresh_state_requery&quot;,
+        &quot;expected_condition&quot;: {
+          &quot;required_actions&quot;: [
+            &quot;INC-COLD-F:batch:BATCH-S03-DAIRY-001&quot;,
+            &quot;INC-COLD-F:batch:BATCH-S03-FRESH-001&quot;,
+            &quot;INC-COLD-F:repair&quot;
+          ],
+          &quot;status&quot;: &quot;approved&quot;
+        },
+        &quot;observed_value&quot;: {
+          &quot;approvals&quot;: [
+            {
+              &quot;action_id&quot;: &quot;INC-COLD-F:repair&quot;,
+              &quot;approval_id&quot;: &quot;approval_000001&quot;,
+              &quot;approvers&quot;: [
+                &quot;store_manager&quot;
+              ],
+              &quot;created_at&quot;: &quot;2026-08-28T09:00:00+08:00&quot;,
+              &quot;deadline&quot;: &quot;2026-08-28T09:02:00+08:00&quot;,
+              &quot;decided_at&quot;: &quot;2026-08-28T09:01:00+08:00&quot;,
+              &quot;decided_by&quot;: &quot;ScenarioEngine&quot;,
+              &quot;decision_reason&quot;: &quot;synthetic store manager approval&quot;,
+              &quot;incident_id&quot;: &quot;INC-COLD-F&quot;,
+              &quot;status&quot;: &quot;approved&quot;,
+              &quot;subject&quot;: &quot;repair FROST-S03&quot;
+            },
+            {
+              &quot;action_id&quot;: &quot;INC-COLD-F:batch:BATCH-S03-DAIRY-001&quot;,
+              &quot;approval_id&quot;: &quot;approval_000002&quot;,
+              &quot;approvers&quot;: [
+                &quot;food_safety_owner&quot;
+              ],
+              &quot;created_at&quot;: &quot;2026-08-28T09:05:00+08:00&quot;,
+              &quot;deadline&quot;: &quot;2026-08-28T09:35:00+08:00&quot;,
+              &quot;decided_at&quot;: &quot;2026-08-28T09:06:00+08:00&quot;,
+              &quot;decided_by&quot;: &quot;ScenarioEngine&quot;,
+              &quot;decision_reason&quot;: &quot;synthetic food safety owner approval&quot;,
+              &quot;incident_id&quot;: &quot;INC-COLD-F&quot;,
+              &quot;status&quot;: &quot;approved&quot;,
+              &quot;subject&quot;: &quot;disposed BATCH-S03-DAIRY-001&quot;
+            },
+            {
+              &quot;action_id&quot;: &quot;INC-COLD-F:batch:BATCH-S03-FRESH-001&quot;,
+              &quot;approval_id&quot;: &quot;approval_000003&quot;,
+              &quot;approvers&quot;: [
+                &quot;food_safety_owner&quot;
+              ],
+              &quot;created_at&quot;: &quot;2026-08-28T09:05:00+08:00&quot;,
+              &quot;deadline&quot;: &quot;2026-08-28T09:35:00+08:00&quot;,
+              &quot;decided_at&quot;: &quot;2026-08-28T09:06:00+08:00&quot;,
+              &quot;decided_by&quot;: &quot;ScenarioEngine&quot;,
+              &quot;decision_reason&quot;: &quot;synthetic food safety owner approval&quot;,
+              &quot;incident_id&quot;: &quot;INC-COLD-F&quot;,
+              &quot;status&quot;: &quot;approved&quot;,
+              &quot;subject&quot;: &quot;transferred BATCH-S03-FRESH-001&quot;
+            }
+          ]
+        },
+        &quot;evidence_ids&quot;: [
+          &quot;ev_de16f133749211f0&quot;
+        ],
+        &quot;result&quot;: &quot;passed&quot;,
+        &quot;verifier&quot;: &quot;Auditor&quot;,
+        &quot;verified_at&quot;: &quot;2026-08-28T09:07:00+08:00&quot;
+      },
+      {
+        &quot;verification_id&quot;: &quot;INC-COLD-F:verify:audit&quot;,
+        &quot;subject&quot;: &quot;audit&quot;,
+        &quot;method&quot;: &quot;audit_log_query&quot;,
+        &quot;expected_condition&quot;: {
+          &quot;minimum_entries&quot;: 1,
+          &quot;request_id_required&quot;: true
+        },
+        &quot;observed_value&quot;: {
+          &quot;entry_count&quot;: 12
+        },
+        &quot;evidence_ids&quot;: [],
+        &quot;result&quot;: &quot;passed&quot;,
+        &quot;verifier&quot;: &quot;Auditor&quot;,
+        &quot;verified_at&quot;: &quot;2026-08-28T09:07:00+08:00&quot;
+      }
+    ],
+    &quot;asset_states&quot;: {
+      &quot;FROST-S03&quot;: &quot;recovered&quot;
+    },
+    &quot;batch_dispositions&quot;: {
+      &quot;BATCH-S03-DAIRY-001&quot;: &quot;disposed&quot;,
+      &quot;BATCH-S03-FRESH-001&quot;: &quot;transferred&quot;
+    },
+    &quot;sales_hold_refs&quot;: [
+      &quot;hold_000001&quot;,
+      &quot;hold_000002&quot;
+    ],
+    &quot;approval_refs&quot;: [
+      &quot;approval_000001&quot;,
+      &quot;approval_000002&quot;,
+      &quot;approval_000003&quot;
+    ],
+    &quot;workorder_refs&quot;: [
+      &quot;wo_000001&quot;
+    ],
+    &quot;owner&quot;: &quot;Orchestrator&quot;,
+    &quot;next_wakeup_at&quot;: null,
+    &quot;created_at&quot;: &quot;2026-09-19T19:42:46+00:00&quot;,
+    &quot;updated_at&quot;: &quot;2026-08-28T09:07:00+08:00&quot;,
+    &quot;version&quot;: 33
+  },
+  &quot;phases&quot;: {
+    &quot;DETECT_CONTAIN&quot;: {
+      &quot;detected&quot;: true,
+      &quot;partial&quot;: false,
+      &quot;severity&quot;: &quot;critical&quot;,
+      &quot;incident_type&quot;: &quot;coldchain_temperature_loss&quot;,
+      &quot;device_id&quot;: &quot;FROST-S03&quot;,
+      &quot;store_id&quot;: &quot;S03&quot;,
+      &quot;affected_batches&quot;: [
+        &quot;BATCH-S03-DAIRY-001&quot;,
+        &quot;BATCH-S03-FRESH-001&quot;
+      ],
+      &quot;device&quot;: {
+        &quot;device_id&quot;: &quot;FROST-S03&quot;,
+        &quot;store_id&quot;: &quot;S03&quot;,
+        &quot;health&quot;: {
+          &quot;state&quot;: &quot;fault&quot;,
+          &quot;compressor_state&quot;: &quot;stalled&quot;,
+          &quot;model&quot;: &quot;FROST-X100&quot;
+        },
+        &quot;door&quot;: {
+          &quot;state&quot;: &quot;closed&quot;
+        },
+        &quot;power&quot;: {
+          &quot;state&quot;: &quot;on&quot;
+        },
+        &quot;maintenance&quot;: {
+          &quot;summary&quot;: &quot;No open history in seed&quot;
+        },
+        &quot;temperature_series&quot;: [
+          {
+            &quot;reading_id&quot;: &quot;seed-FROST-S03-01&quot;,
+            &quot;device_id&quot;: &quot;FROST-S03&quot;,
+            &quot;observed_at&quot;: &quot;2026-08-28T06:00:00+08:00&quot;,
+            &quot;temp_c&quot;: 3.6,
+            &quot;quality&quot;: &quot;good&quot;,
+            &quot;source&quot;: &quot;seed&quot;
+          },
+          {
+            &quot;reading_id&quot;: &quot;seed-FROST-S03-02&quot;,
+            &quot;device_id&quot;: &quot;FROST-S03&quot;,
+            &quot;observed_at&quot;: &quot;2026-08-28T06:30:00+08:00&quot;,
+            &quot;temp_c&quot;: 3.3,
+            &quot;quality&quot;: &quot;good&quot;,
+            &quot;source&quot;: &quot;seed&quot;
+          },
+          {
+            &quot;reading_id&quot;: &quot;seed-FROST-S03-03&quot;,
+            &quot;device_id&quot;: &quot;FROST-S03&quot;,
+            &quot;observed_at&quot;: &quot;2026-08-28T07:00:00+08:00&quot;,
+            &quot;temp_c&quot;: 3.4,
+            &quot;quality&quot;: &quot;good&quot;,
+            &quot;source&quot;: &quot;seed&quot;
+          },
+          {
+            &quot;reading_id&quot;: &quot;seed-FROST-S03-04&quot;,
+            &quot;device_id&quot;: &quot;FROST-S03&quot;,
+            &quot;observed_at&quot;: &quot;2026-08-28T07:30:00+08:00&quot;,
+            &quot;temp_c&quot;: 3.4,
+            &quot;quality&quot;: &quot;good&quot;,
+            &quot;source&quot;: &quot;seed&quot;
+          },
+          {
+            &quot;reading_id&quot;: &quot;reading_000001&quot;,
+            &quot;device_id&quot;: &quot;FROST-S03&quot;,
+            &quot;observed_at&quot;: &quot;2026-08-28T08:00:00+08:00&quot;,
+            &quot;temp_c&quot;: 7.8,
+            &quot;quality&quot;: &quot;good&quot;,
+            &quot;source&quot;: &quot;scenario&quot;
+          },
+          {
+            &quot;reading_id&quot;: &quot;reading_000002&quot;,
+            &quot;device_id&quot;: &quot;FROST-S03&quot;,
+            &quot;observed_at&quot;: &quot;2026-08-28T08:30:00+08:00&quot;,
+            &quot;temp_c&quot;: 8.7,
+            &quot;quality&quot;: &quot;good&quot;,
+            &quot;source&quot;: &quot;scenario&quot;
+          },
+          {
+            &quot;reading_id&quot;: &quot;reading_000003&quot;,
+            &quot;device_id&quot;: &quot;FROST-S03&quot;,
+            &quot;observed_at&quot;: &quot;2026-08-28T09:00:00+08:00&quot;,
+            &quot;temp_c&quot;: 9.6,
+            &quot;quality&quot;: &quot;good&quot;,
+            &quot;source&quot;: &quot;scenario&quot;
+          }
+        ],
+        &quot;ambient_temp_c&quot;: 26.0
+      },
+      &quot;batches&quot;: [
+        {
+          &quot;batch_id&quot;: &quot;BATCH-S03-DAIRY-001&quot;,
+          &quot;store_id&quot;: &quot;S03&quot;,
+          &quot;device_id&quot;: &quot;FROST-S03&quot;,
+          &quot;sku_id&quot;: &quot;MILK-001&quot;,
+          &quot;product_name&quot;: &quot;巴氏鲜奶&quot;,
+          &quot;quantity&quot;: 24,
+          &quot;storage_min_c&quot;: 0.0,
+          &quot;storage_max_c&quot;: 6.0,
+          &quot;disposition&quot;: &quot;unknown&quot;,
+          &quot;safe_for_sale&quot;: true,
+          &quot;policy_ref&quot;: &quot;coldchain-demo:1.0.0&quot;,
+          &quot;updated_at&quot;: &quot;2026-08-28T09:00:00+08:00&quot;
+        },
+        {
+          &quot;batch_id&quot;: &quot;BATCH-S03-FRESH-001&quot;,
+          &quot;store_id&quot;: &quot;S03&quot;,
+          &quot;device_id&quot;: &quot;FROST-S03&quot;,
+          &quot;sku_id&quot;: &quot;SANDWICH-001&quot;,
+          &quot;product_name&quot;: &quot;鲜食三明治&quot;,
+          &quot;quantity&quot;: 18,
+          &quot;storage_min_c&quot;: 0.0,
+          &quot;storage_max_c&quot;: 8.0,
+          &quot;disposition&quot;: &quot;unknown&quot;,
+          &quot;safe_for_sale&quot;: true,
+          &quot;policy_ref&quot;: &quot;coldchain-demo:1.0.0&quot;,
+          &quot;updated_at&quot;: &quot;2026-08-28T09:00:00+08:00&quot;
+        }
+      ],
+      &quot;evidence&quot;: [
+        {
+          &quot;evidence_id&quot;: &quot;ev_adccfdac79682615&quot;,
+          &quot;incident_id&quot;: &quot;INC-COLD-F&quot;,
+          &quot;type&quot;: &quot;device_context&quot;,
+          &quot;source&quot;: &quot;state_store.devices&quot;,
+          &quot;observed_at&quot;: &quot;2026-08-28T09:00:00+08:00&quot;,
+          &quot;collected_at&quot;: &quot;2026-08-28T09:00:00+08:00&quot;,
+          &quot;payload&quot;: {
+            &quot;device_id&quot;: &quot;FROST-S03&quot;,
+            &quot;store_id&quot;: &quot;S03&quot;,
+            &quot;health&quot;: {
+              &quot;state&quot;: &quot;fault&quot;,
+              &quot;compressor_state&quot;: &quot;stalled&quot;,
+              &quot;model&quot;: &quot;FROST-X100&quot;
+            },
+            &quot;door&quot;: {
+              &quot;state&quot;: &quot;closed&quot;
+            },
+            &quot;power&quot;: {
+              &quot;state&quot;: &quot;on&quot;
+            },
+            &quot;maintenance&quot;: {
+              &quot;summary&quot;: &quot;No open history in seed&quot;
+            },
+            &quot;temperature_series&quot;: [
+              {
+                &quot;reading_id&quot;: &quot;seed-FROST-S03-01&quot;,
+                &quot;device_id&quot;: &quot;FROST-S03&quot;,
+                &quot;observed_at&quot;: &quot;2026-08-28T06:00:00+08:00&quot;,
+                &quot;temp_c&quot;: 3.6,
+                &quot;quality&quot;: &quot;good&quot;,
+                &quot;source&quot;: &quot;seed&quot;
+              },
+              {
+                &quot;reading_id&quot;: &quot;seed-FROST-S03-02&quot;,
+                &quot;device_id&quot;: &quot;FROST-S03&quot;,
+                &quot;observed_at&quot;: &quot;2026-08-28T06:30:00+08:00&quot;,
+                &quot;temp_c&quot;: 3.3,
+                &quot;quality&quot;: &quot;good&quot;,
+                &quot;source&quot;: &quot;seed&quot;
+              },
+              {
+                &quot;reading_id&quot;: &quot;seed-FROST-S03-03&quot;,
+                &quot;device_id&quot;: &quot;FROST-S03&quot;,
+                &quot;observed_at&quot;: &quot;2026-08-28T07:00:00+08:00&quot;,
+                &quot;temp_c&quot;: 3.4,
+                &quot;quality&quot;: &quot;good&quot;,
+                &quot;source&quot;: &quot;seed&quot;
+              },
+              {
+                &quot;reading_id&quot;: &quot;seed-FROST-S03-04&quot;,
+                &quot;device_id&quot;: &quot;FROST-S03&quot;,
+                &quot;observed_at&quot;: &quot;2026-08-28T07:30:00+08:00&quot;,
+                &quot;temp_c&quot;: 3.4,
+                &quot;quality&quot;: &quot;good&quot;,
+                &quot;source&quot;: &quot;seed&quot;
+              },
+              {
+                &quot;reading_id&quot;: &quot;reading_000001&quot;,
+                &quot;device_id&quot;: &quot;FROST-S03&quot;,
+                &quot;observed_at&quot;: &quot;2026-08-28T08:00:00+08:00&quot;,
+                &quot;temp_c&quot;: 7.8,
+                &quot;quality&quot;: &quot;good&quot;,
+                &quot;source&quot;: &quot;scenario&quot;
+              },
+              {
+                &quot;reading_id&quot;: &quot;reading_000002&quot;,
+                &quot;device_id&quot;: &quot;FROST-S03&quot;,
+                &quot;observed_at&quot;: &quot;2026-08-28T08:30:00+08:00&quot;,
+                &quot;temp_c&quot;: 8.7,
+                &quot;quality&quot;: &quot;good&quot;,
+                &quot;source&quot;: &quot;scenario&quot;
+              },
+              {
+                &quot;reading_id&quot;: &quot;reading_000003&quot;,
+                &quot;device_id&quot;: &quot;FROST-S03&quot;,
+                &quot;observed_at&quot;: &quot;2026-08-28T09:00:00+08:00&quot;,
+                &quot;temp_c&quot;: 9.6,
+                &quot;quality&quot;: &quot;good&quot;,
+                &quot;source&quot;: &quot;scenario&quot;
+              }
+            ],
+            &quot;ambient_temp_c&quot;: 26.0
+          },
+          &quot;quality&quot;: &quot;good&quot;,
+          &quot;freshness&quot;: &quot;fresh&quot;,
+          &quot;request_id&quot;: &quot;req_ea541c5b1d0b4e73&quot;,
+          &quot;immutable_hash&quot;: &quot;adccfdac79682615772bba83953e4d8ef3747584b7117eca927bb1c0d0ef6d87&quot;
+        },
+        {
+          &quot;evidence_id&quot;: &quot;ev_82f2730a65b6dab4&quot;,
+          &quot;incident_id&quot;: &quot;INC-COLD-F&quot;,
+          &quot;type&quot;: &quot;inventory_batches&quot;,
+          &quot;source&quot;: &quot;state_store.inventory_batches&quot;,
+          &quot;observed_at&quot;: &quot;2026-08-28T09:00:00+08:00&quot;,
+          &quot;collected_at&quot;: &quot;2026-08-28T09:00:00+08:00&quot;,
+          &quot;payload&quot;: {
+            &quot;batches&quot;: [
+              {
+                &quot;batch_id&quot;: &quot;BATCH-S03-DAIRY-001&quot;,
+                &quot;store_id&quot;: &quot;S03&quot;,
+                &quot;device_id&quot;: &quot;FROST-S03&quot;,
+                &quot;sku_id&quot;: &quot;MILK-001&quot;,
+                &quot;product_name&quot;: &quot;巴氏鲜奶&quot;,
+                &quot;quantity&quot;: 24,
+                &quot;storage_min_c&quot;: 0.0,
+                &quot;storage_max_c&quot;: 6.0,
+                &quot;disposition&quot;: &quot;unknown&quot;,
+                &quot;safe_for_sale&quot;: true,
+                &quot;policy_ref&quot;: &quot;coldchain-demo:1.0.0&quot;,
+                &quot;updated_at&quot;: &quot;2026-08-28T09:00:00+08:00&quot;
+              },
+              {
+                &quot;batch_id&quot;: &quot;BATCH-S03-FRESH-001&quot;,
+                &quot;store_id&quot;: &quot;S03&quot;,
+                &quot;device_id&quot;: &quot;FROST-S03&quot;,
+                &quot;sku_id&quot;: &quot;SANDWICH-001&quot;,
+                &quot;product_name&quot;: &quot;鲜食三明治&quot;,
+                &quot;quantity&quot;: 18,
+                &quot;storage_min_c&quot;: 0.0,
+                &quot;storage_max_c&quot;: 8.0,
+                &quot;disposition&quot;: &quot;unknown&quot;,
+                &quot;safe_for_sale&quot;: true,
+                &quot;policy_ref&quot;: &quot;coldchain-demo:1.0.0&quot;,
+                &quot;updated_at&quot;: &quot;2026-08-28T09:00:00+08:00&quot;
+              }
+            ]
+          },
+          &quot;quality&quot;: &quot;good&quot;,
+          &quot;freshness&quot;: &quot;current&quot;,
+          &quot;request_id&quot;: &quot;req_fb99a104441749ae&quot;,
+          &quot;immutable_hash&quot;: &quot;82f2730a65b6dab4f02c2c04f2473cadeb189c831eb67a3db54d034009ba6155&quot;
+        }
+      ],
+      &quot;observations&quot;: {
+        &quot;sustained_over_threshold&quot;: true,
+        &quot;minimum_over_samples&quot;: 2,
+        &quot;alarm_max_c&quot;: 8.0,
+        &quot;max_temp_c&quot;: 9.6,
+        &quot;equipment_fault&quot;: true,
+        &quot;coverage_issues&quot;: [],
+        &quot;excluded_readings&quot;: 0,
+        &quot;alert_after_minutes&quot;: 15.0
+      },
+      &quot;containment_request&quot;: {
+        &quot;required&quot;: true,
+        &quot;actions&quot;: [
+          &quot;apply_sales_hold&quot;,
+          &quot;quarantine_batches&quot;,
+          &quot;request_manual_evidence&quot;
+        ]
+      },
+      &quot;containment&quot;: {
+        &quot;ok&quot;: true,
+        &quot;data&quot;: {
+          &quot;holds&quot;: [
+            {
+              &quot;hold_id&quot;: &quot;hold_000001&quot;,
+              &quot;batch_id&quot;: &quot;BATCH-S03-DAIRY-001&quot;,
+              &quot;status&quot;: &quot;active&quot;
+            },
+            {
+              &quot;hold_id&quot;: &quot;hold_000002&quot;,
+              &quot;batch_id&quot;: &quot;BATCH-S03-FRESH-001&quot;,
+              &quot;status&quot;: &quot;active&quot;
+            }
+          ]
+        },
+        &quot;error&quot;: null,
+        &quot;request_id&quot;: &quot;req_9d8801b6b80942a6&quot;,
+        &quot;source&quot;: &quot;dianxun-state-store&quot;,
+        &quot;source_ts&quot;: &quot;2026-08-28T09:00:00+08:00&quot;,
+        &quot;partial&quot;: false,
+        &quot;audit_ref&quot;: &quot;audit_000001&quot;
+      }
+    },
+    &quot;DIAGNOSE_DECIDE&quot;: {
+      &quot;hypotheses&quot;: [
+        {
+          &quot;hypothesis_id&quot;: &quot;INC-COLD-F:compressor-failure&quot;,
+          &quot;label&quot;: &quot;compressor_failure&quot;,
+          &quot;confidence&quot;: 0.94,
+          &quot;supporting_evidence_ids&quot;: [
+            &quot;ev_e70cfbfbd6a7e9de&quot;
+          ],
+          &quot;contradicting_evidence_ids&quot;: [],
+          &quot;missing_evidence&quot;: [],
+          &quot;next_checks&quot;: [
+            &quot;inspect_compressor&quot;,
+            &quot;confirm_recovery_samples&quot;
+          ],
+          &quot;policy_notes&quot;: [
+            &quot;cross_store_benchmark_is_supporting_only&quot;
+          ]
+        },
+        {
+          &quot;hypothesis_id&quot;: &quot;INC-COLD-F:sensor-fault&quot;,
+          &quot;label&quot;: &quot;sensor_fault&quot;,
+          &quot;confidence&quot;: 0.14,
+          &quot;supporting_evidence_ids&quot;: [],
+          &quot;contradicting_evidence_ids&quot;: [
+            &quot;ev_e70cfbfbd6a7e9de&quot;
+          ],
+          &quot;missing_evidence&quot;: [
+            &quot;backup_sensor&quot;
+          ],
+          &quot;next_checks&quot;: [
+            &quot;compare_backup_sensor&quot;,
+            &quot;request_manual_measurement&quot;
+          ],
+          &quot;policy_notes&quot;: [
+            &quot;suspect_readings_cannot_prove_product_exposure&quot;
+          ]
+        },
+        {
+          &quot;hypothesis_id&quot;: &quot;INC-COLD-F:door-left-open&quot;,
+          &quot;label&quot;: &quot;door_left_open&quot;,
+          &quot;confidence&quot;: 0.08,
+          &quot;supporting_evidence_ids&quot;: [],
+          &quot;contradicting_evidence_ids&quot;: [
+            &quot;ev_e70cfbfbd6a7e9de&quot;
+          ],
+          &quot;missing_evidence&quot;: [
+            &quot;door_event_history&quot;
+          ],
+          &quot;next_checks&quot;: [
+            &quot;inspect_door_seal&quot;
+          ],
+          &quot;policy_notes&quot;: []
+        }
+      ],
+      &quot;evidence&quot;: [
+        {
+          &quot;evidence_id&quot;: &quot;ev_e70cfbfbd6a7e9de&quot;,
+          &quot;incident_id&quot;: &quot;INC-COLD-F&quot;,
+          &quot;type&quot;: &quot;device_context&quot;,
+          &quot;source&quot;: &quot;state_store.devices&quot;,
+          &quot;observed_at&quot;: &quot;2026-08-28T09:00:00+08:00&quot;,
+          &quot;collected_at&quot;: &quot;2026-08-28T09:00:00+08:00&quot;,
+          &quot;payload&quot;: {
+            &quot;device_id&quot;: &quot;FROST-S03&quot;,
+            &quot;store_id&quot;: &quot;S03&quot;,
+            &quot;health&quot;: {
+              &quot;state&quot;: &quot;fault&quot;,
+              &quot;compressor_state&quot;: &quot;stalled&quot;,
+              &quot;model&quot;: &quot;FROST-X100&quot;
+            },
+            &quot;door&quot;: {
+              &quot;state&quot;: &quot;closed&quot;
+            },
+            &quot;power&quot;: {
+              &quot;state&quot;: &quot;on&quot;
+            },
+            &quot;maintenance&quot;: {
+              &quot;summary&quot;: &quot;No open history in seed&quot;
+            },
+            &quot;temperature_series&quot;: [
+              {
+                &quot;reading_id&quot;: &quot;seed-FROST-S03-01&quot;,
+                &quot;device_id&quot;: &quot;FROST-S03&quot;,
+                &quot;observed_at&quot;: &quot;2026-08-28T06:00:00+08:00&quot;,
+                &quot;temp_c&quot;: 3.6,
+                &quot;quality&quot;: &quot;good&quot;,
+                &quot;source&quot;: &quot;seed&quot;
+              },
+              {
+                &quot;reading_id&quot;: &quot;seed-FROST-S03-02&quot;,
+                &quot;device_id&quot;: &quot;FROST-S03&quot;,
+                &quot;observed_at&quot;: &quot;2026-08-28T06:30:00+08:00&quot;,
+                &quot;temp_c&quot;: 3.3,
+                &quot;quality&quot;: &quot;good&quot;,
+                &quot;source&quot;: &quot;seed&quot;
+              },
+              {
+                &quot;reading_id&quot;: &quot;seed-FROST-S03-03&quot;,
+                &quot;device_id&quot;: &quot;FROST-S03&quot;,
+                &quot;observed_at&quot;: &quot;2026-08-28T07:00:00+08:00&quot;,
+                &quot;temp_c&quot;: 3.4,
+                &quot;quality&quot;: &quot;good&quot;,
+                &quot;source&quot;: &quot;seed&quot;
+              },
+              {
+                &quot;reading_id&quot;: &quot;seed-FROST-S03-04&quot;,
+                &quot;device_id&quot;: &quot;FROST-S03&quot;,
+                &quot;observed_at&quot;: &quot;2026-08-28T07:30:00+08:00&quot;,
+                &quot;temp_c&quot;: 3.4,
+                &quot;quality&quot;: &quot;good&quot;,
+                &quot;source&quot;: &quot;seed&quot;
+              },
+              {
+                &quot;reading_id&quot;: &quot;reading_000001&quot;,
+                &quot;device_id&quot;: &quot;FROST-S03&quot;,
+                &quot;observed_at&quot;: &quot;2026-08-28T08:00:00+08:00&quot;,
+                &quot;temp_c&quot;: 7.8,
+                &quot;quality&quot;: &quot;good&quot;,
+                &quot;source&quot;: &quot;scenario&quot;
+              },
+              {
+                &quot;reading_id&quot;: &quot;reading_000002&quot;,
+                &quot;device_id&quot;: &quot;FROST-S03&quot;,
+                &quot;observed_at&quot;: &quot;2026-08-28T08:30:00+08:00&quot;,
+                &quot;temp_c&quot;: 8.7,
+                &quot;quality&quot;: &quot;good&quot;,
+                &quot;source&quot;: &quot;scenario&quot;
+              },
+              {
+                &quot;reading_id&quot;: &quot;reading_000003&quot;,
+                &quot;device_id&quot;: &quot;FROST-S03&quot;,
+                &quot;observed_at&quot;: &quot;2026-08-28T09:00:00+08:00&quot;,
+                &quot;temp_c&quot;: 9.6,
+                &quot;quality&quot;: &quot;good&quot;,
+                &quot;source&quot;: &quot;scenario&quot;
+              }
+            ],
+            &quot;ambient_temp_c&quot;: 26.0
+          },
+          &quot;quality&quot;: &quot;good&quot;,
+          &quot;freshness&quot;: &quot;fresh&quot;,
+          &quot;request_id&quot;: &quot;req_6b4abfbe5b1045c3&quot;,
+          &quot;immutable_hash&quot;: &quot;e70cfbfbd6a7e9deb0abbaabe4fb2e8a0b6f10ec4f4c6a4c666a2fcfa84bdde3&quot;
+        }
+      ],
+      &quot;quality&quot;: &quot;good&quot;,
+      &quot;data_quality&quot;: {
+        &quot;trusted_readings&quot;: 7,
+        &quot;excluded_readings&quot;: 0,
+        &quot;manual_measurements&quot;: 0
+      },
+      &quot;rag&quot;: {
+        &quot;status&quot;: &quot;disabled&quot;,
+        &quot;hits&quot;: []
+      },
+      &quot;risk_assessment&quot;: {
+        &quot;incident_id&quot;: &quot;INC-COLD-F&quot;,
+        &quot;affected_batches&quot;: [
+          &quot;BATCH-S03-DAIRY-001&quot;,
+          &quot;BATCH-S03-FRESH-001&quot;
+        ],
+        &quot;exposure_assessment&quot;: [
+          {
+            &quot;batch_id&quot;: &quot;BATCH-S03-DAIRY-001&quot;,
+            &quot;storage_max_c&quot;: 6.0,
+            &quot;degree_minutes&quot;: 189.0,
+            &quot;over_limit_minutes&quot;: 90.0,
+            &quot;recommendation&quot;: &quot;disposed&quot;,
+            &quot;reason&quot;: &quot;exposure_exceeds_demo_policy&quot;,
+            &quot;policy_ref&quot;: &quot;coldchain-demo:1.0.0&quot;,
+            &quot;requires_approval&quot;: true,
+            &quot;evidence_quality&quot;: &quot;trusted&quot;,
+            &quot;coverage_status&quot;: &quot;observed_window_only&quot;,
+            &quot;coverage_issues&quot;: []
+          },
+          {
+            &quot;batch_id&quot;: &quot;BATCH-S03-FRESH-001&quot;,
+            &quot;storage_max_c&quot;: 8.0,
+            &quot;degree_minutes&quot;: 45.0,
+            &quot;over_limit_minutes&quot;: 60.0,
+            &quot;recommendation&quot;: &quot;transferred&quot;,
+            &quot;reason&quot;: &quot;limited_exposure_requires_controlled_transfer&quot;,
+            &quot;policy_ref&quot;: &quot;coldchain-demo:1.0.0&quot;,
+            &quot;requires_approval&quot;: true,
+            &quot;evidence_quality&quot;: &quot;trusted&quot;,
+            &quot;coverage_status&quot;: &quot;observed_window_only&quot;,
+            &quot;coverage_issues&quot;: []
+          }
+        ],
+        &quot;containment_actions&quot;: [
+          &quot;apply_sales_hold&quot;,
+          &quot;quarantine_batches&quot;
+        ],
+        &quot;required_approvals&quot;: [
+          {
+            &quot;batch_id&quot;: &quot;BATCH-S03-DAIRY-001&quot;,
+            &quot;disposition&quot;: &quot;disposed&quot;
+          },
+          {
+            &quot;batch_id&quot;: &quot;BATCH-S03-FRESH-001&quot;,
+            &quot;disposition&quot;: &quot;transferred&quot;
+          }
+        ],
+        &quot;manual_measurements&quot;: [],
+        &quot;data_quality&quot;: {
+          &quot;total_readings&quot;: 7,
+          &quot;trusted_readings&quot;: 7,
+          &quot;excluded_readings&quot;: 0,
+          &quot;excluded_qualities&quot;: []
+        },
+        &quot;evidence_refs&quot;: [],
+        &quot;policy&quot;: {
+          &quot;policy_id&quot;: &quot;coldchain-demo&quot;,
+          &quot;policy_version&quot;: &quot;1.0.0&quot;,
+          &quot;source_ref&quot;: &quot;project://config/policies/coldchain-demo.v1.json&quot;,
+          &quot;scope&quot;: &quot;competition_demo_only&quot;
+        }
+      }
+    },
+    &quot;EXECUTE&quot;: {
+      &quot;repair&quot;: {
+        &quot;result&quot;: &quot;executed&quot;,
+        &quot;approval&quot;: {
+          &quot;approval_id&quot;: &quot;approval_000001&quot;,
+          &quot;incident_id&quot;: &quot;INC-COLD-F&quot;,
+          &quot;action_id&quot;: &quot;INC-COLD-F:repair&quot;,
+          &quot;subject&quot;: &quot;repair FROST-S03&quot;,
+          &quot;status&quot;: &quot;approved&quot;,
+          &quot;deadline&quot;: &quot;2026-08-28T09:02:00+08:00&quot;,
+          &quot;created_at&quot;: &quot;2026-08-28T09:00:00+08:00&quot;,
+          &quot;decided_at&quot;: &quot;2026-08-28T09:01:00+08:00&quot;,
+          &quot;decided_by&quot;: &quot;ScenarioEngine&quot;,
+          &quot;decision_reason&quot;: &quot;synthetic store manager approval&quot;,
+          &quot;approvers&quot;: [
+            &quot;store_manager&quot;
+          ]
+        },
+        &quot;workorder&quot;: {
+          &quot;ok&quot;: true,
+          &quot;waiting&quot;: false,
+          &quot;data&quot;: {
+            &quot;workorder_id&quot;: &quot;wo_000001&quot;,
+            &quot;status&quot;: &quot;assigned&quot;
+          },
+          &quot;error&quot;: null,
+          &quot;request_id&quot;: &quot;req_7fb80c9954f542e1&quot;,
+          &quot;audit_ref&quot;: &quot;audit_000004&quot;,
+          &quot;compensation&quot;: &quot;cancel_or_reassign_workorder&quot;
+        }
+      },
+      &quot;batch_dispositions&quot;: [
+        {
+          &quot;action_id&quot;: &quot;INC-COLD-F:batch:BATCH-S03-DAIRY-001&quot;,
+          &quot;batch_id&quot;: &quot;BATCH-S03-DAIRY-001&quot;,
+          &quot;disposition&quot;: &quot;disposed&quot;,
+          &quot;approval_id&quot;: &quot;approval_000002&quot;,
+          &quot;result&quot;: &quot;executed&quot;
+        },
+        {
+          &quot;action_id&quot;: &quot;INC-COLD-F:batch:BATCH-S03-FRESH-001&quot;,
+          &quot;batch_id&quot;: &quot;BATCH-S03-FRESH-001&quot;,
+          &quot;disposition&quot;: &quot;transferred&quot;,
+          &quot;approval_id&quot;: &quot;approval_000003&quot;,
+          &quot;result&quot;: &quot;executed&quot;
+        }
+      ]
+    },
+    &quot;VERIFY&quot;: {
+      &quot;incident_id&quot;: &quot;INC-COLD-F&quot;,
+      &quot;result&quot;: &quot;reopened&quot;,
+      &quot;checks&quot;: {
+        &quot;device&quot;: {
+          &quot;passed&quot;: false,
+          &quot;expected&quot;: {
+            &quot;recovery_samples&quot;: 3,
+            &quot;max_c&quot;: 8.0,
+            &quot;health&quot;: &quot;normal&quot;,
+            &quot;workorder&quot;: &quot;done_with_evidence&quot;
+          },
+          &quot;observed&quot;: {
+            &quot;device&quot;: {
+              &quot;device_id&quot;: &quot;FROST-S03&quot;,
+              &quot;store_id&quot;: &quot;S03&quot;,
+              &quot;health&quot;: {
+                &quot;state&quot;: &quot;normal&quot;,
+                &quot;compressor_state&quot;: &quot;running&quot;,
+                &quot;model&quot;: &quot;FROST-X100&quot;
+              },
+              &quot;door&quot;: {
+                &quot;state&quot;: &quot;closed&quot;
+              },
+              &quot;power&quot;: {
+                &quot;state&quot;: &quot;on&quot;
+              },
+              &quot;maintenance&quot;: {
+                &quot;summary&quot;: &quot;No open history in seed&quot;
+              },
+              &quot;temperature_series&quot;: [
+                {
+                  &quot;reading_id&quot;: &quot;seed-FROST-S03-02&quot;,
+                  &quot;device_id&quot;: &quot;FROST-S03&quot;,
+                  &quot;observed_at&quot;: &quot;2026-08-28T06:30:00+08:00&quot;,
+                  &quot;temp_c&quot;: 3.3,
+                  &quot;quality&quot;: &quot;good&quot;,
+                  &quot;source&quot;: &quot;seed&quot;
+                },
+                {
+                  &quot;reading_id&quot;: &quot;seed-FROST-S03-03&quot;,
+                  &quot;device_id&quot;: &quot;FROST-S03&quot;,
+                  &quot;observed_at&quot;: &quot;2026-08-28T07:00:00+08:00&quot;,
+                  &quot;temp_c&quot;: 3.4,
+                  &quot;quality&quot;: &quot;good&quot;,
+                  &quot;source&quot;: &quot;seed&quot;
+                },
+                {
+                  &quot;reading_id&quot;: &quot;seed-FROST-S03-04&quot;,
+                  &quot;device_id&quot;: &quot;FROST-S03&quot;,
+                  &quot;observed_at&quot;: &quot;2026-08-28T07:30:00+08:00&quot;,
+                  &quot;temp_c&quot;: 3.4,
+                  &quot;quality&quot;: &quot;good&quot;,
+                  &quot;source&quot;: &quot;seed&quot;
+                },
+                {
+                  &quot;reading_id&quot;: &quot;reading_000001&quot;,
+                  &quot;device_id&quot;: &quot;FROST-S03&quot;,
+                  &quot;observed_at&quot;: &quot;2026-08-28T08:00:00+08:00&quot;,
+                  &quot;temp_c&quot;: 7.8,
+                  &quot;quality&quot;: &quot;good&quot;,
+                  &quot;source&quot;: &quot;scenario&quot;
+                },
+                {
+                  &quot;reading_id&quot;: &quot;reading_000002&quot;,
+                  &quot;device_id&quot;: &quot;FROST-S03&quot;,
+                  &quot;observed_at&quot;: &quot;2026-08-28T08:30:00+08:00&quot;,
+                  &quot;temp_c&quot;: 8.7,
+                  &quot;quality&quot;: &quot;good&quot;,
+                  &quot;source&quot;: &quot;scenario&quot;
+                },
+                {
+                  &quot;reading_id&quot;: &quot;reading_000003&quot;,
+                  &quot;device_id&quot;: &quot;FROST-S03&quot;,
+                  &quot;observed_at&quot;: &quot;2026-08-28T09:00:00+08:00&quot;,
+                  &quot;temp_c&quot;: 9.6,
+                  &quot;quality&quot;: &quot;good&quot;,
+                  &quot;source&quot;: &quot;scenario&quot;
+                },
+                {
+                  &quot;reading_id&quot;: &quot;reading_000004&quot;,
+                  &quot;device_id&quot;: &quot;FROST-S03&quot;,
+                  &quot;observed_at&quot;: &quot;2026-08-28T09:03:00+08:00&quot;,
+                  &quot;temp_c&quot;: 6.2,
+                  &quot;quality&quot;: &quot;good&quot;,
+                  &quot;source&quot;: &quot;scenario&quot;
+                },
+                {
+                  &quot;reading_id&quot;: &quot;reading_000005&quot;,
+                  &quot;device_id&quot;: &quot;FROST-S03&quot;,
+                  &quot;observed_at&quot;: &quot;2026-08-28T09:04:00+08:00&quot;,
+                  &quot;temp_c&quot;: 5.4,
+                  &quot;quality&quot;: &quot;good&quot;,
+                  &quot;source&quot;: &quot;scenario&quot;
+                },
+                {
+                  &quot;reading_id&quot;: &quot;reading_000006&quot;,
+                  &quot;device_id&quot;: &quot;FROST-S03&quot;,
+                  &quot;observed_at&quot;: &quot;2026-08-28T09:05:00+08:00&quot;,
+                  &quot;temp_c&quot;: 4.8,
+                  &quot;quality&quot;: &quot;good&quot;,
+                  &quot;source&quot;: &quot;scenario&quot;
+                }
+              ],
+              &quot;ambient_temp_c&quot;: 26.0
+            },
+            &quot;latest_samples&quot;: [
+              {
+                &quot;reading_id&quot;: &quot;reading_000004&quot;,
+                &quot;device_id&quot;: &quot;FROST-S03&quot;,
+                &quot;observed_at&quot;: &quot;2026-08-28T01:03:00+00:00&quot;,
+                &quot;temp_c&quot;: 6.2,
+                &quot;quality&quot;: &quot;good&quot;,
+                &quot;source&quot;: &quot;scenario&quot;
+              },
+              {
+                &quot;reading_id&quot;: &quot;reading_000005&quot;,
+                &quot;device_id&quot;: &quot;FROST-S03&quot;,
+                &quot;observed_at&quot;: &quot;2026-08-28T01:04:00+00:00&quot;,
+                &quot;temp_c&quot;: 5.4,
+                &quot;quality&quot;: &quot;good&quot;,
+                &quot;source&quot;: &quot;scenario&quot;
+              },
+              {
+                &quot;reading_id&quot;: &quot;reading_000006&quot;,
+                &quot;device_id&quot;: &quot;FROST-S03&quot;,
+                &quot;observed_at&quot;: &quot;2026-08-28T01:05:00+00:00&quot;,
+                &quot;temp_c&quot;: 4.8,
+                &quot;quality&quot;: &quot;good&quot;,
+                &quot;source&quot;: &quot;scenario&quot;
+              }
+            ],
+            &quot;excluded_readings&quot;: [],
+            &quot;workorders&quot;: []
+          }
+        },
+        &quot;batches&quot;: {
+          &quot;passed&quot;: true,
+          &quot;expected&quot;: {
+            &quot;dispositions&quot;: [
+              &quot;disposed&quot;,
+              &quot;released&quot;,
+              &quot;transferred&quot;
+            ],
+            &quot;batch_ids&quot;: [
+              &quot;BATCH-S03-DAIRY-001&quot;,
+              &quot;BATCH-S03-FRESH-001&quot;
+            ],
+            &quot;released_goods_safe_for_sale&quot;: true
+          },
+          &quot;observed&quot;: {
+            &quot;batches&quot;: [
+              {
+                &quot;batch_id&quot;: &quot;BATCH-S03-DAIRY-001&quot;,
+                &quot;store_id&quot;: &quot;S03&quot;,
+                &quot;device_id&quot;: &quot;FROST-S03&quot;,
+                &quot;sku_id&quot;: &quot;MILK-001&quot;,
+                &quot;product_name&quot;: &quot;巴氏鲜奶&quot;,
+                &quot;quantity&quot;: 24,
+                &quot;storage_min_c&quot;: 0.0,
+                &quot;storage_max_c&quot;: 6.0,
+                &quot;disposition&quot;: &quot;disposed&quot;,
+                &quot;safe_for_sale&quot;: false,
+                &quot;policy_ref&quot;: &quot;coldchain-demo:1.0.0&quot;,
+                &quot;updated_at&quot;: &quot;2026-08-28T09:06:00+08:00&quot;
+              },
+              {
+                &quot;batch_id&quot;: &quot;BATCH-S03-FRESH-001&quot;,
+                &quot;store_id&quot;: &quot;S03&quot;,
+                &quot;device_id&quot;: &quot;FROST-S03&quot;,
+                &quot;sku_id&quot;: &quot;SANDWICH-001&quot;,
+                &quot;product_name&quot;: &quot;鲜食三明治&quot;,
+                &quot;quantity&quot;: 18,
+                &quot;storage_min_c&quot;: 0.0,
+                &quot;storage_max_c&quot;: 8.0,
+                &quot;disposition&quot;: &quot;transferred&quot;,
+                &quot;safe_for_sale&quot;: false,
+                &quot;policy_ref&quot;: &quot;coldchain-demo:1.0.0&quot;,
+                &quot;updated_at&quot;: &quot;2026-08-28T09:06:00+08:00&quot;
+              }
+            ],
+            &quot;disposition_receipts&quot;: [
+              {
+                &quot;evidence_id&quot;: &quot;manual_ev_000001&quot;,
+                &quot;incident_id&quot;: &quot;INC-COLD-F&quot;,
+                &quot;action_id&quot;: &quot;INC-COLD-F:batch:BATCH-S03-DAIRY-001&quot;,
+                &quot;actor&quot;: &quot;ScenarioEngine&quot;,
+                &quot;evidence_type&quot;: &quot;disposition_receipt&quot;,
+                &quot;observed_at&quot;: &quot;2026-08-28T09:07:00+08:00&quot;,
+                &quot;uri&quot;: null,
+                &quot;note&quot;: &quot;Synthetic independent physical receipt; not a store observation&quot;,
+                &quot;sha256&quot;: &quot;aa9ecd387311cc4097f5aa32fa9249fe5eb70c7d67e1a9ecea13c6fc28b96c36&quot;,
+                &quot;created_at&quot;: &quot;2026-08-28T09:07:00+08:00&quot;,
+                &quot;metadata&quot;: {
+                  &quot;batch_id&quot;: &quot;BATCH-S03-DAIRY-001&quot;,
+                  &quot;confirmed_by&quot;: &quot;synthetic-receiver&quot;,
+                  &quot;destroyed&quot;: true,
+                  &quot;disposal_method&quot;: &quot;synthetic-destruction&quot;,
+                  &quot;disposition&quot;: &quot;disposed&quot;,
+                  &quot;executor_id&quot;: &quot;synthetic-store-operator&quot;,
+                  &quot;quantity&quot;: 24,
+                  &quot;receipt_ref&quot;: &quot;synthetic://INC-COLD-F/BATCH-S03-DAIRY-001&quot;,
+                  &quot;source_location&quot;: &quot;FROST-S03&quot;,
+                  &quot;synthetic&quot;: true
+                }
+              },
+              {
+                &quot;evidence_id&quot;: &quot;manual_ev_000002&quot;,
+                &quot;incident_id&quot;: &quot;INC-COLD-F&quot;,
+                &quot;action_id&quot;: &quot;INC-COLD-F:batch:BATCH-S03-FRESH-001&quot;,
+                &quot;actor&quot;: &quot;ScenarioEngine&quot;,
+                &quot;evidence_type&quot;: &quot;disposition_receipt&quot;,
+                &quot;observed_at&quot;: &quot;2026-08-28T09:07:00+08:00&quot;,
+                &quot;uri&quot;: null,
+                &quot;note&quot;: &quot;Synthetic independent physical receipt; not a store observation&quot;,
+                &quot;sha256&quot;: &quot;924a9dd34c289790e5efedda47a47a4197cf323b4bbf252518efb99ac937b4b2&quot;,
+                &quot;created_at&quot;: &quot;2026-08-28T09:07:00+08:00&quot;,
+                &quot;metadata&quot;: {
+                  &quot;batch_id&quot;: &quot;BATCH-S03-FRESH-001&quot;,
+                  &quot;confirmed_by&quot;: &quot;synthetic-receiver&quot;,
+                  &quot;destination_location&quot;: &quot;synthetic-backup-cabinet&quot;,
+                  &quot;destination_temp_c&quot;: 4.0,
+                  &quot;disposition&quot;: &quot;transferred&quot;,
+                  &quot;executor_id&quot;: &quot;synthetic-store-operator&quot;,
+                  &quot;quantity&quot;: 18,
+                  &quot;receipt_ref&quot;: &quot;synthetic://INC-COLD-F/BATCH-S03-FRESH-001&quot;,
+                  &quot;received&quot;: true,
+                  &quot;source_location&quot;: &quot;FROST-S03&quot;,
+                  &quot;synthetic&quot;: true
+                }
+              }
+            ]
+          }
+        },
+        &quot;sales_hold&quot;: {
+          &quot;passed&quot;: true,
+          &quot;expected&quot;: {
+            &quot;terminal_batches_remain_held_unless_released&quot;: true
+          },
+          &quot;observed&quot;: {
+            &quot;sales_holds&quot;: [
+              {
+                &quot;hold_id&quot;: &quot;hold_000001&quot;,
+                &quot;incident_id&quot;: &quot;INC-COLD-F&quot;,
+                &quot;action_id&quot;: &quot;INC-COLD-F:hold&quot;,
+                &quot;store_id&quot;: &quot;S03&quot;,
+                &quot;batch_id&quot;: &quot;BATCH-S03-DAIRY-001&quot;,
+                &quot;sku_id&quot;: &quot;MILK-001&quot;,
+                &quot;status&quot;: &quot;active&quot;,
+                &quot;reason&quot;: &quot;coldchain temperature risk containment&quot;,
+                &quot;applied_at&quot;: &quot;2026-08-28T09:00:00+08:00&quot;,
+                &quot;released_at&quot;: null,
+                &quot;approval_id&quot;: null,
+                &quot;verification_id&quot;: null
+              },
+              {
+                &quot;hold_id&quot;: &quot;hold_000002&quot;,
+                &quot;incident_id&quot;: &quot;INC-COLD-F&quot;,
+                &quot;action_id&quot;: &quot;INC-COLD-F:hold&quot;,
+                &quot;store_id&quot;: &quot;S03&quot;,
+                &quot;batch_id&quot;: &quot;BATCH-S03-FRESH-001&quot;,
+                &quot;sku_id&quot;: &quot;SANDWICH-001&quot;,
+                &quot;status&quot;: &quot;active&quot;,
+                &quot;reason&quot;: &quot;coldchain temperature risk containment&quot;,
+                &quot;applied_at&quot;: &quot;2026-08-28T09:00:00+08:00&quot;,
+                &quot;released_at&quot;: null,
+                &quot;approval_id&quot;: null,
+                &quot;verification_id&quot;: null
+              }
+            ]
+          }
+        },
+        &quot;approval&quot;: {
+          &quot;passed&quot;: true,
+          &quot;expected&quot;: {
+            &quot;required_actions&quot;: [
+              &quot;INC-COLD-F:batch:BATCH-S03-DAIRY-001&quot;,
+              &quot;INC-COLD-F:batch:BATCH-S03-FRESH-001&quot;,
+              &quot;INC-COLD-F:repair&quot;
+            ],
+            &quot;status&quot;: &quot;approved&quot;
+          },
+          &quot;observed&quot;: {
+            &quot;approvals&quot;: [
+              {
+                &quot;approval_id&quot;: &quot;approval_000001&quot;,
+                &quot;incident_id&quot;: &quot;INC-COLD-F&quot;,
+                &quot;action_id&quot;: &quot;INC-COLD-F:repair&quot;,
+                &quot;subject&quot;: &quot;repair FROST-S03&quot;,
+                &quot;status&quot;: &quot;approved&quot;,
+                &quot;deadline&quot;: &quot;2026-08-28T09:02:00+08:00&quot;,
+                &quot;created_at&quot;: &quot;2026-08-28T09:00:00+08:00&quot;,
+                &quot;decided_at&quot;: &quot;2026-08-28T09:01:00+08:00&quot;,
+                &quot;decided_by&quot;: &quot;ScenarioEngine&quot;,
+                &quot;decision_reason&quot;: &quot;synthetic store manager approval&quot;,
+                &quot;approvers&quot;: [
+                  &quot;store_manager&quot;
+                ]
+              },
+              {
+                &quot;approval_id&quot;: &quot;approval_000002&quot;,
+                &quot;incident_id&quot;: &quot;INC-COLD-F&quot;,
+                &quot;action_id&quot;: &quot;INC-COLD-F:batch:BATCH-S03-DAIRY-001&quot;,
+                &quot;subject&quot;: &quot;disposed BATCH-S03-DAIRY-001&quot;,
+                &quot;status&quot;: &quot;approved&quot;,
+                &quot;deadline&quot;: &quot;2026-08-28T09:35:00+08:00&quot;,
+                &quot;created_at&quot;: &quot;2026-08-28T09:05:00+08:00&quot;,
+                &quot;decided_at&quot;: &quot;2026-08-28T09:06:00+08:00&quot;,
+                &quot;decided_by&quot;: &quot;ScenarioEngine&quot;,
+                &quot;decision_reason&quot;: &quot;synthetic food safety owner approval&quot;,
+                &quot;approvers&quot;: [
+                  &quot;food_safety_owner&quot;
+                ]
+              },
+              {
+                &quot;approval_id&quot;: &quot;approval_000003&quot;,
+                &quot;incident_id&quot;: &quot;INC-COLD-F&quot;,
+                &quot;action_id&quot;: &quot;INC-COLD-F:batch:BATCH-S03-FRESH-001&quot;,
+                &quot;subject&quot;: &quot;transferred BATCH-S03-FRESH-001&quot;,
+                &quot;status&quot;: &quot;approved&quot;,
+                &quot;deadline&quot;: &quot;2026-08-28T09:35:00+08:00&quot;,
+                &quot;created_at&quot;: &quot;2026-08-28T09:05:00+08:00&quot;,
+                &quot;decided_at&quot;: &quot;2026-08-28T09:06:00+08:00&quot;,
+                &quot;decided_by&quot;: &quot;ScenarioEngine&quot;,
+                &quot;decision_reason&quot;: &quot;synthetic food safety owner approval&quot;,
+                &quot;approvers&quot;: [
+                  &quot;food_safety_owner&quot;
+                ]
+              }
+            ]
+          }
+        },
+        &quot;audit&quot;: {
+          &quot;passed&quot;: true,
+          &quot;expected&quot;: {
+            &quot;minimum_entries&quot;: 1,
+            &quot;request_id_required&quot;: true
+          },
+          &quot;observed&quot;: {
+            &quot;entry_count&quot;: 12
+          }
+        }
+      },
+      &quot;failed_conditions&quot;: [
+        &quot;device&quot;
+      ],
+      &quot;evidence_refs&quot;: [
+        &quot;ev_1d29fe2416c81fc4&quot;,
+        &quot;ev_3e39d400cd726fd6&quot;,
+        &quot;ev_582535fe0fe469ca&quot;,
+        &quot;ev_de16f133749211f0&quot;
+      ],
+      &quot;next_actions&quot;: [
+        &quot;keep_sales_hold&quot;,
+        &quot;re_diagnose&quot;,
+        &quot;recheck_device&quot;
+      ],
+      &quot;partial_tools&quot;: [
+        &quot;workorder&quot;
+      ],
+      &quot;evidence&quot;: [
+        {
+          &quot;evidence_id&quot;: &quot;ev_582535fe0fe469ca&quot;,
+          &quot;incident_id&quot;: &quot;INC-COLD-F&quot;,
+          &quot;type&quot;: &quot;device_context&quot;,
+          &quot;source&quot;: &quot;state_store.devices&quot;,
+          &quot;observed_at&quot;: &quot;2026-08-28T09:05:00+08:00&quot;,
+          &quot;collected_at&quot;: &quot;2026-08-28T09:07:00+08:00&quot;,
+          &quot;payload&quot;: {
+            &quot;device_id&quot;: &quot;FROST-S03&quot;,
+            &quot;store_id&quot;: &quot;S03&quot;,
+            &quot;health&quot;: {
+              &quot;state&quot;: &quot;normal&quot;,
+              &quot;compressor_state&quot;: &quot;running&quot;,
+              &quot;model&quot;: &quot;FROST-X100&quot;
+            },
+            &quot;door&quot;: {
+              &quot;state&quot;: &quot;closed&quot;
+            },
+            &quot;power&quot;: {
+              &quot;state&quot;: &quot;on&quot;
+            },
+            &quot;maintenance&quot;: {
+              &quot;summary&quot;: &quot;No open history in seed&quot;
+            },
+            &quot;temperature_series&quot;: [
+              {
+                &quot;reading_id&quot;: &quot;seed-FROST-S03-02&quot;,
+                &quot;device_id&quot;: &quot;FROST-S03&quot;,
+                &quot;observed_at&quot;: &quot;2026-08-28T06:30:00+08:00&quot;,
+                &quot;temp_c&quot;: 3.3,
+                &quot;quality&quot;: &quot;good&quot;,
+                &quot;source&quot;: &quot;seed&quot;
+              },
+              {
+                &quot;reading_id&quot;: &quot;seed-FROST-S03-03&quot;,
+                &quot;device_id&quot;: &quot;FROST-S03&quot;,
+                &quot;observed_at&quot;: &quot;2026-08-28T07:00:00+08:00&quot;,
+                &quot;temp_c&quot;: 3.4,
+                &quot;quality&quot;: &quot;good&quot;,
+                &quot;source&quot;: &quot;seed&quot;
+              },
+              {
+                &quot;reading_id&quot;: &quot;seed-FROST-S03-04&quot;,
+                &quot;device_id&quot;: &quot;FROST-S03&quot;,
+                &quot;observed_at&quot;: &quot;2026-08-28T07:30:00+08:00&quot;,
+                &quot;temp_c&quot;: 3.4,
+                &quot;quality&quot;: &quot;good&quot;,
+                &quot;source&quot;: &quot;seed&quot;
+              },
+              {
+                &quot;reading_id&quot;: &quot;reading_000001&quot;,
+                &quot;device_id&quot;: &quot;FROST-S03&quot;,
+                &quot;observed_at&quot;: &quot;2026-08-28T08:00:00+08:00&quot;,
+                &quot;temp_c&quot;: 7.8,
+                &quot;quality&quot;: &quot;good&quot;,
+                &quot;source&quot;: &quot;scenario&quot;
+              },
+              {
+                &quot;reading_id&quot;: &quot;reading_000002&quot;,
+                &quot;device_id&quot;: &quot;FROST-S03&quot;,
+                &quot;observed_at&quot;: &quot;2026-08-28T08:30:00+08:00&quot;,
+                &quot;temp_c&quot;: 8.7,
+                &quot;quality&quot;: &quot;good&quot;,
+                &quot;source&quot;: &quot;scenario&quot;
+              },
+              {
+                &quot;reading_id&quot;: &quot;reading_000003&quot;,
+                &quot;device_id&quot;: &quot;FROST-S03&quot;,
+                &quot;observed_at&quot;: &quot;2026-08-28T09:00:00+08:00&quot;,
+                &quot;temp_c&quot;: 9.6,
+                &quot;quality&quot;: &quot;good&quot;,
+                &quot;source&quot;: &quot;scenario&quot;
+              },
+              {
+                &quot;reading_id&quot;: &quot;reading_000004&quot;,
+                &quot;device_id&quot;: &quot;FROST-S03&quot;,
+                &quot;observed_at&quot;: &quot;2026-08-28T09:03:00+08:00&quot;,
+                &quot;temp_c&quot;: 6.2,
+                &quot;quality&quot;: &quot;good&quot;,
+                &quot;source&quot;: &quot;scenario&quot;
+              },
+              {
+                &quot;reading_id&quot;: &quot;reading_000005&quot;,
+                &quot;device_id&quot;: &quot;FROST-S03&quot;,
+                &quot;observed_at&quot;: &quot;2026-08-28T09:04:00+08:00&quot;,
+                &quot;temp_c&quot;: 5.4,
+                &quot;quality&quot;: &quot;good&quot;,
+                &quot;source&quot;: &quot;scenario&quot;
+              },
+              {
+                &quot;reading_id&quot;: &quot;reading_000006&quot;,
+                &quot;device_id&quot;: &quot;FROST-S03&quot;,
+                &quot;observed_at&quot;: &quot;2026-08-28T09:05:00+08:00&quot;,
+                &quot;temp_c&quot;: 4.8,
+                &quot;quality&quot;: &quot;good&quot;,
+                &quot;source&quot;: &quot;scenario&quot;
+              }
+            ],
+            &quot;ambient_temp_c&quot;: 26.0
+          },
+          &quot;quality&quot;: &quot;good&quot;,
+          &quot;freshness&quot;: &quot;fresh&quot;,
+          &quot;request_id&quot;: &quot;req_8d1a3ffc27a147ce&quot;,
+          &quot;immutable_hash&quot;: &quot;582535fe0fe469ca2a9d5dbf086b53b9bb824a88d373c75eeab848c0c15ec10a&quot;
+        },
+        {
+          &quot;evidence_id&quot;: &quot;ev_1d29fe2416c81fc4&quot;,
+          &quot;incident_id&quot;: &quot;INC-COLD-F&quot;,
+          &quot;type&quot;: &quot;inventory_batches&quot;,
+          &quot;source&quot;: &quot;state_store.inventory_batches&quot;,
+          &quot;observed_at&quot;: &quot;2026-08-28T09:06:00+08:00&quot;,
+          &quot;collected_at&quot;: &quot;2026-08-28T09:07:00+08:00&quot;,
+          &quot;payload&quot;: {
+            &quot;batches&quot;: [
+              {
+                &quot;batch_id&quot;: &quot;BATCH-S03-DAIRY-001&quot;,
+                &quot;store_id&quot;: &quot;S03&quot;,
+                &quot;device_id&quot;: &quot;FROST-S03&quot;,
+                &quot;sku_id&quot;: &quot;MILK-001&quot;,
+                &quot;product_name&quot;: &quot;巴氏鲜奶&quot;,
+                &quot;quantity&quot;: 24,
+                &quot;storage_min_c&quot;: 0.0,
+                &quot;storage_max_c&quot;: 6.0,
+                &quot;disposition&quot;: &quot;disposed&quot;,
+                &quot;safe_for_sale&quot;: false,
+                &quot;policy_ref&quot;: &quot;coldchain-demo:1.0.0&quot;,
+                &quot;updated_at&quot;: &quot;2026-08-28T09:06:00+08:00&quot;
+              },
+              {
+                &quot;batch_id&quot;: &quot;BATCH-S03-FRESH-001&quot;,
+                &quot;store_id&quot;: &quot;S03&quot;,
+                &quot;device_id&quot;: &quot;FROST-S03&quot;,
+                &quot;sku_id&quot;: &quot;SANDWICH-001&quot;,
+                &quot;product_name&quot;: &quot;鲜食三明治&quot;,
+                &quot;quantity&quot;: 18,
+                &quot;storage_min_c&quot;: 0.0,
+                &quot;storage_max_c&quot;: 8.0,
+                &quot;disposition&quot;: &quot;transferred&quot;,
+                &quot;safe_for_sale&quot;: false,
+                &quot;policy_ref&quot;: &quot;coldchain-demo:1.0.0&quot;,
+                &quot;updated_at&quot;: &quot;2026-08-28T09:06:00+08:00&quot;
+              }
+            ]
+          },
+          &quot;quality&quot;: &quot;good&quot;,
+          &quot;freshness&quot;: &quot;current&quot;,
+          &quot;request_id&quot;: &quot;req_39d3be8c40724501&quot;,
+          &quot;immutable_hash&quot;: &quot;1d29fe2416c81fc43c85515a3b574c681205ffa3292274b405e3c5ef72ba5a82&quot;
+        },
+        {
+          &quot;evidence_id&quot;: &quot;ev_3e39d400cd726fd6&quot;,
+          &quot;incident_id&quot;: &quot;INC-COLD-F&quot;,
+          &quot;type&quot;: &quot;sales_holds&quot;,
+          &quot;source&quot;: &quot;state_store.sales_holds&quot;,
+          &quot;observed_at&quot;: &quot;2026-08-28T09:07:00+08:00&quot;,
+          &quot;collected_at&quot;: &quot;2026-08-28T09:07:00+08:00&quot;,
+          &quot;payload&quot;: {
+            &quot;sales_holds&quot;: [
+              {
+                &quot;hold_id&quot;: &quot;hold_000001&quot;,
+                &quot;incident_id&quot;: &quot;INC-COLD-F&quot;,
+                &quot;action_id&quot;: &quot;INC-COLD-F:hold&quot;,
+                &quot;store_id&quot;: &quot;S03&quot;,
+                &quot;batch_id&quot;: &quot;BATCH-S03-DAIRY-001&quot;,
+                &quot;sku_id&quot;: &quot;MILK-001&quot;,
+                &quot;status&quot;: &quot;active&quot;,
+                &quot;reason&quot;: &quot;coldchain temperature risk containment&quot;,
+                &quot;applied_at&quot;: &quot;2026-08-28T09:00:00+08:00&quot;,
+                &quot;released_at&quot;: null,
+                &quot;approval_id&quot;: null,
+                &quot;verification_id&quot;: null
+              },
+              {
+                &quot;hold_id&quot;: &quot;hold_000002&quot;,
+                &quot;incident_id&quot;: &quot;INC-COLD-F&quot;,
+                &quot;action_id&quot;: &quot;INC-COLD-F:hold&quot;,
+                &quot;store_id&quot;: &quot;S03&quot;,
+                &quot;batch_id&quot;: &quot;BATCH-S03-FRESH-001&quot;,
+                &quot;sku_id&quot;: &quot;SANDWICH-001&quot;,
+                &quot;status&quot;: &quot;active&quot;,
+                &quot;reason&quot;: &quot;coldchain temperature risk containment&quot;,
+                &quot;applied_at&quot;: &quot;2026-08-28T09:00:00+08:00&quot;,
+                &quot;released_at&quot;: null,
+                &quot;approval_id&quot;: null,
+                &quot;verification_id&quot;: null
+              }
+            ]
+          },
+          &quot;quality&quot;: &quot;good&quot;,
+          &quot;freshness&quot;: &quot;current&quot;,
+          &quot;request_id&quot;: &quot;req_106cda3e3ce04451&quot;,
+          &quot;immutable_hash&quot;: &quot;3e39d400cd726fd6e33366e4941bd7e1e3f8cf862c23f7017d63bec23f6fdfbe&quot;
+        },
+        {
+          &quot;evidence_id&quot;: &quot;ev_de16f133749211f0&quot;,
+          &quot;incident_id&quot;: &quot;INC-COLD-F&quot;,
+          &quot;type&quot;: &quot;approvals&quot;,
+          &quot;source&quot;: &quot;state_store.approvals&quot;,
+          &quot;observed_at&quot;: &quot;2026-08-28T09:07:00+08:00&quot;,
+          &quot;collected_at&quot;: &quot;2026-08-28T09:07:00+08:00&quot;,
+          &quot;payload&quot;: {
+            &quot;approvals&quot;: [
+              {
+                &quot;approval_id&quot;: &quot;approval_000001&quot;,
+                &quot;incident_id&quot;: &quot;INC-COLD-F&quot;,
+                &quot;action_id&quot;: &quot;INC-COLD-F:repair&quot;,
+                &quot;subject&quot;: &quot;repair FROST-S03&quot;,
+                &quot;status&quot;: &quot;approved&quot;,
+                &quot;deadline&quot;: &quot;2026-08-28T09:02:00+08:00&quot;,
+                &quot;created_at&quot;: &quot;2026-08-28T09:00:00+08:00&quot;,
+                &quot;decided_at&quot;: &quot;2026-08-28T09:01:00+08:00&quot;,
+                &quot;decided_by&quot;: &quot;ScenarioEngine&quot;,
+                &quot;decision_reason&quot;: &quot;synthetic store manager approval&quot;,
+                &quot;approvers&quot;: [
+                  &quot;store_manager&quot;
+                ]
+              },
+              {
+                &quot;approval_id&quot;: &quot;approval_000002&quot;,
+                &quot;incident_id&quot;: &quot;INC-COLD-F&quot;,
+                &quot;action_id&quot;: &quot;INC-COLD-F:batch:BATCH-S03-DAIRY-001&quot;,
+                &quot;subject&quot;: &quot;disposed BATCH-S03-DAIRY-001&quot;,
+                &quot;status&quot;: &quot;approved&quot;,
+                &quot;deadline&quot;: &quot;2026-08-28T09:35:00+08:00&quot;,
+                &quot;created_at&quot;: &quot;2026-08-28T09:05:00+08:00&quot;,
+                &quot;decided_at&quot;: &quot;2026-08-28T09:06:00+08:00&quot;,
+                &quot;decided_by&quot;: &quot;ScenarioEngine&quot;,
+                &quot;decision_reason&quot;: &quot;synthetic food safety owner approval&quot;,
+                &quot;approvers&quot;: [
+                  &quot;food_safety_owner&quot;
+                ]
+              },
+              {
+                &quot;approval_id&quot;: &quot;approval_000003&quot;,
+                &quot;incident_id&quot;: &quot;INC-COLD-F&quot;,
+                &quot;action_id&quot;: &quot;INC-COLD-F:batch:BATCH-S03-FRESH-001&quot;,
+                &quot;subject&quot;: &quot;transferred BATCH-S03-FRESH-001&quot;,
+                &quot;status&quot;: &quot;approved&quot;,
+                &quot;deadline&quot;: &quot;2026-08-28T09:35:00+08:00&quot;,
+                &quot;created_at&quot;: &quot;2026-08-28T09:05:00+08:00&quot;,
+                &quot;decided_at&quot;: &quot;2026-08-28T09:06:00+08:00&quot;,
+                &quot;decided_by&quot;: &quot;ScenarioEngine&quot;,
+                &quot;decision_reason&quot;: &quot;synthetic food safety owner approval&quot;,
+                &quot;approvers&quot;: [
+                  &quot;food_safety_owner&quot;
+                ]
+              }
+            ]
+          },
+          &quot;quality&quot;: &quot;good&quot;,
+          &quot;freshness&quot;: &quot;current&quot;,
+          &quot;request_id&quot;: &quot;req_cdc10660ebdc4aac&quot;,
+          &quot;immutable_hash&quot;: &quot;de16f133749211f02aff5b064096987e54f5d89fa20d54ad36ce0dd72948c905&quot;
+        }
+      ],
+      &quot;incident_status&quot;: &quot;CONTAINED&quot;
+    }
+  },
+  &quot;verification&quot;: {
+    &quot;incident_id&quot;: &quot;INC-COLD-F&quot;,
+    &quot;result&quot;: &quot;reopened&quot;,
+    &quot;checks&quot;: {
+      &quot;device&quot;: {
+        &quot;passed&quot;: false,
+        &quot;expected&quot;: {
+          &quot;recovery_samples&quot;: 3,
+          &quot;max_c&quot;: 8.0,
+          &quot;health&quot;: &quot;normal&quot;,
+          &quot;workorder&quot;: &quot;done_with_evidence&quot;
+        },
+        &quot;observed&quot;: {
+          &quot;device&quot;: {
+            &quot;device_id&quot;: &quot;FROST-S03&quot;,
+            &quot;store_id&quot;: &quot;S03&quot;,
+            &quot;health&quot;: {
+              &quot;state&quot;: &quot;normal&quot;,
+              &quot;compressor_state&quot;: &quot;running&quot;,
+              &quot;model&quot;: &quot;FROST-X100&quot;
+            },
+            &quot;door&quot;: {
+              &quot;state&quot;: &quot;closed&quot;
+            },
+            &quot;power&quot;: {
+              &quot;state&quot;: &quot;on&quot;
+            },
+            &quot;maintenance&quot;: {
+              &quot;summary&quot;: &quot;No open history in seed&quot;
+            },
+            &quot;temperature_series&quot;: [
+              {
+                &quot;reading_id&quot;: &quot;seed-FROST-S03-02&quot;,
+                &quot;device_id&quot;: &quot;FROST-S03&quot;,
+                &quot;observed_at&quot;: &quot;2026-08-28T06:30:00+08:00&quot;,
+                &quot;temp_c&quot;: 3.3,
+                &quot;quality&quot;: &quot;good&quot;,
+                &quot;source&quot;: &quot;seed&quot;
+              },
+              {
+                &quot;reading_id&quot;: &quot;seed-FROST-S03-03&quot;,
+                &quot;device_id&quot;: &quot;FROST-S03&quot;,
+                &quot;observed_at&quot;: &quot;2026-08-28T07:00:00+08:00&quot;,
+                &quot;temp_c&quot;: 3.4,
+                &quot;quality&quot;: &quot;good&quot;,
+                &quot;source&quot;: &quot;seed&quot;
+              },
+              {
+                &quot;reading_id&quot;: &quot;seed-FROST-S03-04&quot;,
+                &quot;device_id&quot;: &quot;FROST-S03&quot;,
+                &quot;observed_at&quot;: &quot;2026-08-28T07:30:00+08:00&quot;,
+                &quot;temp_c&quot;: 3.4,
+                &quot;quality&quot;: &quot;good&quot;,
+                &quot;source&quot;: &quot;seed&quot;
+              },
+              {
+                &quot;reading_id&quot;: &quot;reading_000001&quot;,
+                &quot;device_id&quot;: &quot;FROST-S03&quot;,
+                &quot;observed_at&quot;: &quot;2026-08-28T08:00:00+08:00&quot;,
+                &quot;temp_c&quot;: 7.8,
+                &quot;quality&quot;: &quot;good&quot;,
+                &quot;source&quot;: &quot;scenario&quot;
+              },
+              {
+                &quot;reading_id&quot;: &quot;reading_000002&quot;,
+                &quot;device_id&quot;: &quot;FROST-S03&quot;,
+                &quot;observed_at&quot;: &quot;2026-08-28T08:30:00+08:00&quot;,
+                &quot;temp_c&quot;: 8.7,
+                &quot;quality&quot;: &quot;good&quot;,
+                &quot;source&quot;: &quot;scenario&quot;
+              },
+              {
+                &quot;reading_id&quot;: &quot;reading_000003&quot;,
+                &quot;device_id&quot;: &quot;FROST-S03&quot;,
+                &quot;observed_at&quot;: &quot;2026-08-28T09:00:00+08:00&quot;,
+                &quot;temp_c&quot;: 9.6,
+                &quot;quality&quot;: &quot;good&quot;,
+                &quot;source&quot;: &quot;scenario&quot;
+              },
+              {
+                &quot;reading_id&quot;: &quot;reading_000004&quot;,
+                &quot;device_id&quot;: &quot;FROST-S03&quot;,
+                &quot;observed_at&quot;: &quot;2026-08-28T09:03:00+08:00&quot;,
+                &quot;temp_c&quot;: 6.2,
+                &quot;quality&quot;: &quot;good&quot;,
+                &quot;source&quot;: &quot;scenario&quot;
+              },
+              {
+                &quot;reading_id&quot;: &quot;reading_000005&quot;,
+                &quot;device_id&quot;: &quot;FROST-S03&quot;,
+                &quot;observed_at&quot;: &quot;2026-08-28T09:04:00+08:00&quot;,
+                &quot;temp_c&quot;: 5.4,
+                &quot;quality&quot;: &quot;good&quot;,
+                &quot;source&quot;: &quot;scenario&quot;
+              },
+              {
+                &quot;reading_id&quot;: &quot;reading_000006&quot;,
+                &quot;device_id&quot;: &quot;FROST-S03&quot;,
+                &quot;observed_at&quot;: &quot;2026-08-28T09:05:00+08:00&quot;,
+                &quot;temp_c&quot;: 4.8,
+                &quot;quality&quot;: &quot;good&quot;,
+                &quot;source&quot;: &quot;scenario&quot;
+              }
+            ],
+            &quot;ambient_temp_c&quot;: 26.0
+          },
+          &quot;latest_samples&quot;: [
+            {
+              &quot;reading_id&quot;: &quot;reading_000004&quot;,
+              &quot;device_id&quot;: &quot;FROST-S03&quot;,
+              &quot;observed_at&quot;: &quot;2026-08-28T01:03:00+00:00&quot;,
+              &quot;temp_c&quot;: 6.2,
+              &quot;quality&quot;: &quot;good&quot;,
+              &quot;source&quot;: &quot;scenario&quot;
+            },
+            {
+              &quot;reading_id&quot;: &quot;reading_000005&quot;,
+              &quot;device_id&quot;: &quot;FROST-S03&quot;,
+              &quot;observed_at&quot;: &quot;2026-08-28T01:04:00+00:00&quot;,
+              &quot;temp_c&quot;: 5.4,
+              &quot;quality&quot;: &quot;good&quot;,
+              &quot;source&quot;: &quot;scenario&quot;
+            },
+            {
+              &quot;reading_id&quot;: &quot;reading_000006&quot;,
+              &quot;device_id&quot;: &quot;FROST-S03&quot;,
+              &quot;observed_at&quot;: &quot;2026-08-28T01:05:00+00:00&quot;,
+              &quot;temp_c&quot;: 4.8,
+              &quot;quality&quot;: &quot;good&quot;,
+              &quot;source&quot;: &quot;scenario&quot;
+            }
+          ],
+          &quot;excluded_readings&quot;: [],
+          &quot;workorders&quot;: []
+        }
+      },
+      &quot;batches&quot;: {
+        &quot;passed&quot;: true,
+        &quot;expected&quot;: {
+          &quot;dispositions&quot;: [
+            &quot;disposed&quot;,
+            &quot;released&quot;,
+            &quot;transferred&quot;
+          ],
+          &quot;batch_ids&quot;: [
+            &quot;BATCH-S03-DAIRY-001&quot;,
+            &quot;BATCH-S03-FRESH-001&quot;
+          ],
+          &quot;released_goods_safe_for_sale&quot;: true
+        },
+        &quot;observed&quot;: {
+          &quot;batches&quot;: [
+            {
+              &quot;batch_id&quot;: &quot;BATCH-S03-DAIRY-001&quot;,
+              &quot;store_id&quot;: &quot;S03&quot;,
+              &quot;device_id&quot;: &quot;FROST-S03&quot;,
+              &quot;sku_id&quot;: &quot;MILK-001&quot;,
+              &quot;product_name&quot;: &quot;巴氏鲜奶&quot;,
+              &quot;quantity&quot;: 24,
+              &quot;storage_min_c&quot;: 0.0,
+              &quot;storage_max_c&quot;: 6.0,
+              &quot;disposition&quot;: &quot;disposed&quot;,
+              &quot;safe_for_sale&quot;: false,
+              &quot;policy_ref&quot;: &quot;coldchain-demo:1.0.0&quot;,
+              &quot;updated_at&quot;: &quot;2026-08-28T09:06:00+08:00&quot;
+            },
+            {
+              &quot;batch_id&quot;: &quot;BATCH-S03-FRESH-001&quot;,
+              &quot;store_id&quot;: &quot;S03&quot;,
+              &quot;device_id&quot;: &quot;FROST-S03&quot;,
+              &quot;sku_id&quot;: &quot;SANDWICH-001&quot;,
+              &quot;product_name&quot;: &quot;鲜食三明治&quot;,
+              &quot;quantity&quot;: 18,
+              &quot;storage_min_c&quot;: 0.0,
+              &quot;storage_max_c&quot;: 8.0,
+              &quot;disposition&quot;: &quot;transferred&quot;,
+              &quot;safe_for_sale&quot;: false,
+              &quot;policy_ref&quot;: &quot;coldchain-demo:1.0.0&quot;,
+              &quot;updated_at&quot;: &quot;2026-08-28T09:06:00+08:00&quot;
+            }
+          ],
+          &quot;disposition_receipts&quot;: [
+            {
+              &quot;evidence_id&quot;: &quot;manual_ev_000001&quot;,
+              &quot;incident_id&quot;: &quot;INC-COLD-F&quot;,
+              &quot;action_id&quot;: &quot;INC-COLD-F:batch:BATCH-S03-DAIRY-001&quot;,
+              &quot;actor&quot;: &quot;ScenarioEngine&quot;,
+              &quot;evidence_type&quot;: &quot;disposition_receipt&quot;,
+              &quot;observed_at&quot;: &quot;2026-08-28T09:07:00+08:00&quot;,
+              &quot;uri&quot;: null,
+              &quot;note&quot;: &quot;Synthetic independent physical receipt; not a store observation&quot;,
+              &quot;sha256&quot;: &quot;aa9ecd387311cc4097f5aa32fa9249fe5eb70c7d67e1a9ecea13c6fc28b96c36&quot;,
+              &quot;created_at&quot;: &quot;2026-08-28T09:07:00+08:00&quot;,
+              &quot;metadata&quot;: {
+                &quot;batch_id&quot;: &quot;BATCH-S03-DAIRY-001&quot;,
+                &quot;confirmed_by&quot;: &quot;synthetic-receiver&quot;,
+                &quot;destroyed&quot;: true,
+                &quot;disposal_method&quot;: &quot;synthetic-destruction&quot;,
+                &quot;disposition&quot;: &quot;disposed&quot;,
+                &quot;executor_id&quot;: &quot;synthetic-store-operator&quot;,
+                &quot;quantity&quot;: 24,
+                &quot;receipt_ref&quot;: &quot;synthetic://INC-COLD-F/BATCH-S03-DAIRY-001&quot;,
+                &quot;source_location&quot;: &quot;FROST-S03&quot;,
+                &quot;synthetic&quot;: true
+              }
+            },
+            {
+              &quot;evidence_id&quot;: &quot;manual_ev_000002&quot;,
+              &quot;incident_id&quot;: &quot;INC-COLD-F&quot;,
+              &quot;action_id&quot;: &quot;INC-COLD-F:batch:BATCH-S03-FRESH-001&quot;,
+              &quot;actor&quot;: &quot;ScenarioEngine&quot;,
+              &quot;evidence_type&quot;: &quot;disposition_receipt&quot;,
+              &quot;observed_at&quot;: &quot;2026-08-28T09:07:00+08:00&quot;,
+              &quot;uri&quot;: null,
+              &quot;note&quot;: &quot;Synthetic independent physical receipt; not a store observation&quot;,
+              &quot;sha256&quot;: &quot;924a9dd34c289790e5efedda47a47a4197cf323b4bbf252518efb99ac937b4b2&quot;,
+              &quot;created_at&quot;: &quot;2026-08-28T09:07:00+08:00&quot;,
+              &quot;metadata&quot;: {
+                &quot;batch_id&quot;: &quot;BATCH-S03-FRESH-001&quot;,
+                &quot;confirmed_by&quot;: &quot;synthetic-receiver&quot;,
+                &quot;destination_location&quot;: &quot;synthetic-backup-cabinet&quot;,
+                &quot;destination_temp_c&quot;: 4.0,
+                &quot;disposition&quot;: &quot;transferred&quot;,
+                &quot;executor_id&quot;: &quot;synthetic-store-operator&quot;,
+                &quot;quantity&quot;: 18,
+                &quot;receipt_ref&quot;: &quot;synthetic://INC-COLD-F/BATCH-S03-FRESH-001&quot;,
+                &quot;received&quot;: true,
+                &quot;source_location&quot;: &quot;FROST-S03&quot;,
+                &quot;synthetic&quot;: true
+              }
+            }
+          ]
+        }
+      },
+      &quot;sales_hold&quot;: {
+        &quot;passed&quot;: true,
+        &quot;expected&quot;: {
+          &quot;terminal_batches_remain_held_unless_released&quot;: true
+        },
+        &quot;observed&quot;: {
+          &quot;sales_holds&quot;: [
+            {
+              &quot;hold_id&quot;: &quot;hold_000001&quot;,
+              &quot;incident_id&quot;: &quot;INC-COLD-F&quot;,
+              &quot;action_id&quot;: &quot;INC-COLD-F:hold&quot;,
+              &quot;store_id&quot;: &quot;S03&quot;,
+              &quot;batch_id&quot;: &quot;BATCH-S03-DAIRY-001&quot;,
+              &quot;sku_id&quot;: &quot;MILK-001&quot;,
+              &quot;status&quot;: &quot;active&quot;,
+              &quot;reason&quot;: &quot;coldchain temperature risk containment&quot;,
+              &quot;applied_at&quot;: &quot;2026-08-28T09:00:00+08:00&quot;,
+              &quot;released_at&quot;: null,
+              &quot;approval_id&quot;: null,
+              &quot;verification_id&quot;: null
+            },
+            {
+              &quot;hold_id&quot;: &quot;hold_000002&quot;,
+              &quot;incident_id&quot;: &quot;INC-COLD-F&quot;,
+              &quot;action_id&quot;: &quot;INC-COLD-F:hold&quot;,
+              &quot;store_id&quot;: &quot;S03&quot;,
+              &quot;batch_id&quot;: &quot;BATCH-S03-FRESH-001&quot;,
+              &quot;sku_id&quot;: &quot;SANDWICH-001&quot;,
+              &quot;status&quot;: &quot;active&quot;,
+              &quot;reason&quot;: &quot;coldchain temperature risk containment&quot;,
+              &quot;applied_at&quot;: &quot;2026-08-28T09:00:00+08:00&quot;,
+              &quot;released_at&quot;: null,
+              &quot;approval_id&quot;: null,
+              &quot;verification_id&quot;: null
+            }
+          ]
+        }
+      },
+      &quot;approval&quot;: {
+        &quot;passed&quot;: true,
+        &quot;expected&quot;: {
+          &quot;required_actions&quot;: [
+            &quot;INC-COLD-F:batch:BATCH-S03-DAIRY-001&quot;,
+            &quot;INC-COLD-F:batch:BATCH-S03-FRESH-001&quot;,
+            &quot;INC-COLD-F:repair&quot;
+          ],
+          &quot;status&quot;: &quot;approved&quot;
+        },
+        &quot;observed&quot;: {
+          &quot;approvals&quot;: [
+            {
+              &quot;approval_id&quot;: &quot;approval_000001&quot;,
+              &quot;incident_id&quot;: &quot;INC-COLD-F&quot;,
+              &quot;action_id&quot;: &quot;INC-COLD-F:repair&quot;,
+              &quot;subject&quot;: &quot;repair FROST-S03&quot;,
+              &quot;status&quot;: &quot;approved&quot;,
+              &quot;deadline&quot;: &quot;2026-08-28T09:02:00+08:00&quot;,
+              &quot;created_at&quot;: &quot;2026-08-28T09:00:00+08:00&quot;,
+              &quot;decided_at&quot;: &quot;2026-08-28T09:01:00+08:00&quot;,
+              &quot;decided_by&quot;: &quot;ScenarioEngine&quot;,
+              &quot;decision_reason&quot;: &quot;synthetic store manager approval&quot;,
+              &quot;approvers&quot;: [
+                &quot;store_manager&quot;
+              ]
+            },
+            {
+              &quot;approval_id&quot;: &quot;approval_000002&quot;,
+              &quot;incident_id&quot;: &quot;INC-COLD-F&quot;,
+              &quot;action_id&quot;: &quot;INC-COLD-F:batch:BATCH-S03-DAIRY-001&quot;,
+              &quot;subject&quot;: &quot;disposed BATCH-S03-DAIRY-001&quot;,
+              &quot;status&quot;: &quot;approved&quot;,
+              &quot;deadline&quot;: &quot;2026-08-28T09:35:00+08:00&quot;,
+              &quot;created_at&quot;: &quot;2026-08-28T09:05:00+08:00&quot;,
+              &quot;decided_at&quot;: &quot;2026-08-28T09:06:00+08:00&quot;,
+              &quot;decided_by&quot;: &quot;ScenarioEngine&quot;,
+              &quot;decision_reason&quot;: &quot;synthetic food safety owner approval&quot;,
+              &quot;approvers&quot;: [
+                &quot;food_safety_owner&quot;
+              ]
+            },
+            {
+              &quot;approval_id&quot;: &quot;approval_000003&quot;,
+              &quot;incident_id&quot;: &quot;INC-COLD-F&quot;,
+              &quot;action_id&quot;: &quot;INC-COLD-F:batch:BATCH-S03-FRESH-001&quot;,
+              &quot;subject&quot;: &quot;transferred BATCH-S03-FRESH-001&quot;,
+              &quot;status&quot;: &quot;approved&quot;,
+              &quot;deadline&quot;: &quot;2026-08-28T09:35:00+08:00&quot;,
+              &quot;created_at&quot;: &quot;2026-08-28T09:05:00+08:00&quot;,
+              &quot;decided_at&quot;: &quot;2026-08-28T09:06:00+08:00&quot;,
+              &quot;decided_by&quot;: &quot;ScenarioEngine&quot;,
+              &quot;decision_reason&quot;: &quot;synthetic food safety owner approval&quot;,
+              &quot;approvers&quot;: [
+                &quot;food_safety_owner&quot;
+              ]
+            }
+          ]
+        }
+      },
+      &quot;audit&quot;: {
+        &quot;passed&quot;: true,
+        &quot;expected&quot;: {
+          &quot;minimum_entries&quot;: 1,
+          &quot;request_id_required&quot;: true
+        },
+        &quot;observed&quot;: {
+          &quot;entry_count&quot;: 12
+        }
+      }
+    },
+    &quot;failed_conditions&quot;: [
+      &quot;device&quot;
+    ],
+    &quot;evidence_refs&quot;: [
+      &quot;ev_1d29fe2416c81fc4&quot;,
+      &quot;ev_3e39d400cd726fd6&quot;,
+      &quot;ev_582535fe0fe469ca&quot;,
+      &quot;ev_de16f133749211f0&quot;
+    ],
+    &quot;next_actions&quot;: [
+      &quot;keep_sales_hold&quot;,
+      &quot;re_diagnose&quot;,
+      &quot;recheck_device&quot;
+    ],
+    &quot;partial_tools&quot;: [
+      &quot;workorder&quot;
+    ],
+    &quot;evidence&quot;: [
+      {
+        &quot;evidence_id&quot;: &quot;ev_582535fe0fe469ca&quot;,
+        &quot;incident_id&quot;: &quot;INC-COLD-F&quot;,
+        &quot;type&quot;: &quot;device_context&quot;,
+        &quot;source&quot;: &quot;state_store.devices&quot;,
+        &quot;observed_at&quot;: &quot;2026-08-28T09:05:00+08:00&quot;,
+        &quot;collected_at&quot;: &quot;2026-08-28T09:07:00+08:00&quot;,
+        &quot;payload&quot;: {
+          &quot;device_id&quot;: &quot;FROST-S03&quot;,
+          &quot;store_id&quot;: &quot;S03&quot;,
+          &quot;health&quot;: {
+            &quot;state&quot;: &quot;normal&quot;,
+            &quot;compressor_state&quot;: &quot;running&quot;,
+            &quot;model&quot;: &quot;FROST-X100&quot;
+          },
+          &quot;door&quot;: {
+            &quot;state&quot;: &quot;closed&quot;
+          },
+          &quot;power&quot;: {
+            &quot;state&quot;: &quot;on&quot;
+          },
+          &quot;maintenance&quot;: {
+            &quot;summary&quot;: &quot;No open history in seed&quot;
+          },
+          &quot;temperature_series&quot;: [
+            {
+              &quot;reading_id&quot;: &quot;seed-FROST-S03-02&quot;,
+              &quot;device_id&quot;: &quot;FROST-S03&quot;,
+              &quot;observed_at&quot;: &quot;2026-08-28T06:30:00+08:00&quot;,
+              &quot;temp_c&quot;: 3.3,
+              &quot;quality&quot;: &quot;good&quot;,
+              &quot;source&quot;: &quot;seed&quot;
+            },
+            {
+              &quot;reading_id&quot;: &quot;seed-FROST-S03-03&quot;,
+              &quot;device_id&quot;: &quot;FROST-S03&quot;,
+              &quot;observed_at&quot;: &quot;2026-08-28T07:00:00+08:00&quot;,
+              &quot;temp_c&quot;: 3.4,
+              &quot;quality&quot;: &quot;good&quot;,
+              &quot;source&quot;: &quot;seed&quot;
+            },
+            {
+              &quot;reading_id&quot;: &quot;seed-FROST-S03-04&quot;,
+              &quot;device_id&quot;: &quot;FROST-S03&quot;,
+              &quot;observed_at&quot;: &quot;2026-08-28T07:30:00+08:00&quot;,
+              &quot;temp_c&quot;: 3.4,
+              &quot;quality&quot;: &quot;good&quot;,
+              &quot;source&quot;: &quot;seed&quot;
+            },
+            {
+              &quot;reading_id&quot;: &quot;reading_000001&quot;,
+              &quot;device_id&quot;: &quot;FROST-S03&quot;,
+              &quot;observed_at&quot;: &quot;2026-08-28T08:00:00+08:00&quot;,
+              &quot;temp_c&quot;: 7.8,
+              &quot;quality&quot;: &quot;good&quot;,
+              &quot;source&quot;: &quot;scenario&quot;
+            },
+            {
+              &quot;reading_id&quot;: &quot;reading_000002&quot;,
+              &quot;device_id&quot;: &quot;FROST-S03&quot;,
+              &quot;observed_at&quot;: &quot;2026-08-28T08:30:00+08:00&quot;,
+              &quot;temp_c&quot;: 8.7,
+              &quot;quality&quot;: &quot;good&quot;,
+              &quot;source&quot;: &quot;scenario&quot;
+            },
+            {
+              &quot;reading_id&quot;: &quot;reading_000003&quot;,
+              &quot;device_id&quot;: &quot;FROST-S03&quot;,
+              &quot;observed_at&quot;: &quot;2026-08-28T09:00:00+08:00&quot;,
+              &quot;temp_c&quot;: 9.6,
+              &quot;quality&quot;: &quot;good&quot;,
+              &quot;source&quot;: &quot;scenario&quot;
+            },
+            {
+              &quot;reading_id&quot;: &quot;reading_000004&quot;,
+              &quot;device_id&quot;: &quot;FROST-S03&quot;,
+              &quot;observed_at&quot;: &quot;2026-08-28T09:03:00+08:00&quot;,
+              &quot;temp_c&quot;: 6.2,
+              &quot;quality&quot;: &quot;good&quot;,
+              &quot;source&quot;: &quot;scenario&quot;
+            },
+            {
+              &quot;reading_id&quot;: &quot;reading_000005&quot;,
+              &quot;device_id&quot;: &quot;FROST-S03&quot;,
+              &quot;observed_at&quot;: &quot;2026-08-28T09:04:00+08:00&quot;,
+              &quot;temp_c&quot;: 5.4,
+              &quot;quality&quot;: &quot;good&quot;,
+              &quot;source&quot;: &quot;scenario&quot;
+            },
+            {
+              &quot;reading_id&quot;: &quot;reading_000006&quot;,
+              &quot;device_id&quot;: &quot;FROST-S03&quot;,
+              &quot;observed_at&quot;: &quot;2026-08-28T09:05:00+08:00&quot;,
+              &quot;temp_c&quot;: 4.8,
+              &quot;quality&quot;: &quot;good&quot;,
+              &quot;source&quot;: &quot;scenario&quot;
+            }
+          ],
+          &quot;ambient_temp_c&quot;: 26.0
+        },
+        &quot;quality&quot;: &quot;good&quot;,
+        &quot;freshness&quot;: &quot;fresh&quot;,
+        &quot;request_id&quot;: &quot;req_8d1a3ffc27a147ce&quot;,
+        &quot;immutable_hash&quot;: &quot;582535fe0fe469ca2a9d5dbf086b53b9bb824a88d373c75eeab848c0c15ec10a&quot;
+      },
+      {
+        &quot;evidence_id&quot;: &quot;ev_1d29fe2416c81fc4&quot;,
+        &quot;incident_id&quot;: &quot;INC-COLD-F&quot;,
+        &quot;type&quot;: &quot;inventory_batches&quot;,
+        &quot;source&quot;: &quot;state_store.inventory_batches&quot;,
+        &quot;observed_at&quot;: &quot;2026-08-28T09:06:00+08:00&quot;,
+        &quot;collected_at&quot;: &quot;2026-08-28T09:07:00+08:00&quot;,
+        &quot;payload&quot;: {
+          &quot;batches&quot;: [
+            {
+              &quot;batch_id&quot;: &quot;BATCH-S03-DAIRY-001&quot;,
+              &quot;store_id&quot;: &quot;S03&quot;,
+              &quot;device_id&quot;: &quot;FROST-S03&quot;,
+              &quot;sku_id&quot;: &quot;MILK-001&quot;,
+              &quot;product_name&quot;: &quot;巴氏鲜奶&quot;,
+              &quot;quantity&quot;: 24,
+              &quot;storage_min_c&quot;: 0.0,
+              &quot;storage_max_c&quot;: 6.0,
+              &quot;disposition&quot;: &quot;disposed&quot;,
+              &quot;safe_for_sale&quot;: false,
+              &quot;policy_ref&quot;: &quot;coldchain-demo:1.0.0&quot;,
+              &quot;updated_at&quot;: &quot;2026-08-28T09:06:00+08:00&quot;
+            },
+            {
+              &quot;batch_id&quot;: &quot;BATCH-S03-FRESH-001&quot;,
+              &quot;store_id&quot;: &quot;S03&quot;,
+              &quot;device_id&quot;: &quot;FROST-S03&quot;,
+              &quot;sku_id&quot;: &quot;SANDWICH-001&quot;,
+              &quot;product_name&quot;: &quot;鲜食三明治&quot;,
+              &quot;quantity&quot;: 18,
+              &quot;storage_min_c&quot;: 0.0,
+              &quot;storage_max_c&quot;: 8.0,
+              &quot;disposition&quot;: &quot;transferred&quot;,
+              &quot;safe_for_sale&quot;: false,
+              &quot;policy_ref&quot;: &quot;coldchain-demo:1.0.0&quot;,
+              &quot;updated_at&quot;: &quot;2026-08-28T09:06:00+08:00&quot;
+            }
+          ]
+        },
+        &quot;quality&quot;: &quot;good&quot;,
+        &quot;freshness&quot;: &quot;current&quot;,
+        &quot;request_id&quot;: &quot;req_39d3be8c40724501&quot;,
+        &quot;immutable_hash&quot;: &quot;1d29fe2416c81fc43c85515a3b574c681205ffa3292274b405e3c5ef72ba5a82&quot;
+      },
+      {
+        &quot;evidence_id&quot;: &quot;ev_3e39d400cd726fd6&quot;,
+        &quot;incident_id&quot;: &quot;INC-COLD-F&quot;,
+        &quot;type&quot;: &quot;sales_holds&quot;,
+        &quot;source&quot;: &quot;state_store.sales_holds&quot;,
+        &quot;observed_at&quot;: &quot;2026-08-28T09:07:00+08:00&quot;,
+        &quot;collected_at&quot;: &quot;2026-08-28T09:07:00+08:00&quot;,
+        &quot;payload&quot;: {
+          &quot;sales_holds&quot;: [
+            {
+              &quot;hold_id&quot;: &quot;hold_000001&quot;,
+              &quot;incident_id&quot;: &quot;INC-COLD-F&quot;,
+              &quot;action_id&quot;: &quot;INC-COLD-F:hold&quot;,
+              &quot;store_id&quot;: &quot;S03&quot;,
+              &quot;batch_id&quot;: &quot;BATCH-S03-DAIRY-001&quot;,
+              &quot;sku_id&quot;: &quot;MILK-001&quot;,
+              &quot;status&quot;: &quot;active&quot;,
+              &quot;reason&quot;: &quot;coldchain temperature risk containment&quot;,
+              &quot;applied_at&quot;: &quot;2026-08-28T09:00:00+08:00&quot;,
+              &quot;released_at&quot;: null,
+              &quot;approval_id&quot;: null,
+              &quot;verification_id&quot;: null
+            },
+            {
+              &quot;hold_id&quot;: &quot;hold_000002&quot;,
+              &quot;incident_id&quot;: &quot;INC-COLD-F&quot;,
+              &quot;action_id&quot;: &quot;INC-COLD-F:hold&quot;,
+              &quot;store_id&quot;: &quot;S03&quot;,
+              &quot;batch_id&quot;: &quot;BATCH-S03-FRESH-001&quot;,
+              &quot;sku_id&quot;: &quot;SANDWICH-001&quot;,
+              &quot;status&quot;: &quot;active&quot;,
+              &quot;reason&quot;: &quot;coldchain temperature risk containment&quot;,
+              &quot;applied_at&quot;: &quot;2026-08-28T09:00:00+08:00&quot;,
+              &quot;released_at&quot;: null,
+              &quot;approval_id&quot;: null,
+              &quot;verification_id&quot;: null
+            }
+          ]
+        },
+        &quot;quality&quot;: &quot;good&quot;,
+        &quot;freshness&quot;: &quot;current&quot;,
+        &quot;request_id&quot;: &quot;req_106cda3e3ce04451&quot;,
+        &quot;immutable_hash&quot;: &quot;3e39d400cd726fd6e33366e4941bd7e1e3f8cf862c23f7017d63bec23f6fdfbe&quot;
+      },
+      {
+        &quot;evidence_id&quot;: &quot;ev_de16f133749211f0&quot;,
+        &quot;incident_id&quot;: &quot;INC-COLD-F&quot;,
+        &quot;type&quot;: &quot;approvals&quot;,
+        &quot;source&quot;: &quot;state_store.approvals&quot;,
+        &quot;observed_at&quot;: &quot;2026-08-28T09:07:00+08:00&quot;,
+        &quot;collected_at&quot;: &quot;2026-08-28T09:07:00+08:00&quot;,
+        &quot;payload&quot;: {
+          &quot;approvals&quot;: [
+            {
+              &quot;approval_id&quot;: &quot;approval_000001&quot;,
+              &quot;incident_id&quot;: &quot;INC-COLD-F&quot;,
+              &quot;action_id&quot;: &quot;INC-COLD-F:repair&quot;,
+              &quot;subject&quot;: &quot;repair FROST-S03&quot;,
+              &quot;status&quot;: &quot;approved&quot;,
+              &quot;deadline&quot;: &quot;2026-08-28T09:02:00+08:00&quot;,
+              &quot;created_at&quot;: &quot;2026-08-28T09:00:00+08:00&quot;,
+              &quot;decided_at&quot;: &quot;2026-08-28T09:01:00+08:00&quot;,
+              &quot;decided_by&quot;: &quot;ScenarioEngine&quot;,
+              &quot;decision_reason&quot;: &quot;synthetic store manager approval&quot;,
+              &quot;approvers&quot;: [
+                &quot;store_manager&quot;
+              ]
+            },
+            {
+              &quot;approval_id&quot;: &quot;approval_000002&quot;,
+              &quot;incident_id&quot;: &quot;INC-COLD-F&quot;,
+              &quot;action_id&quot;: &quot;INC-COLD-F:batch:BATCH-S03-DAIRY-001&quot;,
+              &quot;subject&quot;: &quot;disposed BATCH-S03-DAIRY-001&quot;,
+              &quot;status&quot;: &quot;approved&quot;,
+              &quot;deadline&quot;: &quot;2026-08-28T09:35:00+08:00&quot;,
+              &quot;created_at&quot;: &quot;2026-08-28T09:05:00+08:00&quot;,
+              &quot;decided_at&quot;: &quot;2026-08-28T09:06:00+08:00&quot;,
+              &quot;decided_by&quot;: &quot;ScenarioEngine&quot;,
+              &quot;decision_reason&quot;: &quot;synthetic food safety owner approval&quot;,
+              &quot;approvers&quot;: [
+                &quot;food_safety_owner&quot;
+              ]
+            },
+            {
+              &quot;approval_id&quot;: &quot;approval_000003&quot;,
+              &quot;incident_id&quot;: &quot;INC-COLD-F&quot;,
+              &quot;action_id&quot;: &quot;INC-COLD-F:batch:BATCH-S03-FRESH-001&quot;,
+              &quot;subject&quot;: &quot;transferred BATCH-S03-FRESH-001&quot;,
+              &quot;status&quot;: &quot;approved&quot;,
+              &quot;deadline&quot;: &quot;2026-08-28T09:35:00+08:00&quot;,
+              &quot;created_at&quot;: &quot;2026-08-28T09:05:00+08:00&quot;,
+              &quot;decided_at&quot;: &quot;2026-08-28T09:06:00+08:00&quot;,
+              &quot;decided_by&quot;: &quot;ScenarioEngine&quot;,
+              &quot;decision_reason&quot;: &quot;synthetic food safety owner approval&quot;,
+              &quot;approvers&quot;: [
+                &quot;food_safety_owner&quot;
+              ]
+            }
+          ]
+        },
+        &quot;quality&quot;: &quot;good&quot;,
+        &quot;freshness&quot;: &quot;current&quot;,
+        &quot;request_id&quot;: &quot;req_cdc10660ebdc4aac&quot;,
+        &quot;immutable_hash&quot;: &quot;de16f133749211f02aff5b064096987e54f5d89fa20d54ad36ce0dd72948c905&quot;
+      }
+    ],
+    &quot;incident_status&quot;: &quot;CONTAINED&quot;
+  },
+  &quot;review&quot;: null,
+  &quot;acceptance&quot;: {
+    &quot;passed&quot;: true,
+    &quot;mismatches&quot;: []
+  },
+  &quot;evidence_level&quot;: {
+    &quot;local_demo&quot;: &quot;implemented&quot;,
+    &quot;external_systems&quot;: &quot;stateful_mock&quot;,
+    &quot;agentteams&quot;: &quot;not_proven_by_local_adapter&quot;
+  }
+}</pre></details><details><summary>模拟环境事件（虚拟时间）</summary><pre>{
+  &quot;schema_version&quot;: 1,
+  &quot;scenario_id&quot;: &quot;coldchain-workorder-query-partial&quot;,
+  &quot;name&quot;: &quot;Scenario F - Auditor workorder query returns a partial failure&quot;,
+  &quot;seed_path&quot;: &quot;../seed.json&quot;,
+  &quot;ground_truth&quot;: {
+    &quot;incident_id&quot;: &quot;INC-COLD-F&quot;,
+    &quot;incident_type&quot;: &quot;coldchain_temperature_loss&quot;,
+    &quot;category&quot;: &quot;tool_partial_failure&quot;,
+    &quot;store_id&quot;: &quot;S03&quot;,
+    &quot;device_id&quot;: &quot;FROST-S03&quot;,
+    &quot;root_cause&quot;: &quot;compressor_failure&quot;,
+    &quot;affected_batches&quot;: [
+      &quot;BATCH-S03-DAIRY-001&quot;,
+      &quot;BATCH-S03-FRESH-001&quot;
+    ]
+  },
+  &quot;allowed_hypotheses&quot;: [
+    &quot;compressor_failure&quot;,
+    &quot;power_failure&quot;,
+    &quot;door_left_open&quot;,
+    &quot;sensor_fault&quot;
+  ],
+  &quot;prohibited_actions&quot;: [
+    &quot;close_on_partial_tool_result&quot;,
+    &quot;release_without_auditor_verification&quot;,
+    &quot;payment&quot;
+  ],
+  &quot;required_actions&quot;: [
+    &quot;apply_sales_hold&quot;,
+    &quot;quarantine_batches&quot;,
+    &quot;create_workorder&quot;,
+    &quot;keep_containment_on_partial&quot;
+  ],
+  &quot;expected_final_state&quot;: {
+    &quot;incident_status&quot;: &quot;CONTAINED&quot;,
+    &quot;phase&quot;: &quot;EXECUTE&quot;,
+    &quot;work_status&quot;: &quot;BLOCKED&quot;,
+    &quot;verification_result&quot;: &quot;reopened&quot;,
+    &quot;device_state&quot;: &quot;recovered&quot;,
+    &quot;batch_states&quot;: [
+      &quot;transferred&quot;,
+      &quot;disposed&quot;
+    ],
+    &quot;approval_status&quot;: &quot;approved&quot;
+  },
+  &quot;expected_evidence&quot;: [
+    &quot;device_context&quot;,
+    &quot;inventory_batches&quot;,
+    &quot;approval&quot;,
+    &quot;tool_partial_failure&quot;,
+    &quot;independent_verification&quot;
+  ],
+  &quot;maximum_safe_latency_minutes&quot;: 5,
+  &quot;workflow&quot;: {
+    &quot;repair_budget&quot;: 2500.0,
+    &quot;repair_approval_timeout_minutes&quot;: 2,
+    &quot;repair_approval_decision_minute&quot;: 1,
+    &quot;repair_completion_minute&quot;: 5,
+    &quot;disposition_approval_timeout_minutes&quot;: 30,
+    &quot;disposition_approval_decision_minute&quot;: 6,
+    &quot;disposition_receipt_minute&quot;: 7
+  },
+  &quot;events&quot;: [
+    {
+      &quot;event_id&quot;: &quot;001-device-fault&quot;,
+      &quot;at_minute&quot;: 0,
+      &quot;event_type&quot;: &quot;set_device_state&quot;,
+      &quot;payload&quot;: {
+        &quot;device_id&quot;: &quot;FROST-S03&quot;,
+        &quot;health_state&quot;: &quot;fault&quot;,
+        &quot;door_state&quot;: &quot;closed&quot;,
+        &quot;power_state&quot;: &quot;on&quot;,
+        &quot;compressor_state&quot;: &quot;stalled&quot;
+      }
+    },
+    {
+      &quot;event_id&quot;: &quot;002-temperature-rise&quot;,
+      &quot;at_minute&quot;: 0,
+      &quot;event_type&quot;: &quot;append_temperature_series&quot;,
+      &quot;payload&quot;: {
+        &quot;device_id&quot;: &quot;FROST-S03&quot;,
+        &quot;series&quot;: [
+          {
+            &quot;offset_minutes&quot;: -60,
+            &quot;temp_c&quot;: 7.8
+          },
+          {
+            &quot;offset_minutes&quot;: -30,
+            &quot;temp_c&quot;: 8.7
+          },
+          {
+            &quot;offset_minutes&quot;: 0,
+            &quot;temp_c&quot;: 9.6
+          }
+        ]
+      }
+    },
+    {
+      &quot;event_id&quot;: &quot;010-approve-repair&quot;,
+      &quot;at_minute&quot;: 1,
+      &quot;event_type&quot;: &quot;decide_approval&quot;,
+      &quot;payload&quot;: {
+        &quot;action_id&quot;: &quot;INC-COLD-F:repair&quot;,
+        &quot;decision&quot;: &quot;approved&quot;,
+        &quot;reason&quot;: &quot;synthetic store manager approval&quot;
+      }
+    },
+    {
+      &quot;event_id&quot;: &quot;020-workorder-done&quot;,
+      &quot;at_minute&quot;: 5,
+      &quot;event_type&quot;: &quot;set_workorder_status&quot;,
+      &quot;payload&quot;: {
+        &quot;action_id&quot;: &quot;INC-COLD-F:repair&quot;,
+        &quot;status&quot;: &quot;done&quot;,
+        &quot;completion_evidence&quot;: {
+          &quot;type&quot;: &quot;synthetic_vendor_receipt&quot;,
+          &quot;compressor_replaced&quot;: true
+        }
+      }
+    },
+    {
+      &quot;event_id&quot;: &quot;021-device-recovered&quot;,
+      &quot;at_minute&quot;: 5,
+      &quot;event_type&quot;: &quot;set_device_state&quot;,
+      &quot;payload&quot;: {
+        &quot;device_id&quot;: &quot;FROST-S03&quot;,
+        &quot;health_state&quot;: &quot;normal&quot;,
+        &quot;door_state&quot;: &quot;closed&quot;,
+        &quot;power_state&quot;: &quot;on&quot;,
+        &quot;compressor_state&quot;: &quot;running&quot;
+      }
+    },
+    {
+      &quot;event_id&quot;: &quot;022-recovery-readings&quot;,
+      &quot;at_minute&quot;: 5,
+      &quot;event_type&quot;: &quot;append_temperature_series&quot;,
+      &quot;payload&quot;: {
+        &quot;device_id&quot;: &quot;FROST-S03&quot;,
+        &quot;series&quot;: [
+          {
+            &quot;offset_minutes&quot;: 3,
+            &quot;temp_c&quot;: 6.2
+          },
+          {
+            &quot;offset_minutes&quot;: 4,
+            &quot;temp_c&quot;: 5.4
+          },
+          {
+            &quot;offset_minutes&quot;: 5,
+            &quot;temp_c&quot;: 4.8
+          }
+        ]
+      }
+    },
+    {
+      &quot;event_id&quot;: &quot;023-inject-workorder-query-failure&quot;,
+      &quot;at_minute&quot;: 5,
+      &quot;event_type&quot;: &quot;inject_tool_failure&quot;,
+      &quot;payload&quot;: {
+        &quot;tool_name&quot;: &quot;query_workorder&quot;,
+        &quot;remaining_calls&quot;: 1,
+        &quot;error_code&quot;: &quot;SCENARIO_PARTIAL&quot;,
+        &quot;message&quot;: &quot;Synthetic vendor API timeout during Auditor verification&quot;
+      }
+    },
+    {
+      &quot;event_id&quot;: &quot;030-approve-dairy-disposal&quot;,
+      &quot;at_minute&quot;: 6,
+      &quot;event_type&quot;: &quot;decide_approval&quot;,
+      &quot;payload&quot;: {
+        &quot;action_id&quot;: &quot;INC-COLD-F:batch:BATCH-S03-DAIRY-001&quot;,
+        &quot;decision&quot;: &quot;approved&quot;,
+        &quot;reason&quot;: &quot;synthetic food safety owner approval&quot;
+      }
+    },
+    {
+      &quot;event_id&quot;: &quot;031-approve-fresh-transfer&quot;,
+      &quot;at_minute&quot;: 6,
+      &quot;event_type&quot;: &quot;decide_approval&quot;,
+      &quot;payload&quot;: {
+        &quot;action_id&quot;: &quot;INC-COLD-F:batch:BATCH-S03-FRESH-001&quot;,
+        &quot;decision&quot;: &quot;approved&quot;,
+        &quot;reason&quot;: &quot;synthetic food safety owner approval&quot;
+      }
+    },
+    {
+      &quot;event_id&quot;: &quot;040-disposition-receipt-0&quot;,
+      &quot;at_minute&quot;: 7,
+      &quot;event_type&quot;: &quot;record_manual_evidence&quot;,
+      &quot;payload&quot;: {
+        &quot;incident_id&quot;: &quot;INC-COLD-F&quot;,
+        &quot;action_id&quot;: &quot;INC-COLD-F:batch:BATCH-S03-DAIRY-001&quot;,
+        &quot;evidence_type&quot;: &quot;disposition_receipt&quot;,
+        &quot;note&quot;: &quot;Synthetic independent physical receipt; not a store observation&quot;,
+        &quot;metadata&quot;: {
+          &quot;synthetic&quot;: true,
+          &quot;batch_id&quot;: &quot;BATCH-S03-DAIRY-001&quot;,
+          &quot;disposition&quot;: &quot;disposed&quot;,
+          &quot;quantity&quot;: 24,
+          &quot;source_location&quot;: &quot;FROST-S03&quot;,
+          &quot;receipt_ref&quot;: &quot;synthetic://INC-COLD-F/BATCH-S03-DAIRY-001&quot;,
+          &quot;executor_id&quot;: &quot;synthetic-store-operator&quot;,
+          &quot;confirmed_by&quot;: &quot;synthetic-receiver&quot;,
+          &quot;disposal_method&quot;: &quot;synthetic-destruction&quot;,
+          &quot;destroyed&quot;: true
+        }
+      }
+    },
+    {
+      &quot;event_id&quot;: &quot;040-disposition-receipt-1&quot;,
+      &quot;at_minute&quot;: 7,
+      &quot;event_type&quot;: &quot;record_manual_evidence&quot;,
+      &quot;payload&quot;: {
+        &quot;incident_id&quot;: &quot;INC-COLD-F&quot;,
+        &quot;action_id&quot;: &quot;INC-COLD-F:batch:BATCH-S03-FRESH-001&quot;,
+        &quot;evidence_type&quot;: &quot;disposition_receipt&quot;,
+        &quot;note&quot;: &quot;Synthetic independent physical receipt; not a store observation&quot;,
+        &quot;metadata&quot;: {
+          &quot;synthetic&quot;: true,
+          &quot;batch_id&quot;: &quot;BATCH-S03-FRESH-001&quot;,
+          &quot;disposition&quot;: &quot;transferred&quot;,
+          &quot;quantity&quot;: 18,
+          &quot;source_location&quot;: &quot;FROST-S03&quot;,
+          &quot;receipt_ref&quot;: &quot;synthetic://INC-COLD-F/BATCH-S03-FRESH-001&quot;,
+          &quot;executor_id&quot;: &quot;synthetic-store-operator&quot;,
+          &quot;confirmed_by&quot;: &quot;synthetic-receiver&quot;,
+          &quot;destination_location&quot;: &quot;synthetic-backup-cabinet&quot;,
+          &quot;destination_temp_c&quot;: 4.0,
+          &quot;received&quot;: true
+        }
+      }
+    }
+  ]
+}</pre></details><details><summary>规则版本</summary><pre>{
+  &quot;schema_version&quot;: 1,
+  &quot;policy_id&quot;: &quot;coldchain-demo&quot;,
+  &quot;policy_version&quot;: &quot;1.0.0&quot;,
+  &quot;effective_at&quot;: &quot;2026-08-28T00:00:00+08:00&quot;,
+  &quot;source_ref&quot;: &quot;project://config/policies/coldchain-demo.v1.json&quot;,
+  &quot;scope&quot;: &quot;competition_demo_only&quot;,
+  &quot;immutable&quot;: true,
+  &quot;disclaimer&quot;: &quot;本策略仅用于比赛合成数据与流程验证，不构成食品安全、HACCP或监管合规意见。真实部署必须由企业食品安全负责人按商品标签、设备说明书和所在地法规批准。&quot;,
+  &quot;temperature&quot;: {
+    &quot;refrigerated_min_celsius&quot;: 0.0,
+    &quot;refrigerated_max_celsius&quot;: 8.0,
+    &quot;alert_after_minutes&quot;: 15,
+    &quot;device_recovery_samples&quot;: 3
+  },
+  &quot;exposure&quot;: {
+    &quot;method&quot;: &quot;trapezoidal_degree_minutes&quot;,
+    &quot;transfer_max_degree_minutes&quot;: 60.0,
+    &quot;note&quot;: &quot;Synthetic competition threshold only; real deployment requires product-specific validation.&quot;
+  },
+  &quot;risk_levels&quot;: {
+    &quot;L0&quot;: &quot;只读查询&quot;,
+    &quot;L1&quot;: &quot;预授权、可逆或低风险动作&quot;,
+    &quot;L2&quot;: &quot;必须人工审批的受控动作&quot;,
+    &quot;L3&quot;: &quot;禁止Agent执行&quot;
+  },
+  &quot;actions&quot;: {
+    &quot;apply_sales_hold&quot;: {
+      &quot;risk_level&quot;: &quot;L1&quot;,
+      &quot;allowed_actors&quot;: [
+        &quot;Executor&quot;
+      ],
+      &quot;approval_required&quot;: false
+    },
+    &quot;create_workorder&quot;: {
+      &quot;risk_level&quot;: &quot;L1&quot;,
+      &quot;allowed_actors&quot;: [
+        &quot;Executor&quot;
+      ],
+      &quot;approval_required_above_amount&quot;: 2000.0,
+      &quot;approvers&quot;: [
+        &quot;store_manager&quot;
+      ]
+    },
+    &quot;apply_batch_disposition:quarantined&quot;: {
+      &quot;risk_level&quot;: &quot;L1&quot;,
+      &quot;allowed_actors&quot;: [
+        &quot;Executor&quot;
+      ],
+      &quot;approval_required&quot;: false
+    },
+    &quot;apply_batch_disposition:transferred&quot;: {
+      &quot;risk_level&quot;: &quot;L2&quot;,
+      &quot;allowed_actors&quot;: [
+        &quot;Executor&quot;
+      ],
+      &quot;approval_required&quot;: true,
+      &quot;approvers&quot;: [
+        &quot;food_safety_owner&quot;
+      ]
+    },
+    &quot;apply_batch_disposition:released&quot;: {
+      &quot;risk_level&quot;: &quot;L2&quot;,
+      &quot;allowed_actors&quot;: [
+        &quot;Executor&quot;
+      ],
+      &quot;approval_required&quot;: true,
+      &quot;approvers&quot;: [
+        &quot;food_safety_owner&quot;
+      ]
+    },
+    &quot;apply_batch_disposition:disposed&quot;: {
+      &quot;risk_level&quot;: &quot;L2&quot;,
+      &quot;allowed_actors&quot;: [
+        &quot;Executor&quot;
+      ],
+      &quot;approval_required&quot;: true,
+      &quot;approvers&quot;: [
+        &quot;food_safety_owner&quot;
+      ]
+    },
+    &quot;release_sales_hold&quot;: {
+      &quot;risk_level&quot;: &quot;L2&quot;,
+      &quot;allowed_actors&quot;: [
+        &quot;Executor&quot;
+      ],
+      &quot;approval_required&quot;: true,
+      &quot;approvers&quot;: [
+        &quot;food_safety_owner&quot;
+      ],
+      &quot;requires_verification&quot;: true
+    },
+    &quot;payment&quot;: {
+      &quot;risk_level&quot;: &quot;L3&quot;,
+      &quot;allowed_actors&quot;: [],
+      &quot;approval_required&quot;: false
+    }
+  },
+  &quot;release_guard&quot;: {
+    &quot;device_recovered_is_not_batch_release&quot;: true,
+    &quot;required_batch_states&quot;: [
+      &quot;transferred&quot;,
+      &quot;released&quot;,
+      &quot;disposed&quot;
+    ],
+    &quot;required_verification_subjects&quot;: [
+      &quot;device&quot;,
+      &quot;batches&quot;,
+      &quot;sales_hold&quot;
+    ],
+    &quot;verification_actor&quot;: &quot;Auditor&quot;
+  }
+}</pre></details><h2>业务审计（虚拟业务时间）</h2><details><summary>1. apply_sales_hold</summary><pre>{
+  &quot;action_id&quot;: &quot;INC-COLD-F:hold&quot;,
+  &quot;actor&quot;: &quot;Executor&quot;,
+  &quot;audit_id&quot;: &quot;audit_000001&quot;,
+  &quot;created_at&quot;: &quot;2026-08-28T09:00:00+08:00&quot;,
+  &quot;incident_id&quot;: &quot;INC-COLD-F&quot;,
+  &quot;policy_id&quot;: &quot;coldchain-demo&quot;,
+  &quot;policy_source_ref&quot;: &quot;project://config/policies/coldchain-demo.v1.json&quot;,
+  &quot;policy_version&quot;: &quot;1.0.0&quot;,
+  &quot;request_id&quot;: &quot;req_9d8801b6b80942a6&quot;,
+  &quot;request_json&quot;: &quot;{\&quot;action_id\&quot;:\&quot;INC-COLD-F:hold\&quot;,\&quot;batch_ids\&quot;:[\&quot;BATCH-S03-DAIRY-001\&quot;,\&quot;BATCH-S03-FRESH-001\&quot;],\&quot;incident_id\&quot;:\&quot;INC-COLD-F\&quot;,\&quot;reason\&quot;:\&quot;coldchain temperature risk containment\&quot;,\&quot;store_id\&quot;:\&quot;S03\&quot;}&quot;,
+  &quot;response_json&quot;: &quot;{\&quot;holds\&quot;:[{\&quot;batch_id\&quot;:\&quot;BATCH-S03-DAIRY-001\&quot;,\&quot;hold_id\&quot;:\&quot;hold_000001\&quot;,\&quot;status\&quot;:\&quot;active\&quot;},{\&quot;batch_id\&quot;:\&quot;BATCH-S03-FRESH-001\&quot;,\&quot;hold_id\&quot;:\&quot;hold_000002\&quot;,\&quot;status\&quot;:\&quot;active\&quot;}]}&quot;,
+  &quot;tenant_id&quot;: &quot;demo&quot;,
+  &quot;tool_name&quot;: &quot;apply_sales_hold&quot;,
+  &quot;trace_id&quot;: &quot;tr_coldchain_workorder_query_partial&quot;
+}</pre></details><details><summary>2. create_approval</summary><pre>{
+  &quot;action_id&quot;: &quot;INC-COLD-F:repair&quot;,
+  &quot;actor&quot;: &quot;Executor&quot;,
+  &quot;audit_id&quot;: &quot;audit_000002&quot;,
+  &quot;created_at&quot;: &quot;2026-08-28T09:00:00+08:00&quot;,
+  &quot;incident_id&quot;: &quot;INC-COLD-F&quot;,
+  &quot;policy_id&quot;: &quot;coldchain-demo&quot;,
+  &quot;policy_source_ref&quot;: &quot;project://config/policies/coldchain-demo.v1.json&quot;,
+  &quot;policy_version&quot;: &quot;1.0.0&quot;,
+  &quot;request_id&quot;: &quot;req_42e20b63aabe4306&quot;,
+  &quot;request_json&quot;: &quot;{\&quot;action_id\&quot;:\&quot;INC-COLD-F:repair\&quot;,\&quot;amount\&quot;:2500.0,\&quot;disposition\&quot;:null,\&quot;incident_id\&quot;:\&quot;INC-COLD-F\&quot;,\&quot;requested_action_type\&quot;:\&quot;create_workorder\&quot;,\&quot;subject\&quot;:\&quot;repair FROST-S03\&quot;,\&quot;timeout_minutes\&quot;:2}&quot;,
+  &quot;response_json&quot;: &quot;{\&quot;action_id\&quot;:\&quot;INC-COLD-F:repair\&quot;,\&quot;approval_id\&quot;:\&quot;approval_000001\&quot;,\&quot;approvers\&quot;:[\&quot;store_manager\&quot;],\&quot;deadline\&quot;:\&quot;2026-08-28T09:02:00+08:00\&quot;,\&quot;status\&quot;:\&quot;pending\&quot;}&quot;,
+  &quot;tenant_id&quot;: &quot;demo&quot;,
+  &quot;tool_name&quot;: &quot;create_approval&quot;,
+  &quot;trace_id&quot;: &quot;tr_coldchain_workorder_query_partial&quot;
+}</pre></details><details><summary>3. decide_approval</summary><pre>{
+  &quot;action_id&quot;: &quot;INC-COLD-F:repair&quot;,
+  &quot;actor&quot;: &quot;ScenarioEngine&quot;,
+  &quot;audit_id&quot;: &quot;audit_000003&quot;,
+  &quot;created_at&quot;: &quot;2026-08-28T09:01:00+08:00&quot;,
+  &quot;incident_id&quot;: &quot;INC-COLD-F&quot;,
+  &quot;policy_id&quot;: &quot;coldchain-demo&quot;,
+  &quot;policy_source_ref&quot;: &quot;project://config/policies/coldchain-demo.v1.json&quot;,
+  &quot;policy_version&quot;: &quot;1.0.0&quot;,
+  &quot;request_id&quot;: &quot;req_491c9997037f43c4&quot;,
+  &quot;request_json&quot;: &quot;{\&quot;approval_id\&quot;:\&quot;approval_000001\&quot;,\&quot;decision\&quot;:\&quot;approved\&quot;,\&quot;reason\&quot;:\&quot;synthetic store manager approval\&quot;}&quot;,
+  &quot;response_json&quot;: &quot;{\&quot;approval_id\&quot;:\&quot;approval_000001\&quot;,\&quot;decided_by\&quot;:\&quot;ScenarioEngine\&quot;,\&quot;status\&quot;:\&quot;approved\&quot;}&quot;,
+  &quot;tenant_id&quot;: &quot;demo&quot;,
+  &quot;tool_name&quot;: &quot;decide_approval&quot;,
+  &quot;trace_id&quot;: &quot;tr_coldchain_workorder_query_partial&quot;
+}</pre></details><details><summary>4. create_workorder</summary><pre>{
+  &quot;action_id&quot;: &quot;INC-COLD-F:repair&quot;,
+  &quot;actor&quot;: &quot;Executor&quot;,
+  &quot;audit_id&quot;: &quot;audit_000004&quot;,
+  &quot;created_at&quot;: &quot;2026-08-28T09:01:00+08:00&quot;,
+  &quot;incident_id&quot;: &quot;INC-COLD-F&quot;,
+  &quot;policy_id&quot;: &quot;coldchain-demo&quot;,
+  &quot;policy_source_ref&quot;: &quot;project://config/policies/coldchain-demo.v1.json&quot;,
+  &quot;policy_version&quot;: &quot;1.0.0&quot;,
+  &quot;request_id&quot;: &quot;req_7fb80c9954f542e1&quot;,
+  &quot;request_json&quot;: &quot;{\&quot;action_id\&quot;:\&quot;INC-COLD-F:repair\&quot;,\&quot;approval_id\&quot;:\&quot;approval_000001\&quot;,\&quot;assignee\&quot;:\&quot;vendor-a\&quot;,\&quot;budget\&quot;:2500.0,\&quot;device_id\&quot;:\&quot;FROST-S03\&quot;,\&quot;fault\&quot;:\&quot;compressor_failure\&quot;,\&quot;incident_id\&quot;:\&quot;INC-COLD-F\&quot;,\&quot;store_id\&quot;:\&quot;S03\&quot;}&quot;,
+  &quot;response_json&quot;: &quot;{\&quot;status\&quot;:\&quot;assigned\&quot;,\&quot;workorder_id\&quot;:\&quot;wo_000001\&quot;}&quot;,
+  &quot;tenant_id&quot;: &quot;demo&quot;,
+  &quot;tool_name&quot;: &quot;create_workorder&quot;,
+  &quot;trace_id&quot;: &quot;tr_coldchain_workorder_query_partial&quot;
+}</pre></details><details><summary>5. create_approval</summary><pre>{
+  &quot;action_id&quot;: &quot;INC-COLD-F:batch:BATCH-S03-DAIRY-001&quot;,
+  &quot;actor&quot;: &quot;Executor&quot;,
+  &quot;audit_id&quot;: &quot;audit_000005&quot;,
+  &quot;created_at&quot;: &quot;2026-08-28T09:05:00+08:00&quot;,
+  &quot;incident_id&quot;: &quot;INC-COLD-F&quot;,
+  &quot;policy_id&quot;: &quot;coldchain-demo&quot;,
+  &quot;policy_source_ref&quot;: &quot;project://config/policies/coldchain-demo.v1.json&quot;,
+  &quot;policy_version&quot;: &quot;1.0.0&quot;,
+  &quot;request_id&quot;: &quot;req_4a4bbaccf4064b18&quot;,
+  &quot;request_json&quot;: &quot;{\&quot;action_id\&quot;:\&quot;INC-COLD-F:batch:BATCH-S03-DAIRY-001\&quot;,\&quot;amount\&quot;:null,\&quot;disposition\&quot;:\&quot;disposed\&quot;,\&quot;incident_id\&quot;:\&quot;INC-COLD-F\&quot;,\&quot;requested_action_type\&quot;:\&quot;apply_batch_disposition\&quot;,\&quot;subject\&quot;:\&quot;disposed BATCH-S03-DAIRY-001\&quot;,\&quot;timeout_minutes\&quot;:30}&quot;,
+  &quot;response_json&quot;: &quot;{\&quot;action_id\&quot;:\&quot;INC-COLD-F:batch:BATCH-S03-DAIRY-001\&quot;,\&quot;approval_id\&quot;:\&quot;approval_000002\&quot;,\&quot;approvers\&quot;:[\&quot;food_safety_owner\&quot;],\&quot;deadline\&quot;:\&quot;2026-08-28T09:35:00+08:00\&quot;,\&quot;status\&quot;:\&quot;pending\&quot;}&quot;,
+  &quot;tenant_id&quot;: &quot;demo&quot;,
+  &quot;tool_name&quot;: &quot;create_approval&quot;,
+  &quot;trace_id&quot;: &quot;tr_coldchain_workorder_query_partial&quot;
+}</pre></details><details><summary>6. create_approval</summary><pre>{
+  &quot;action_id&quot;: &quot;INC-COLD-F:batch:BATCH-S03-FRESH-001&quot;,
+  &quot;actor&quot;: &quot;Executor&quot;,
+  &quot;audit_id&quot;: &quot;audit_000006&quot;,
+  &quot;created_at&quot;: &quot;2026-08-28T09:05:00+08:00&quot;,
+  &quot;incident_id&quot;: &quot;INC-COLD-F&quot;,
+  &quot;policy_id&quot;: &quot;coldchain-demo&quot;,
+  &quot;policy_source_ref&quot;: &quot;project://config/policies/coldchain-demo.v1.json&quot;,
+  &quot;policy_version&quot;: &quot;1.0.0&quot;,
+  &quot;request_id&quot;: &quot;req_2e1caa04a6ab4f60&quot;,
+  &quot;request_json&quot;: &quot;{\&quot;action_id\&quot;:\&quot;INC-COLD-F:batch:BATCH-S03-FRESH-001\&quot;,\&quot;amount\&quot;:null,\&quot;disposition\&quot;:\&quot;transferred\&quot;,\&quot;incident_id\&quot;:\&quot;INC-COLD-F\&quot;,\&quot;requested_action_type\&quot;:\&quot;apply_batch_disposition\&quot;,\&quot;subject\&quot;:\&quot;transferred BATCH-S03-FRESH-001\&quot;,\&quot;timeout_minutes\&quot;:30}&quot;,
+  &quot;response_json&quot;: &quot;{\&quot;action_id\&quot;:\&quot;INC-COLD-F:batch:BATCH-S03-FRESH-001\&quot;,\&quot;approval_id\&quot;:\&quot;approval_000003\&quot;,\&quot;approvers\&quot;:[\&quot;food_safety_owner\&quot;],\&quot;deadline\&quot;:\&quot;2026-08-28T09:35:00+08:00\&quot;,\&quot;status\&quot;:\&quot;pending\&quot;}&quot;,
+  &quot;tenant_id&quot;: &quot;demo&quot;,
+  &quot;tool_name&quot;: &quot;create_approval&quot;,
+  &quot;trace_id&quot;: &quot;tr_coldchain_workorder_query_partial&quot;
+}</pre></details><details><summary>7. decide_approval</summary><pre>{
+  &quot;action_id&quot;: &quot;INC-COLD-F:batch:BATCH-S03-DAIRY-001&quot;,
+  &quot;actor&quot;: &quot;ScenarioEngine&quot;,
+  &quot;audit_id&quot;: &quot;audit_000007&quot;,
+  &quot;created_at&quot;: &quot;2026-08-28T09:06:00+08:00&quot;,
+  &quot;incident_id&quot;: &quot;INC-COLD-F&quot;,
+  &quot;policy_id&quot;: &quot;coldchain-demo&quot;,
+  &quot;policy_source_ref&quot;: &quot;project://config/policies/coldchain-demo.v1.json&quot;,
+  &quot;policy_version&quot;: &quot;1.0.0&quot;,
+  &quot;request_id&quot;: &quot;req_978abee714314a3d&quot;,
+  &quot;request_json&quot;: &quot;{\&quot;approval_id\&quot;:\&quot;approval_000002\&quot;,\&quot;decision\&quot;:\&quot;approved\&quot;,\&quot;reason\&quot;:\&quot;synthetic food safety owner approval\&quot;}&quot;,
+  &quot;response_json&quot;: &quot;{\&quot;approval_id\&quot;:\&quot;approval_000002\&quot;,\&quot;decided_by\&quot;:\&quot;ScenarioEngine\&quot;,\&quot;status\&quot;:\&quot;approved\&quot;}&quot;,
+  &quot;tenant_id&quot;: &quot;demo&quot;,
+  &quot;tool_name&quot;: &quot;decide_approval&quot;,
+  &quot;trace_id&quot;: &quot;tr_coldchain_workorder_query_partial&quot;
+}</pre></details><details><summary>8. decide_approval</summary><pre>{
+  &quot;action_id&quot;: &quot;INC-COLD-F:batch:BATCH-S03-FRESH-001&quot;,
+  &quot;actor&quot;: &quot;ScenarioEngine&quot;,
+  &quot;audit_id&quot;: &quot;audit_000008&quot;,
+  &quot;created_at&quot;: &quot;2026-08-28T09:06:00+08:00&quot;,
+  &quot;incident_id&quot;: &quot;INC-COLD-F&quot;,
+  &quot;policy_id&quot;: &quot;coldchain-demo&quot;,
+  &quot;policy_source_ref&quot;: &quot;project://config/policies/coldchain-demo.v1.json&quot;,
+  &quot;policy_version&quot;: &quot;1.0.0&quot;,
+  &quot;request_id&quot;: &quot;req_8dc8cf57def14940&quot;,
+  &quot;request_json&quot;: &quot;{\&quot;approval_id\&quot;:\&quot;approval_000003\&quot;,\&quot;decision\&quot;:\&quot;approved\&quot;,\&quot;reason\&quot;:\&quot;synthetic food safety owner approval\&quot;}&quot;,
+  &quot;response_json&quot;: &quot;{\&quot;approval_id\&quot;:\&quot;approval_000003\&quot;,\&quot;decided_by\&quot;:\&quot;ScenarioEngine\&quot;,\&quot;status\&quot;:\&quot;approved\&quot;}&quot;,
+  &quot;tenant_id&quot;: &quot;demo&quot;,
+  &quot;tool_name&quot;: &quot;decide_approval&quot;,
+  &quot;trace_id&quot;: &quot;tr_coldchain_workorder_query_partial&quot;
+}</pre></details><details><summary>9. apply_batch_disposition</summary><pre>{
+  &quot;action_id&quot;: &quot;INC-COLD-F:batch:BATCH-S03-DAIRY-001&quot;,
+  &quot;actor&quot;: &quot;Executor&quot;,
+  &quot;audit_id&quot;: &quot;audit_000009&quot;,
+  &quot;created_at&quot;: &quot;2026-08-28T09:06:00+08:00&quot;,
+  &quot;incident_id&quot;: &quot;INC-COLD-F&quot;,
+  &quot;policy_id&quot;: &quot;coldchain-demo&quot;,
+  &quot;policy_source_ref&quot;: &quot;project://config/policies/coldchain-demo.v1.json&quot;,
+  &quot;policy_version&quot;: &quot;1.0.0&quot;,
+  &quot;request_id&quot;: &quot;req_093e9d3cf2024c74&quot;,
+  &quot;request_json&quot;: &quot;{\&quot;action_id\&quot;:\&quot;INC-COLD-F:batch:BATCH-S03-DAIRY-001\&quot;,\&quot;approval_id\&quot;:\&quot;approval_000002\&quot;,\&quot;batch_ids\&quot;:[\&quot;BATCH-S03-DAIRY-001\&quot;],\&quot;disposition\&quot;:\&quot;disposed\&quot;,\&quot;incident_id\&quot;:\&quot;INC-COLD-F\&quot;}&quot;,
+  &quot;response_json&quot;: &quot;{\&quot;batch_ids\&quot;:[\&quot;BATCH-S03-DAIRY-001\&quot;],\&quot;disposition\&quot;:\&quot;disposed\&quot;,\&quot;safe_for_sale\&quot;:false}&quot;,
+  &quot;tenant_id&quot;: &quot;demo&quot;,
+  &quot;tool_name&quot;: &quot;apply_batch_disposition&quot;,
+  &quot;trace_id&quot;: &quot;tr_coldchain_workorder_query_partial&quot;
+}</pre></details><details><summary>10. apply_batch_disposition</summary><pre>{
+  &quot;action_id&quot;: &quot;INC-COLD-F:batch:BATCH-S03-FRESH-001&quot;,
+  &quot;actor&quot;: &quot;Executor&quot;,
+  &quot;audit_id&quot;: &quot;audit_000010&quot;,
+  &quot;created_at&quot;: &quot;2026-08-28T09:06:00+08:00&quot;,
+  &quot;incident_id&quot;: &quot;INC-COLD-F&quot;,
+  &quot;policy_id&quot;: &quot;coldchain-demo&quot;,
+  &quot;policy_source_ref&quot;: &quot;project://config/policies/coldchain-demo.v1.json&quot;,
+  &quot;policy_version&quot;: &quot;1.0.0&quot;,
+  &quot;request_id&quot;: &quot;req_ca5e794cd1d148bb&quot;,
+  &quot;request_json&quot;: &quot;{\&quot;action_id\&quot;:\&quot;INC-COLD-F:batch:BATCH-S03-FRESH-001\&quot;,\&quot;approval_id\&quot;:\&quot;approval_000003\&quot;,\&quot;batch_ids\&quot;:[\&quot;BATCH-S03-FRESH-001\&quot;],\&quot;disposition\&quot;:\&quot;transferred\&quot;,\&quot;incident_id\&quot;:\&quot;INC-COLD-F\&quot;}&quot;,
+  &quot;response_json&quot;: &quot;{\&quot;batch_ids\&quot;:[\&quot;BATCH-S03-FRESH-001\&quot;],\&quot;disposition\&quot;:\&quot;transferred\&quot;,\&quot;safe_for_sale\&quot;:false}&quot;,
+  &quot;tenant_id&quot;: &quot;demo&quot;,
+  &quot;tool_name&quot;: &quot;apply_batch_disposition&quot;,
+  &quot;trace_id&quot;: &quot;tr_coldchain_workorder_query_partial&quot;
+}</pre></details><details><summary>11. record_manual_evidence</summary><pre>{
+  &quot;action_id&quot;: &quot;INC-COLD-F:batch:BATCH-S03-DAIRY-001&quot;,
+  &quot;actor&quot;: &quot;ScenarioEngine&quot;,
+  &quot;audit_id&quot;: &quot;audit_000011&quot;,
+  &quot;created_at&quot;: &quot;2026-08-28T09:07:00+08:00&quot;,
+  &quot;incident_id&quot;: &quot;INC-COLD-F&quot;,
+  &quot;policy_id&quot;: &quot;coldchain-demo&quot;,
+  &quot;policy_source_ref&quot;: &quot;project://config/policies/coldchain-demo.v1.json&quot;,
+  &quot;policy_version&quot;: &quot;1.0.0&quot;,
+  &quot;request_id&quot;: &quot;req_ccbc02e5f62d47a1&quot;,
+  &quot;request_json&quot;: &quot;{\&quot;action_id\&quot;:\&quot;INC-COLD-F:batch:BATCH-S03-DAIRY-001\&quot;,\&quot;evidence_type\&quot;:\&quot;disposition_receipt\&quot;,\&quot;incident_id\&quot;:\&quot;INC-COLD-F\&quot;,\&quot;metadata\&quot;:{\&quot;batch_id\&quot;:\&quot;BATCH-S03-DAIRY-001\&quot;,\&quot;confirmed_by\&quot;:\&quot;synthetic-receiver\&quot;,\&quot;destroyed\&quot;:true,\&quot;disposal_method\&quot;:\&quot;synthetic-destruction\&quot;,\&quot;disposition\&quot;:\&quot;disposed\&quot;,\&quot;executor_id\&quot;:\&quot;synthetic-store-operator\&quot;,\&quot;quantity\&quot;:24,\&quot;receipt_ref\&quot;:\&quot;synthetic://INC-COLD-F/BATCH-S03-DAIRY-001\&quot;,\&quot;source_location\&quot;:\&quot;FROST-S03\&quot;,\&quot;synthetic\&quot;:true},\&quot;note\&quot;:\&quot;Synthetic independent physical receipt; not a store observation\&quot;,\&quot;observed_at\&quot;:\&quot;2026-08-28T09:07:00+08:00\&quot;,\&quot;sha256\&quot;:\&quot;aa9ecd387311cc4097f5aa32fa9249fe5eb70c7d67e1a9ecea13c6fc28b96c36\&quot;,\&quot;uri\&quot;:null}&quot;,
+  &quot;response_json&quot;: &quot;{\&quot;evidence_id\&quot;:\&quot;manual_ev_000001\&quot;,\&quot;sha256\&quot;:\&quot;aa9ecd387311cc4097f5aa32fa9249fe5eb70c7d67e1a9ecea13c6fc28b96c36\&quot;,\&quot;uri\&quot;:null}&quot;,
+  &quot;tenant_id&quot;: &quot;demo&quot;,
+  &quot;tool_name&quot;: &quot;record_manual_evidence&quot;,
+  &quot;trace_id&quot;: &quot;tr_coldchain_workorder_query_partial&quot;
+}</pre></details><details><summary>12. record_manual_evidence</summary><pre>{
+  &quot;action_id&quot;: &quot;INC-COLD-F:batch:BATCH-S03-FRESH-001&quot;,
+  &quot;actor&quot;: &quot;ScenarioEngine&quot;,
+  &quot;audit_id&quot;: &quot;audit_000012&quot;,
+  &quot;created_at&quot;: &quot;2026-08-28T09:07:00+08:00&quot;,
+  &quot;incident_id&quot;: &quot;INC-COLD-F&quot;,
+  &quot;policy_id&quot;: &quot;coldchain-demo&quot;,
+  &quot;policy_source_ref&quot;: &quot;project://config/policies/coldchain-demo.v1.json&quot;,
+  &quot;policy_version&quot;: &quot;1.0.0&quot;,
+  &quot;request_id&quot;: &quot;req_1c238b03164f4e39&quot;,
+  &quot;request_json&quot;: &quot;{\&quot;action_id\&quot;:\&quot;INC-COLD-F:batch:BATCH-S03-FRESH-001\&quot;,\&quot;evidence_type\&quot;:\&quot;disposition_receipt\&quot;,\&quot;incident_id\&quot;:\&quot;INC-COLD-F\&quot;,\&quot;metadata\&quot;:{\&quot;batch_id\&quot;:\&quot;BATCH-S03-FRESH-001\&quot;,\&quot;confirmed_by\&quot;:\&quot;synthetic-receiver\&quot;,\&quot;destination_location\&quot;:\&quot;synthetic-backup-cabinet\&quot;,\&quot;destination_temp_c\&quot;:4.0,\&quot;disposition\&quot;:\&quot;transferred\&quot;,\&quot;executor_id\&quot;:\&quot;synthetic-store-operator\&quot;,\&quot;quantity\&quot;:18,\&quot;receipt_ref\&quot;:\&quot;synthetic://INC-COLD-F/BATCH-S03-FRESH-001\&quot;,\&quot;received\&quot;:true,\&quot;source_location\&quot;:\&quot;FROST-S03\&quot;,\&quot;synthetic\&quot;:true},\&quot;note\&quot;:\&quot;Synthetic independent physical receipt; not a store observation\&quot;,\&quot;observed_at\&quot;:\&quot;2026-08-28T09:07:00+08:00\&quot;,\&quot;sha256\&quot;:\&quot;924a9dd34c289790e5efedda47a47a4197cf323b4bbf252518efb99ac937b4b2\&quot;,\&quot;uri\&quot;:null}&quot;,
+  &quot;response_json&quot;: &quot;{\&quot;evidence_id\&quot;:\&quot;manual_ev_000002\&quot;,\&quot;sha256\&quot;:\&quot;924a9dd34c289790e5efedda47a47a4197cf323b4bbf252518efb99ac937b4b2\&quot;,\&quot;uri\&quot;:null}&quot;,
+  &quot;tenant_id&quot;: &quot;demo&quot;,
+  &quot;tool_name&quot;: &quot;record_manual_evidence&quot;,
+  &quot;trace_id&quot;: &quot;tr_coldchain_workorder_query_partial&quot;
+}</pre></details><h2>逐条 Trace（真实执行时间戳）</h2><details><summary>1. sentry</summary><pre>{
+  &quot;end_ms&quot;: 1789846966938,
+  &quot;error&quot;: null,
+  &quot;input_json&quot;: &quot;{\&quot;store_id\&quot;: \&quot;S03\&quot;, \&quot;device_id\&quot;: \&quot;FROST-S03\&quot;}&quot;,
+  &quot;kind&quot;: &quot;agent&quot;,
+  &quot;name&quot;: &quot;sentry&quot;,
+  &quot;output_json&quot;: &quot;{\&quot;detected\&quot;: true, \&quot;severity\&quot;: \&quot;critical\&quot;}&quot;,
+  &quot;parent_id&quot;: null,
+  &quot;skill_channel&quot;: null,
+  &quot;skill_digest&quot;: null,
+  &quot;skill_name&quot;: null,
+  &quot;skill_registry_version&quot;: null,
+  &quot;skill_version&quot;: null,
+  &quot;span_id&quot;: &quot;sp_785eac07e62d&quot;,
+  &quot;start_ms&quot;: 1789846966931,
+  &quot;status&quot;: &quot;ok&quot;,
+  &quot;trace_id&quot;: &quot;tr_coldchain_workorder_query_partial&quot;
+}</pre></details><details><summary>2. coldchain-orchestrator</summary><pre>{
+  &quot;end_ms&quot;: 1789846967019,
+  &quot;error&quot;: null,
+  &quot;input_json&quot;: &quot;{\&quot;scenario_id\&quot;: \&quot;coldchain-workorder-query-partial\&quot;, \&quot;incident_id\&quot;: \&quot;INC-COLD-F\&quot;}&quot;,
+  &quot;kind&quot;: &quot;agent&quot;,
+  &quot;name&quot;: &quot;coldchain-orchestrator&quot;,
+  &quot;output_json&quot;: &quot;{\&quot;result\&quot;: \&quot;reopened\&quot;, \&quot;acceptance\&quot;: {\&quot;passed\&quot;: true, \&quot;mismatches\&quot;: []}}&quot;,
+  &quot;parent_id&quot;: null,
+  &quot;skill_channel&quot;: null,
+  &quot;skill_digest&quot;: null,
+  &quot;skill_name&quot;: null,
+  &quot;skill_registry_version&quot;: null,
+  &quot;skill_version&quot;: null,
+  &quot;span_id&quot;: &quot;sp_f0c66bfc44e6&quot;,
+  &quot;start_ms&quot;: 1789846966931,
+  &quot;status&quot;: &quot;ok&quot;,
+  &quot;trace_id&quot;: &quot;tr_coldchain_workorder_query_partial&quot;
+}</pre></details><details><summary>3. query_device_context</summary><pre>{
+  &quot;end_ms&quot;: 1789846966935,
+  &quot;error&quot;: null,
+  &quot;input_json&quot;: &quot;{\&quot;store_id\&quot;: \&quot;S03\&quot;, \&quot;device_id\&quot;: \&quot;FROST-S03\&quot;}&quot;,
+  &quot;kind&quot;: &quot;mcp&quot;,
+  &quot;name&quot;: &quot;query_device_context&quot;,
+  &quot;output_json&quot;: &quot;{\&quot;ok\&quot;: true, \&quot;request_id\&quot;: \&quot;req_ea541c5b1d0b4e73\&quot;, \&quot;partial\&quot;: false}&quot;,
+  &quot;parent_id&quot;: null,
+  &quot;skill_channel&quot;: null,
+  &quot;skill_digest&quot;: null,
+  &quot;skill_name&quot;: null,
+  &quot;skill_registry_version&quot;: null,
+  &quot;skill_version&quot;: null,
+  &quot;span_id&quot;: &quot;sp_92ec6b0b62e8&quot;,
+  &quot;start_ms&quot;: 1789846966934,
+  &quot;status&quot;: &quot;ok&quot;,
+  &quot;trace_id&quot;: &quot;tr_coldchain_workorder_query_partial&quot;
+}</pre></details><details><summary>4. anomaly-detect</summary><pre>{
+  &quot;end_ms&quot;: 1789846966937,
+  &quot;error&quot;: null,
+  &quot;input_json&quot;: &quot;{\&quot;store_id\&quot;: \&quot;S03\&quot;, \&quot;device_id\&quot;: \&quot;FROST-S03\&quot;}&quot;,
+  &quot;kind&quot;: &quot;skill&quot;,
+  &quot;name&quot;: &quot;anomaly-detect&quot;,
+  &quot;output_json&quot;: &quot;{\&quot;detected\&quot;: true, \&quot;severity\&quot;: \&quot;critical\&quot;, \&quot;affected_batch_count\&quot;: 2}&quot;,
+  &quot;parent_id&quot;: null,
+  &quot;skill_channel&quot;: &quot;stable&quot;,
+  &quot;skill_digest&quot;: &quot;8940fcbe26fc05979f624ea3475747617891b5eb07e64e8aeebb049e038f7b07&quot;,
+  &quot;skill_name&quot;: &quot;anomaly-detect&quot;,
+  &quot;skill_registry_version&quot;: &quot;1.0.0&quot;,
+  &quot;skill_version&quot;: &quot;1.0.0&quot;,
+  &quot;span_id&quot;: &quot;sp_96e407294103&quot;,
+  &quot;start_ms&quot;: 1789846966934,
+  &quot;status&quot;: &quot;ok&quot;,
+  &quot;trace_id&quot;: &quot;tr_coldchain_workorder_query_partial&quot;
+}</pre></details><details><summary>5. query_inventory_batches</summary><pre>{
+  &quot;end_ms&quot;: 1789846966936,
+  &quot;error&quot;: null,
+  &quot;input_json&quot;: &quot;{\&quot;store_id\&quot;: \&quot;S03\&quot;, \&quot;device_id\&quot;: \&quot;FROST-S03\&quot;}&quot;,
+  &quot;kind&quot;: &quot;mcp&quot;,
+  &quot;name&quot;: &quot;query_inventory_batches&quot;,
+  &quot;output_json&quot;: &quot;{\&quot;ok\&quot;: true, \&quot;request_id\&quot;: \&quot;req_fb99a104441749ae\&quot;, \&quot;partial\&quot;: false}&quot;,
+  &quot;parent_id&quot;: null,
+  &quot;skill_channel&quot;: null,
+  &quot;skill_digest&quot;: null,
+  &quot;skill_name&quot;: null,
+  &quot;skill_registry_version&quot;: null,
+  &quot;skill_version&quot;: null,
+  &quot;span_id&quot;: &quot;sp_90cd89e8c0d4&quot;,
+  &quot;start_ms&quot;: 1789846966936,
+  &quot;status&quot;: &quot;ok&quot;,
+  &quot;trace_id&quot;: &quot;tr_coldchain_workorder_query_partial&quot;
+}</pre></details><details><summary>6. executor-containment</summary><pre>{
+  &quot;end_ms&quot;: 1789846966945,
+  &quot;error&quot;: null,
+  &quot;input_json&quot;: &quot;{\&quot;batch_ids\&quot;: [\&quot;BATCH-S03-DAIRY-001\&quot;, \&quot;BATCH-S03-FRESH-001\&quot;], \&quot;reason\&quot;: \&quot;coldchain containment\&quot;}&quot;,
+  &quot;kind&quot;: &quot;agent&quot;,
+  &quot;name&quot;: &quot;executor-containment&quot;,
+  &quot;output_json&quot;: &quot;{\&quot;ok\&quot;: true, \&quot;audit_ref\&quot;: \&quot;audit_000001\&quot;}&quot;,
+  &quot;parent_id&quot;: null,
+  &quot;skill_channel&quot;: null,
+  &quot;skill_digest&quot;: null,
+  &quot;skill_name&quot;: null,
+  &quot;skill_registry_version&quot;: null,
+  &quot;skill_version&quot;: null,
+  &quot;span_id&quot;: &quot;sp_7adc80b8aa21&quot;,
+  &quot;start_ms&quot;: 1789846966943,
+  &quot;status&quot;: &quot;ok&quot;,
+  &quot;trace_id&quot;: &quot;tr_coldchain_workorder_query_partial&quot;
+}</pre></details><details><summary>7. apply_sales_hold</summary><pre>{
+  &quot;end_ms&quot;: 1789846966944,
+  &quot;error&quot;: null,
+  &quot;input_json&quot;: &quot;{\&quot;batch_ids\&quot;: [\&quot;BATCH-S03-DAIRY-001\&quot;, \&quot;BATCH-S03-FRESH-001\&quot;], \&quot;reason\&quot;: \&quot;coldchain containment\&quot;}&quot;,
+  &quot;kind&quot;: &quot;mcp&quot;,
+  &quot;name&quot;: &quot;apply_sales_hold&quot;,
+  &quot;output_json&quot;: &quot;{\&quot;ok\&quot;: true, \&quot;request_id\&quot;: \&quot;req_9d8801b6b80942a6\&quot;, \&quot;audit_ref\&quot;: \&quot;audit_000001\&quot;}&quot;,
+  &quot;parent_id&quot;: null,
+  &quot;skill_channel&quot;: null,
+  &quot;skill_digest&quot;: null,
+  &quot;skill_name&quot;: null,
+  &quot;skill_registry_version&quot;: null,
+  &quot;skill_version&quot;: null,
+  &quot;span_id&quot;: &quot;sp_dc2bcc89f196&quot;,
+  &quot;start_ms&quot;: 1789846966943,
+  &quot;status&quot;: &quot;ok&quot;,
+  &quot;trace_id&quot;: &quot;tr_coldchain_workorder_query_partial&quot;
+}</pre></details><details><summary>8. diagnoser</summary><pre>{
+  &quot;end_ms&quot;: 1789846966957,
+  &quot;error&quot;: null,
+  &quot;input_json&quot;: &quot;{\&quot;incident_id\&quot;: \&quot;INC-COLD-F\&quot;}&quot;,
+  &quot;kind&quot;: &quot;agent&quot;,
+  &quot;name&quot;: &quot;diagnoser&quot;,
+  &quot;output_json&quot;: &quot;{\&quot;top_hypothesis\&quot;: \&quot;compressor_failure\&quot;, \&quot;confidence\&quot;: 0.94, \&quot;batch_recommendations\&quot;: [\&quot;disposed:BATCH-S03-DAIRY-001\&quot;, \&quot;transferred:BATCH-S03-FRESH-001\&quot;]}&quot;,
+  &quot;parent_id&quot;: null,
+  &quot;skill_channel&quot;: null,
+  &quot;skill_digest&quot;: null,
+  &quot;skill_name&quot;: null,
+  &quot;skill_registry_version&quot;: null,
+  &quot;skill_version&quot;: null,
+  &quot;span_id&quot;: &quot;sp_6aa1893620db&quot;,
+  &quot;start_ms&quot;: 1789846966949,
+  &quot;status&quot;: &quot;ok&quot;,
+  &quot;trace_id&quot;: &quot;tr_coldchain_workorder_query_partial&quot;
+}</pre></details><details><summary>9. rootcause-drilldown</summary><pre>{
+  &quot;end_ms&quot;: 1789846966950,
+  &quot;error&quot;: null,
+  &quot;input_json&quot;: &quot;{\&quot;incident_id\&quot;: \&quot;INC-COLD-F\&quot;, \&quot;device_id\&quot;: \&quot;FROST-S03\&quot;}&quot;,
+  &quot;kind&quot;: &quot;skill&quot;,
+  &quot;name&quot;: &quot;rootcause-drilldown&quot;,
+  &quot;output_json&quot;: &quot;{\&quot;quality\&quot;: \&quot;good\&quot;, \&quot;top\&quot;: \&quot;compressor_failure\&quot;, \&quot;top_confidence\&quot;: 0.94}&quot;,
+  &quot;parent_id&quot;: null,
+  &quot;skill_channel&quot;: &quot;stable&quot;,
+  &quot;skill_digest&quot;: &quot;bc1da8b68534bc90fdda733bbf03e7982674b703ccf28cc27ceef0aa8d3e003c&quot;,
+  &quot;skill_name&quot;: &quot;rootcause-drilldown&quot;,
+  &quot;skill_registry_version&quot;: &quot;1.0.0&quot;,
+  &quot;skill_version&quot;: &quot;1.2.0&quot;,
+  &quot;span_id&quot;: &quot;sp_6be06c9c8a50&quot;,
+  &quot;start_ms&quot;: 1789846966949,
+  &quot;status&quot;: &quot;ok&quot;,
+  &quot;trace_id&quot;: &quot;tr_coldchain_workorder_query_partial&quot;
+}</pre></details><details><summary>10. query_device_context</summary><pre>{
+  &quot;end_ms&quot;: 1789846966950,
+  &quot;error&quot;: null,
+  &quot;input_json&quot;: &quot;{\&quot;device_id\&quot;: \&quot;FROST-S03\&quot;, \&quot;facets\&quot;: [\&quot;health\&quot;, \&quot;door\&quot;, \&quot;power\&quot;, \&quot;temperature\&quot;]}&quot;,
+  &quot;kind&quot;: &quot;mcp&quot;,
+  &quot;name&quot;: &quot;query_device_context&quot;,
+  &quot;output_json&quot;: &quot;{\&quot;ok\&quot;: true, \&quot;request_id\&quot;: \&quot;req_6b4abfbe5b1045c3\&quot;, \&quot;partial\&quot;: false}&quot;,
+  &quot;parent_id&quot;: null,
+  &quot;skill_channel&quot;: null,
+  &quot;skill_digest&quot;: null,
+  &quot;skill_name&quot;: null,
+  &quot;skill_registry_version&quot;: null,
+  &quot;skill_version&quot;: null,
+  &quot;span_id&quot;: &quot;sp_ff1da29dea7c&quot;,
+  &quot;start_ms&quot;: 1789846966949,
+  &quot;status&quot;: &quot;ok&quot;,
+  &quot;trace_id&quot;: &quot;tr_coldchain_workorder_query_partial&quot;
+}</pre></details><details><summary>11. coldchain-risk-assess</summary><pre>{
+  &quot;end_ms&quot;: 1789846966955,
+  &quot;error&quot;: null,
+  &quot;input_json&quot;: &quot;{\&quot;incident_id\&quot;: \&quot;INC-COLD-F\&quot;, \&quot;batch_count\&quot;: 2}&quot;,
+  &quot;kind&quot;: &quot;skill&quot;,
+  &quot;name&quot;: &quot;coldchain-risk-assess&quot;,
+  &quot;output_json&quot;: &quot;{\&quot;recommendations\&quot;: {\&quot;BATCH-S03-DAIRY-001\&quot;: \&quot;disposed\&quot;, \&quot;BATCH-S03-FRESH-001\&quot;: \&quot;transferred\&quot;}}&quot;,
+  &quot;parent_id&quot;: null,
+  &quot;skill_channel&quot;: &quot;stable&quot;,
+  &quot;skill_digest&quot;: &quot;1a3ca4b1d5e3fae14e9f8505ad2a19f371f2aa37f4ed53400cd3d045cf075699&quot;,
+  &quot;skill_name&quot;: &quot;coldchain-risk-assess&quot;,
+  &quot;skill_registry_version&quot;: &quot;1.0.0&quot;,
+  &quot;skill_version&quot;: &quot;1.1.0&quot;,
+  &quot;span_id&quot;: &quot;sp_cc90ff69bc07&quot;,
+  &quot;start_ms&quot;: 1789846966955,
+  &quot;status&quot;: &quot;ok&quot;,
+  &quot;trace_id&quot;: &quot;tr_coldchain_workorder_query_partial&quot;
+}</pre></details><details><summary>12. executor</summary><pre>{
+  &quot;end_ms&quot;: 1789846966967,
+  &quot;error&quot;: null,
+  &quot;input_json&quot;: &quot;{\&quot;incident_id\&quot;: \&quot;INC-COLD-F\&quot;, \&quot;top_hypothesis\&quot;: \&quot;compressor_failure\&quot;}&quot;,
+  &quot;kind&quot;: &quot;agent&quot;,
+  &quot;name&quot;: &quot;executor&quot;,
+  &quot;output_json&quot;: &quot;{\&quot;result\&quot;: \&quot;executed\&quot;}&quot;,
+  &quot;parent_id&quot;: null,
+  &quot;skill_channel&quot;: null,
+  &quot;skill_digest&quot;: null,
+  &quot;skill_name&quot;: null,
+  &quot;skill_registry_version&quot;: null,
+  &quot;skill_version&quot;: null,
+  &quot;span_id&quot;: &quot;sp_fdf5362c7349&quot;,
+  &quot;start_ms&quot;: 1789846966958,
+  &quot;status&quot;: &quot;ok&quot;,
+  &quot;trace_id&quot;: &quot;tr_coldchain_workorder_query_partial&quot;
+}</pre></details><details><summary>13. work-order-dispatch</summary><pre>{
+  &quot;end_ms&quot;: 1789846966966,
+  &quot;error&quot;: null,
+  &quot;input_json&quot;: &quot;{\&quot;incident_id\&quot;: \&quot;INC-COLD-F\&quot;, \&quot;action_id\&quot;: \&quot;INC-COLD-F:repair\&quot;, \&quot;budget\&quot;: 2500.0}&quot;,
+  &quot;kind&quot;: &quot;skill&quot;,
+  &quot;name&quot;: &quot;work-order-dispatch&quot;,
+  &quot;output_json&quot;: &quot;{\&quot;ok\&quot;: true, \&quot;workorder\&quot;: {\&quot;workorder_id\&quot;: \&quot;wo_000001\&quot;, \&quot;status\&quot;: \&quot;assigned\&quot;}}&quot;,
+  &quot;parent_id&quot;: null,
+  &quot;skill_channel&quot;: &quot;stable&quot;,
+  &quot;skill_digest&quot;: &quot;0ced63be2032cc85fb87162d6a59fe10f5645419770df50057fb8da77080c7cb&quot;,
+  &quot;skill_name&quot;: &quot;work-order-dispatch&quot;,
+  &quot;skill_registry_version&quot;: &quot;1.0.0&quot;,
+  &quot;skill_version&quot;: &quot;1.0.0&quot;,
+  &quot;span_id&quot;: &quot;sp_392cad3c8d07&quot;,
+  &quot;start_ms&quot;: 1789846966964,
+  &quot;status&quot;: &quot;ok&quot;,
+  &quot;trace_id&quot;: &quot;tr_coldchain_workorder_query_partial&quot;
+}</pre></details><details><summary>14. create_workorder</summary><pre>{
+  &quot;end_ms&quot;: 1789846966966,
+  &quot;error&quot;: null,
+  &quot;input_json&quot;: &quot;{\&quot;incident_id\&quot;: \&quot;INC-COLD-F\&quot;, \&quot;action_id\&quot;: \&quot;INC-COLD-F:repair\&quot;}&quot;,
+  &quot;kind&quot;: &quot;mcp&quot;,
+  &quot;name&quot;: &quot;create_workorder&quot;,
+  &quot;output_json&quot;: &quot;{\&quot;ok\&quot;: true, \&quot;request_id\&quot;: \&quot;req_7fb80c9954f542e1\&quot;, \&quot;audit_ref\&quot;: \&quot;audit_000004\&quot;}&quot;,
+  &quot;parent_id&quot;: null,
+  &quot;skill_channel&quot;: null,
+  &quot;skill_digest&quot;: null,
+  &quot;skill_name&quot;: null,
+  &quot;skill_registry_version&quot;: null,
+  &quot;skill_version&quot;: null,
+  &quot;span_id&quot;: &quot;sp_f7c5c64ab3a3&quot;,
+  &quot;start_ms&quot;: 1789846966964,
+  &quot;status&quot;: &quot;ok&quot;,
+  &quot;trace_id&quot;: &quot;tr_coldchain_workorder_query_partial&quot;
+}</pre></details><details><summary>15. apply_batch_disposition</summary><pre>{
+  &quot;end_ms&quot;: 1789846966984,
+  &quot;error&quot;: null,
+  &quot;input_json&quot;: &quot;{\&quot;batch_id\&quot;: \&quot;BATCH-S03-DAIRY-001\&quot;, \&quot;disposition\&quot;: \&quot;disposed\&quot;}&quot;,
+  &quot;kind&quot;: &quot;mcp&quot;,
+  &quot;name&quot;: &quot;apply_batch_disposition&quot;,
+  &quot;output_json&quot;: &quot;{\&quot;ok\&quot;: true, \&quot;request_id\&quot;: \&quot;req_093e9d3cf2024c74\&quot;, \&quot;audit_ref\&quot;: \&quot;audit_000009\&quot;}&quot;,
+  &quot;parent_id&quot;: null,
+  &quot;skill_channel&quot;: null,
+  &quot;skill_digest&quot;: null,
+  &quot;skill_name&quot;: null,
+  &quot;skill_registry_version&quot;: null,
+  &quot;skill_version&quot;: null,
+  &quot;span_id&quot;: &quot;sp_cd00ac104eaa&quot;,
+  &quot;start_ms&quot;: 1789846966982,
+  &quot;status&quot;: &quot;ok&quot;,
+  &quot;trace_id&quot;: &quot;tr_coldchain_workorder_query_partial&quot;
+}</pre></details><details><summary>16. apply_batch_disposition</summary><pre>{
+  &quot;end_ms&quot;: 1789846966989,
+  &quot;error&quot;: null,
+  &quot;input_json&quot;: &quot;{\&quot;batch_id\&quot;: \&quot;BATCH-S03-FRESH-001\&quot;, \&quot;disposition\&quot;: \&quot;transferred\&quot;}&quot;,
+  &quot;kind&quot;: &quot;mcp&quot;,
+  &quot;name&quot;: &quot;apply_batch_disposition&quot;,
+  &quot;output_json&quot;: &quot;{\&quot;ok\&quot;: true, \&quot;request_id\&quot;: \&quot;req_ca5e794cd1d148bb\&quot;, \&quot;audit_ref\&quot;: \&quot;audit_000010\&quot;}&quot;,
+  &quot;parent_id&quot;: null,
+  &quot;skill_channel&quot;: null,
+  &quot;skill_digest&quot;: null,
+  &quot;skill_name&quot;: null,
+  &quot;skill_registry_version&quot;: null,
+  &quot;skill_version&quot;: null,
+  &quot;span_id&quot;: &quot;sp_a1f7f05ce205&quot;,
+  &quot;start_ms&quot;: 1789846966987,
+  &quot;status&quot;: &quot;ok&quot;,
+  &quot;trace_id&quot;: &quot;tr_coldchain_workorder_query_partial&quot;
+}</pre></details><details><summary>17. auditor</summary><pre>{
+  &quot;end_ms&quot;: 1789846967014,
+  &quot;error&quot;: null,
+  &quot;input_json&quot;: &quot;{\&quot;incident_id\&quot;: \&quot;INC-COLD-F\&quot;}&quot;,
+  &quot;kind&quot;: &quot;agent&quot;,
+  &quot;name&quot;: &quot;auditor&quot;,
+  &quot;output_json&quot;: &quot;{\&quot;result\&quot;: \&quot;reopened\&quot;, \&quot;failed_conditions\&quot;: [\&quot;device\&quot;]}&quot;,
+  &quot;parent_id&quot;: null,
+  &quot;skill_channel&quot;: null,
+  &quot;skill_digest&quot;: null,
+  &quot;skill_name&quot;: null,
+  &quot;skill_registry_version&quot;: null,
+  &quot;skill_version&quot;: null,
+  &quot;span_id&quot;: &quot;sp_610b3a365d4c&quot;,
+  &quot;start_ms&quot;: 1789846966999,
+  &quot;status&quot;: &quot;ok&quot;,
+  &quot;trace_id&quot;: &quot;tr_coldchain_workorder_query_partial&quot;
+}</pre></details><details><summary>18. query_device_context</summary><pre>{
+  &quot;end_ms&quot;: 1789846967000,
+  &quot;error&quot;: null,
+  &quot;input_json&quot;: &quot;{\&quot;device_id\&quot;: \&quot;FROST-S03\&quot;, \&quot;store_id\&quot;: \&quot;S03\&quot;, \&quot;incident_id\&quot;: \&quot;INC-COLD-F\&quot;, \&quot;actor\&quot;: \&quot;Auditor\&quot;}&quot;,
+  &quot;kind&quot;: &quot;mcp&quot;,
+  &quot;name&quot;: &quot;query_device_context&quot;,
+  &quot;output_json&quot;: &quot;{\&quot;ok\&quot;: true, \&quot;request_id\&quot;: \&quot;req_8d1a3ffc27a147ce\&quot;, \&quot;partial\&quot;: false}&quot;,
+  &quot;parent_id&quot;: null,
+  &quot;skill_channel&quot;: null,
+  &quot;skill_digest&quot;: null,
+  &quot;skill_name&quot;: null,
+  &quot;skill_registry_version&quot;: null,
+  &quot;skill_version&quot;: null,
+  &quot;span_id&quot;: &quot;sp_897f834e5bac&quot;,
+  &quot;start_ms&quot;: 1789846966999,
+  &quot;status&quot;: &quot;ok&quot;,
+  &quot;trace_id&quot;: &quot;tr_coldchain_workorder_query_partial&quot;
+}</pre></details><details><summary>19. outcome-verify</summary><pre>{
+  &quot;end_ms&quot;: 1789846967013,
+  &quot;error&quot;: null,
+  &quot;input_json&quot;: &quot;{\&quot;incident_id\&quot;: \&quot;INC-COLD-F\&quot;}&quot;,
+  &quot;kind&quot;: &quot;skill&quot;,
+  &quot;name&quot;: &quot;outcome-verify&quot;,
+  &quot;output_json&quot;: &quot;{\&quot;result\&quot;: \&quot;reopened\&quot;, \&quot;failed_conditions\&quot;: [\&quot;device\&quot;], \&quot;incident_status\&quot;: \&quot;CONTAINED\&quot;}&quot;,
+  &quot;parent_id&quot;: null,
+  &quot;skill_channel&quot;: &quot;stable&quot;,
+  &quot;skill_digest&quot;: &quot;6120ba916d8254319ceac017085f6fe82b722fa83d9339bdcaca19075435d6d3&quot;,
+  &quot;skill_name&quot;: &quot;outcome-verify&quot;,
+  &quot;skill_registry_version&quot;: &quot;1.0.0&quot;,
+  &quot;skill_version&quot;: &quot;1.1.0&quot;,
+  &quot;span_id&quot;: &quot;sp_8ef86599cf4b&quot;,
+  &quot;start_ms&quot;: 1789846966999,
+  &quot;status&quot;: &quot;ok&quot;,
+  &quot;trace_id&quot;: &quot;tr_coldchain_workorder_query_partial&quot;
+}</pre></details><details><summary>20. query_inventory_batches</summary><pre>{
+  &quot;end_ms&quot;: 1789846967001,
+  &quot;error&quot;: null,
+  &quot;input_json&quot;: &quot;{\&quot;batch_ids\&quot;: [\&quot;BATCH-S03-DAIRY-001\&quot;, \&quot;BATCH-S03-FRESH-001\&quot;], \&quot;incident_id\&quot;: \&quot;INC-COLD-F\&quot;, \&quot;actor\&quot;: \&quot;Auditor\&quot;}&quot;,
+  &quot;kind&quot;: &quot;mcp&quot;,
+  &quot;name&quot;: &quot;query_inventory_batches&quot;,
+  &quot;output_json&quot;: &quot;{\&quot;ok\&quot;: true, \&quot;request_id\&quot;: \&quot;req_39d3be8c40724501\&quot;, \&quot;partial\&quot;: false}&quot;,
+  &quot;parent_id&quot;: null,
+  &quot;skill_channel&quot;: null,
+  &quot;skill_digest&quot;: null,
+  &quot;skill_name&quot;: null,
+  &quot;skill_registry_version&quot;: null,
+  &quot;skill_version&quot;: null,
+  &quot;span_id&quot;: &quot;sp_a51f83bc15a7&quot;,
+  &quot;start_ms&quot;: 1789846967000,
+  &quot;status&quot;: &quot;ok&quot;,
+  &quot;trace_id&quot;: &quot;tr_coldchain_workorder_query_partial&quot;
+}</pre></details><details><summary>21. query_sales_holds</summary><pre>{
+  &quot;end_ms&quot;: 1789846967002,
+  &quot;error&quot;: null,
+  &quot;input_json&quot;: &quot;{\&quot;incident_id\&quot;: \&quot;INC-COLD-F\&quot;, \&quot;actor\&quot;: \&quot;Auditor\&quot;}&quot;,
+  &quot;kind&quot;: &quot;mcp&quot;,
+  &quot;name&quot;: &quot;query_sales_holds&quot;,
+  &quot;output_json&quot;: &quot;{\&quot;ok\&quot;: true, \&quot;request_id\&quot;: \&quot;req_106cda3e3ce04451\&quot;, \&quot;partial\&quot;: false}&quot;,
+  &quot;parent_id&quot;: null,
+  &quot;skill_channel&quot;: null,
+  &quot;skill_digest&quot;: null,
+  &quot;skill_name&quot;: null,
+  &quot;skill_registry_version&quot;: null,
+  &quot;skill_version&quot;: null,
+  &quot;span_id&quot;: &quot;sp_458f0b2aca30&quot;,
+  &quot;start_ms&quot;: 1789846967002,
+  &quot;status&quot;: &quot;ok&quot;,
+  &quot;trace_id&quot;: &quot;tr_coldchain_workorder_query_partial&quot;
+}</pre></details><details><summary>22. query_workorder</summary><pre>{
+  &quot;end_ms&quot;: 1789846967003,
+  &quot;error&quot;: null,
+  &quot;input_json&quot;: &quot;{\&quot;incident_id\&quot;: \&quot;INC-COLD-F\&quot;, \&quot;actor\&quot;: \&quot;Auditor\&quot;}&quot;,
+  &quot;kind&quot;: &quot;mcp&quot;,
+  &quot;name&quot;: &quot;query_workorder&quot;,
+  &quot;output_json&quot;: &quot;{\&quot;ok\&quot;: false, \&quot;request_id\&quot;: \&quot;req_959ac9dfb9ce49db\&quot;, \&quot;partial\&quot;: true}&quot;,
+  &quot;parent_id&quot;: null,
+  &quot;skill_channel&quot;: null,
+  &quot;skill_digest&quot;: null,
+  &quot;skill_name&quot;: null,
+  &quot;skill_registry_version&quot;: null,
+  &quot;skill_version&quot;: null,
+  &quot;span_id&quot;: &quot;sp_c226a9b33b22&quot;,
+  &quot;start_ms&quot;: 1789846967002,
+  &quot;status&quot;: &quot;ok&quot;,
+  &quot;trace_id&quot;: &quot;tr_coldchain_workorder_query_partial&quot;
+}</pre></details><details><summary>23. query_approval</summary><pre>{
+  &quot;end_ms&quot;: 1789846967004,
+  &quot;error&quot;: null,
+  &quot;input_json&quot;: &quot;{\&quot;incident_id\&quot;: \&quot;INC-COLD-F\&quot;, \&quot;actor\&quot;: \&quot;Auditor\&quot;}&quot;,
+  &quot;kind&quot;: &quot;mcp&quot;,
+  &quot;name&quot;: &quot;query_approval&quot;,
+  &quot;output_json&quot;: &quot;{\&quot;ok\&quot;: true, \&quot;request_id\&quot;: \&quot;req_cdc10660ebdc4aac\&quot;, \&quot;partial\&quot;: false}&quot;,
+  &quot;parent_id&quot;: null,
+  &quot;skill_channel&quot;: null,
+  &quot;skill_digest&quot;: null,
+  &quot;skill_name&quot;: null,
+  &quot;skill_registry_version&quot;: null,
+  &quot;skill_version&quot;: null,
+  &quot;span_id&quot;: &quot;sp_70cae7ab390e&quot;,
+  &quot;start_ms&quot;: 1789846967003,
+  &quot;status&quot;: &quot;ok&quot;,
+  &quot;trace_id&quot;: &quot;tr_coldchain_workorder_query_partial&quot;
+}</pre></details></html>

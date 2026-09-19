@@ -1,0 +1,4672 @@
+{
+  "scenario_id": "coldchain-sensor-false-positive",
+  "result": "closed",
+  "trace_id": "tr_coldchain_sensor_false_positive",
+  "incident": {
+    "incident_id": "INC-COLD-B",
+    "trace_id": "tr_coldchain_sensor_false_positive",
+    "tenant_id": "demo",
+    "store_id": "S03",
+    "incident_type": "coldchain_temperature_loss",
+    "severity": "high",
+    "phase": "LEARN",
+    "incident_status": "CLOSED",
+    "work_status": "COMPLETED",
+    "trigger": "scenario",
+    "detected_at": "2026-08-28T09:00:00+08:00",
+    "anchor_time": "2026-08-28T09:00:00+08:00",
+    "affected_assets": [
+      "FROST-S03"
+    ],
+    "affected_batches": [
+      "BATCH-S03-DAIRY-001",
+      "BATCH-S03-FRESH-001"
+    ],
+    "evidence_refs": [
+      "ev_b54d1ab4a1bc6179",
+      "ev_ae07fea613c4ed6b",
+      "manual_ev_000001",
+      "manual_ev_000002",
+      "ev_be754435ea3487a7",
+      "ev_455a60d944527c5b"
+    ],
+    "hypotheses": [
+      {
+        "hypothesis_id": "INC-COLD-B:sensor-fault",
+        "label": "sensor_fault",
+        "confidence": 0.96,
+        "supporting_evidence_ids": [
+          "ev_be754435ea3487a7",
+          "manual_ev_000001",
+          "manual_ev_000002"
+        ],
+        "contradicting_evidence_ids": [],
+        "missing_evidence": [
+          "backup_sensor"
+        ],
+        "next_checks": [
+          "compare_backup_sensor",
+          "request_manual_measurement"
+        ],
+        "policy_notes": [
+          "suspect_readings_cannot_prove_product_exposure"
+        ]
+      },
+      {
+        "hypothesis_id": "INC-COLD-B:compressor-failure",
+        "label": "compressor_failure",
+        "confidence": 0.16,
+        "supporting_evidence_ids": [],
+        "contradicting_evidence_ids": [],
+        "missing_evidence": [
+          "compressor_current"
+        ],
+        "next_checks": [
+          "inspect_compressor",
+          "confirm_recovery_samples"
+        ],
+        "policy_notes": [
+          "cross_store_benchmark_is_supporting_only"
+        ]
+      },
+      {
+        "hypothesis_id": "INC-COLD-B:door-left-open",
+        "label": "door_left_open",
+        "confidence": 0.08,
+        "supporting_evidence_ids": [],
+        "contradicting_evidence_ids": [
+          "ev_be754435ea3487a7"
+        ],
+        "missing_evidence": [
+          "door_event_history"
+        ],
+        "next_checks": [
+          "inspect_door_seal"
+        ],
+        "policy_notes": []
+      }
+    ],
+    "decisions": [
+      {
+        "decision_id": "phase:DIAGNOSE_DECIDE:1",
+        "policy_id": "incident-phase-v1",
+        "selected_hypothesis_ids": [],
+        "proposed_actions": [],
+        "risk_level": "L0",
+        "approval_required": false,
+        "approvers": [],
+        "decision_reason": "risk contained; delegate evidence-linked diagnosis",
+        "evidence_ids": [],
+        "created_by": "Orchestrator"
+      },
+      {
+        "decision_id": "INC-COLD-B:decision:v1",
+        "policy_id": "coldchain-demo:1.0.0",
+        "selected_hypothesis_ids": [
+          "INC-COLD-B:sensor-fault"
+        ],
+        "proposed_actions": [
+          "create_workorder",
+          "released:BATCH-S03-DAIRY-001",
+          "released:BATCH-S03-FRESH-001"
+        ],
+        "risk_level": "L2",
+        "approval_required": true,
+        "approvers": [
+          "store_manager",
+          "food_safety_owner"
+        ],
+        "decision_reason": "top hypothesis sensor_fault plus batch-specific exposure assessment",
+        "evidence_ids": [
+          "ev_b54d1ab4a1bc6179",
+          "ev_ae07fea613c4ed6b",
+          "manual_ev_000001",
+          "manual_ev_000002",
+          "ev_be754435ea3487a7",
+          "ev_455a60d944527c5b"
+        ],
+        "created_by": "Diagnoser"
+      },
+      {
+        "decision_id": "phase:EXECUTE:3",
+        "policy_id": "incident-phase-v1",
+        "selected_hypothesis_ids": [],
+        "proposed_actions": [],
+        "risk_level": "L0",
+        "approval_required": false,
+        "approvers": [],
+        "decision_reason": "policy-bound execution plan accepted",
+        "evidence_ids": [],
+        "created_by": "Orchestrator"
+      },
+      {
+        "decision_id": "phase:VERIFY:4",
+        "policy_id": "incident-phase-v1",
+        "selected_hypothesis_ids": [],
+        "proposed_actions": [],
+        "risk_level": "L0",
+        "approval_required": false,
+        "approvers": [],
+        "decision_reason": "execution receipts available; delegate independent requery",
+        "evidence_ids": [],
+        "created_by": "Orchestrator"
+      },
+      {
+        "decision_id": "phase:EXECUTE:5",
+        "policy_id": "incident-phase-v1",
+        "selected_hypothesis_ids": [],
+        "proposed_actions": [],
+        "risk_level": "L0",
+        "approval_required": false,
+        "approvers": [],
+        "decision_reason": "Auditor release guard passed; delegate approved hold release",
+        "evidence_ids": [],
+        "created_by": "Orchestrator"
+      },
+      {
+        "decision_id": "phase:VERIFY:6",
+        "policy_id": "incident-phase-v1",
+        "selected_hypothesis_ids": [],
+        "proposed_actions": [],
+        "risk_level": "L0",
+        "approval_required": false,
+        "approvers": [],
+        "decision_reason": "sales holds released; Auditor must independently requery final state",
+        "evidence_ids": [],
+        "created_by": "Orchestrator"
+      },
+      {
+        "decision_id": "phase:LEARN:7",
+        "policy_id": "incident-phase-v1",
+        "selected_hypothesis_ids": [],
+        "proposed_actions": [],
+        "risk_level": "L0",
+        "approval_required": false,
+        "approvers": [],
+        "decision_reason": "independent verification passed",
+        "evidence_ids": [],
+        "created_by": "Orchestrator"
+      }
+    ],
+    "actions": [
+      {
+        "action_id": "INC-COLD-B:hold",
+        "action_type": "apply_sales_hold",
+        "tool_name": "apply_sales_hold",
+        "target": "S03",
+        "idempotency_key": "INC-COLD-B:hold:v1",
+        "approval_id": null,
+        "status": "completed",
+        "request": {
+          "batch_ids": [
+            "BATCH-S03-DAIRY-001",
+            "BATCH-S03-FRESH-001"
+          ],
+          "reason": "coldchain containment"
+        },
+        "response": {
+          "audit_ref": "audit_000001",
+          "data": {
+            "holds": [
+              {
+                "batch_id": "BATCH-S03-DAIRY-001",
+                "hold_id": "hold_000001",
+                "status": "active"
+              },
+              {
+                "batch_id": "BATCH-S03-FRESH-001",
+                "hold_id": "hold_000002",
+                "status": "active"
+              }
+            ]
+          },
+          "error": null,
+          "ok": true,
+          "partial": false,
+          "request_id": "req_15b362f351164596",
+          "source": "dianxun-state-store",
+          "source_ts": "2026-08-28T09:00:00+08:00"
+        },
+        "rollback_or_compensation": {
+          "automatic": false,
+          "type": "controlled_release_only"
+        },
+        "started_at": "2026-08-28T09:00:00+08:00",
+        "completed_at": "2026-08-28T09:00:00+08:00"
+      },
+      {
+        "action_id": "INC-COLD-B:repair",
+        "action_type": "create_workorder",
+        "tool_name": "create_workorder",
+        "target": "FROST-S03",
+        "idempotency_key": "INC-COLD-B:repair:execute:v1",
+        "approval_id": null,
+        "status": "completed",
+        "request": {
+          "budget": 500.0,
+          "device_id": "FROST-S03",
+          "fault": "sensor_fault",
+          "store_id": "S03"
+        },
+        "response": {
+          "audit_ref": "audit_000004",
+          "compensation": "cancel_or_reassign_workorder",
+          "data": {
+            "status": "assigned",
+            "workorder_id": "wo_000001"
+          },
+          "error": null,
+          "ok": true,
+          "request_id": "req_54a2871dd5b04e21",
+          "waiting": false
+        },
+        "rollback_or_compensation": {
+          "type": "cancel_or_reassign_workorder"
+        },
+        "started_at": "2026-08-28T09:01:00+08:00",
+        "completed_at": "2026-08-28T09:01:00+08:00"
+      },
+      {
+        "action_id": "INC-COLD-B:batch:BATCH-S03-DAIRY-001",
+        "action_type": "apply_batch_disposition:released",
+        "tool_name": "apply_batch_disposition",
+        "target": "BATCH-S03-DAIRY-001",
+        "idempotency_key": "INC-COLD-B:batch:BATCH-S03-DAIRY-001:execute:v1",
+        "approval_id": "approval_000001",
+        "status": "completed",
+        "request": {
+          "batch_ids": [
+            "BATCH-S03-DAIRY-001"
+          ],
+          "disposition": "released"
+        },
+        "response": {
+          "audit_ref": "audit_000009",
+          "data": {
+            "batch_ids": [
+              "BATCH-S03-DAIRY-001"
+            ],
+            "disposition": "released",
+            "safe_for_sale": true
+          },
+          "error": null,
+          "ok": true,
+          "partial": false,
+          "request_id": "req_ca99c9daff674c4d",
+          "source": "dianxun-state-store",
+          "source_ts": "2026-08-28T09:05:00+08:00"
+        },
+        "rollback_or_compensation": {
+          "automatic": false,
+          "type": "manual_correction"
+        },
+        "started_at": "2026-08-28T09:04:00+08:00",
+        "completed_at": "2026-08-28T09:05:00+08:00"
+      },
+      {
+        "action_id": "INC-COLD-B:batch:BATCH-S03-FRESH-001",
+        "action_type": "apply_batch_disposition:released",
+        "tool_name": "apply_batch_disposition",
+        "target": "BATCH-S03-FRESH-001",
+        "idempotency_key": "INC-COLD-B:batch:BATCH-S03-FRESH-001:execute:v1",
+        "approval_id": "approval_000002",
+        "status": "completed",
+        "request": {
+          "batch_ids": [
+            "BATCH-S03-FRESH-001"
+          ],
+          "disposition": "released"
+        },
+        "response": {
+          "audit_ref": "audit_000010",
+          "data": {
+            "batch_ids": [
+              "BATCH-S03-FRESH-001"
+            ],
+            "disposition": "released",
+            "safe_for_sale": true
+          },
+          "error": null,
+          "ok": true,
+          "partial": false,
+          "request_id": "req_60cd72de6a5b459c",
+          "source": "dianxun-state-store",
+          "source_ts": "2026-08-28T09:05:00+08:00"
+        },
+        "rollback_or_compensation": {
+          "automatic": false,
+          "type": "manual_correction"
+        },
+        "started_at": "2026-08-28T09:04:00+08:00",
+        "completed_at": "2026-08-28T09:05:00+08:00"
+      },
+      {
+        "action_id": "INC-COLD-B:release-holds",
+        "action_type": "release_sales_hold",
+        "tool_name": "release_sales_hold",
+        "target": "INC-COLD-B",
+        "idempotency_key": "INC-COLD-B:release-holds:execute:v1",
+        "approval_id": "approval_000003",
+        "status": "completed",
+        "request": {
+          "hold_ids": [
+            "hold_000001",
+            "hold_000002"
+          ]
+        },
+        "response": {
+          "audit_ref": "audit_000013",
+          "data": {
+            "hold_ids": [
+              "hold_000001",
+              "hold_000002"
+            ],
+            "status": "released"
+          },
+          "error": null,
+          "ok": true,
+          "partial": false,
+          "request_id": "req_08676328f12640e1",
+          "source": "dianxun-state-store",
+          "source_ts": "2026-08-28T09:06:00+08:00"
+        },
+        "rollback_or_compensation": {
+          "type": "reapply_sales_hold"
+        },
+        "started_at": "2026-08-28T09:05:00+08:00",
+        "completed_at": "2026-08-28T09:06:00+08:00"
+      }
+    ],
+    "verifications": [
+      {
+        "verification_id": "INC-COLD-B:verify:device",
+        "subject": "device",
+        "method": "fresh_state_requery",
+        "expected_condition": {
+          "health": "normal",
+          "max_c": 8.0,
+          "recovery_samples": 3,
+          "workorder": "done_with_evidence"
+        },
+        "observed_value": {
+          "device": {
+            "ambient_temp_c": 26.0,
+            "device_id": "FROST-S03",
+            "door": {
+              "state": "closed"
+            },
+            "health": {
+              "compressor_state": "running",
+              "model": "FROST-X100",
+              "state": "normal"
+            },
+            "maintenance": {
+              "summary": "No open history in seed"
+            },
+            "power": {
+              "state": "on"
+            },
+            "store_id": "S03",
+            "temperature_series": [
+              {
+                "device_id": "FROST-S03",
+                "observed_at": "2026-08-28T06:30:00+08:00",
+                "quality": "good",
+                "reading_id": "seed-FROST-S03-02",
+                "source": "seed",
+                "temp_c": 3.3
+              },
+              {
+                "device_id": "FROST-S03",
+                "observed_at": "2026-08-28T07:00:00+08:00",
+                "quality": "good",
+                "reading_id": "seed-FROST-S03-03",
+                "source": "seed",
+                "temp_c": 3.4
+              },
+              {
+                "device_id": "FROST-S03",
+                "observed_at": "2026-08-28T07:30:00+08:00",
+                "quality": "good",
+                "reading_id": "seed-FROST-S03-04",
+                "source": "seed",
+                "temp_c": 3.4
+              },
+              {
+                "device_id": "FROST-S03",
+                "observed_at": "2026-08-28T08:00:00+08:00",
+                "quality": "good",
+                "reading_id": "reading_000003",
+                "source": "synthetic-reference-probe",
+                "temp_c": 4.2
+              },
+              {
+                "device_id": "FROST-S03",
+                "observed_at": "2026-08-28T08:30:00+08:00",
+                "quality": "suspect",
+                "reading_id": "reading_000001",
+                "source": "scenario",
+                "temp_c": 9.1
+              },
+              {
+                "device_id": "FROST-S03",
+                "observed_at": "2026-08-28T08:30:00+08:00",
+                "quality": "good",
+                "reading_id": "reading_000004",
+                "source": "synthetic-reference-probe",
+                "temp_c": 4.2
+              },
+              {
+                "device_id": "FROST-S03",
+                "observed_at": "2026-08-28T09:00:00+08:00",
+                "quality": "suspect",
+                "reading_id": "reading_000002",
+                "source": "scenario",
+                "temp_c": 10.2
+              },
+              {
+                "device_id": "FROST-S03",
+                "observed_at": "2026-08-28T09:00:00+08:00",
+                "quality": "good",
+                "reading_id": "reading_000005",
+                "source": "synthetic-reference-probe",
+                "temp_c": 4.2
+              },
+              {
+                "device_id": "FROST-S03",
+                "observed_at": "2026-08-28T09:02:00+08:00",
+                "quality": "good",
+                "reading_id": "reading_000006",
+                "source": "scenario",
+                "temp_c": 4.3
+              },
+              {
+                "device_id": "FROST-S03",
+                "observed_at": "2026-08-28T09:03:00+08:00",
+                "quality": "good",
+                "reading_id": "reading_000007",
+                "source": "scenario",
+                "temp_c": 4.1
+              },
+              {
+                "device_id": "FROST-S03",
+                "observed_at": "2026-08-28T09:04:00+08:00",
+                "quality": "good",
+                "reading_id": "reading_000008",
+                "source": "scenario",
+                "temp_c": 4.0
+              }
+            ]
+          },
+          "excluded_readings": [
+            {
+              "device_id": "FROST-S03",
+              "observed_at": "2026-08-28T08:30:00+08:00",
+              "quality": "suspect",
+              "reading_id": "reading_000001",
+              "source": "scenario",
+              "temp_c": 9.1
+            },
+            {
+              "device_id": "FROST-S03",
+              "observed_at": "2026-08-28T09:00:00+08:00",
+              "quality": "suspect",
+              "reading_id": "reading_000002",
+              "source": "scenario",
+              "temp_c": 10.2
+            }
+          ],
+          "latest_samples": [
+            {
+              "device_id": "FROST-S03",
+              "observed_at": "2026-08-28T01:02:00+00:00",
+              "quality": "good",
+              "reading_id": "reading_000006",
+              "source": "scenario",
+              "temp_c": 4.3
+            },
+            {
+              "device_id": "FROST-S03",
+              "observed_at": "2026-08-28T01:03:00+00:00",
+              "quality": "good",
+              "reading_id": "reading_000007",
+              "source": "scenario",
+              "temp_c": 4.1
+            },
+            {
+              "device_id": "FROST-S03",
+              "observed_at": "2026-08-28T01:04:00+00:00",
+              "quality": "good",
+              "reading_id": "reading_000008",
+              "source": "scenario",
+              "temp_c": 4.0
+            }
+          ],
+          "workorders": [
+            {
+              "action_id": "INC-COLD-B:repair",
+              "assignee": "vendor-a",
+              "budget": 500.0,
+              "completion_evidence": {
+                "sensor_replaced": true,
+                "type": "synthetic_calibration_receipt"
+              },
+              "created_at": "2026-08-28T09:01:00+08:00",
+              "device_id": "FROST-S03",
+              "fault": "sensor_fault",
+              "incident_id": "INC-COLD-B",
+              "status": "done",
+              "store_id": "S03",
+              "updated_at": "2026-08-28T09:04:00+08:00",
+              "workorder_id": "wo_000001"
+            }
+          ]
+        },
+        "evidence_ids": [
+          "ev_a2aca6204230da1f"
+        ],
+        "result": "passed",
+        "verifier": "Auditor",
+        "verified_at": "2026-08-28T09:06:00+08:00"
+      },
+      {
+        "verification_id": "INC-COLD-B:verify:batches",
+        "subject": "batches",
+        "method": "fresh_state_requery",
+        "expected_condition": {
+          "batch_ids": [
+            "BATCH-S03-DAIRY-001",
+            "BATCH-S03-FRESH-001"
+          ],
+          "dispositions": [
+            "disposed",
+            "released",
+            "transferred"
+          ],
+          "released_goods_safe_for_sale": true
+        },
+        "observed_value": {
+          "batches": [
+            {
+              "batch_id": "BATCH-S03-DAIRY-001",
+              "device_id": "FROST-S03",
+              "disposition": "released",
+              "policy_ref": "coldchain-demo:1.0.0",
+              "product_name": "巴氏鲜奶",
+              "quantity": 24,
+              "safe_for_sale": true,
+              "sku_id": "MILK-001",
+              "storage_max_c": 6.0,
+              "storage_min_c": 0.0,
+              "store_id": "S03",
+              "updated_at": "2026-08-28T09:05:00+08:00"
+            },
+            {
+              "batch_id": "BATCH-S03-FRESH-001",
+              "device_id": "FROST-S03",
+              "disposition": "released",
+              "policy_ref": "coldchain-demo:1.0.0",
+              "product_name": "鲜食三明治",
+              "quantity": 18,
+              "safe_for_sale": true,
+              "sku_id": "SANDWICH-001",
+              "storage_max_c": 8.0,
+              "storage_min_c": 0.0,
+              "store_id": "S03",
+              "updated_at": "2026-08-28T09:05:00+08:00"
+            }
+          ],
+          "disposition_receipts": [
+            {
+              "action_id": null,
+              "actor": "ScenarioEngine",
+              "created_at": "2026-08-28T09:01:00+08:00",
+              "evidence_id": "manual_ev_000001",
+              "evidence_type": "manual_temperature",
+              "incident_id": "INC-COLD-B",
+              "metadata": {
+                "batch_id": "BATCH-S03-DAIRY-001",
+                "calibrated_at": "2026-08-01T00:00:00+08:00",
+                "calibration_valid_until": "2026-09-01T00:00:00+08:00",
+                "device_id": "FROST-S03",
+                "instrument": "synthetic-calibrated-probe",
+                "instrument_id": "synthetic-calibrated-probe",
+                "measurement_point": "product",
+                "synthetic": true,
+                "temp_c": 4.2
+              },
+              "note": "Synthetic calibrated handheld thermometer reads normal",
+              "observed_at": "2026-08-28T09:01:00+08:00",
+              "sha256": "db470ce294cee820626c1e8a95137dae1b1f5bbe5e0e4cedb04a9a0f2b6a35c5",
+              "uri": null
+            },
+            {
+              "action_id": null,
+              "actor": "ScenarioEngine",
+              "created_at": "2026-08-28T09:01:00+08:00",
+              "evidence_id": "manual_ev_000002",
+              "evidence_type": "manual_temperature",
+              "incident_id": "INC-COLD-B",
+              "metadata": {
+                "batch_id": "BATCH-S03-FRESH-001",
+                "calibrated_at": "2026-08-01T00:00:00+08:00",
+                "calibration_valid_until": "2026-09-01T00:00:00+08:00",
+                "device_id": "FROST-S03",
+                "instrument": "synthetic-calibrated-probe",
+                "instrument_id": "synthetic-calibrated-probe",
+                "measurement_point": "product",
+                "synthetic": true,
+                "temp_c": 4.2
+              },
+              "note": "Synthetic calibrated handheld thermometer reads normal",
+              "observed_at": "2026-08-28T09:01:00+08:00",
+              "sha256": "03901c00a97a32a83226a7b6b62fe34ad882681963b0e3325960f6c111fef8ea",
+              "uri": null
+            }
+          ]
+        },
+        "evidence_ids": [
+          "ev_4902606d962f298e"
+        ],
+        "result": "passed",
+        "verifier": "Auditor",
+        "verified_at": "2026-08-28T09:06:00+08:00"
+      },
+      {
+        "verification_id": "INC-COLD-B:verify:sales_hold",
+        "subject": "sales_hold",
+        "method": "fresh_state_requery",
+        "expected_condition": {
+          "terminal_batches_remain_held_unless_released": true
+        },
+        "observed_value": {
+          "sales_holds": [
+            {
+              "action_id": "INC-COLD-B:hold",
+              "applied_at": "2026-08-28T09:00:00+08:00",
+              "approval_id": "approval_000003",
+              "batch_id": "BATCH-S03-DAIRY-001",
+              "hold_id": "hold_000001",
+              "incident_id": "INC-COLD-B",
+              "reason": "coldchain temperature risk containment",
+              "released_at": "2026-08-28T09:06:00+08:00",
+              "sku_id": "MILK-001",
+              "status": "released",
+              "store_id": "S03",
+              "verification_id": "INC-COLD-B:verify:release_guard"
+            },
+            {
+              "action_id": "INC-COLD-B:hold",
+              "applied_at": "2026-08-28T09:00:00+08:00",
+              "approval_id": "approval_000003",
+              "batch_id": "BATCH-S03-FRESH-001",
+              "hold_id": "hold_000002",
+              "incident_id": "INC-COLD-B",
+              "reason": "coldchain temperature risk containment",
+              "released_at": "2026-08-28T09:06:00+08:00",
+              "sku_id": "SANDWICH-001",
+              "status": "released",
+              "store_id": "S03",
+              "verification_id": "INC-COLD-B:verify:release_guard"
+            }
+          ]
+        },
+        "evidence_ids": [
+          "ev_f5774be83b90e1ca"
+        ],
+        "result": "passed",
+        "verifier": "Auditor",
+        "verified_at": "2026-08-28T09:06:00+08:00"
+      },
+      {
+        "verification_id": "INC-COLD-B:verify:approval",
+        "subject": "approval",
+        "method": "fresh_state_requery",
+        "expected_condition": {
+          "required_actions": [
+            "INC-COLD-B:batch:BATCH-S03-DAIRY-001",
+            "INC-COLD-B:batch:BATCH-S03-FRESH-001",
+            "INC-COLD-B:release-holds"
+          ],
+          "status": "approved"
+        },
+        "observed_value": {
+          "approvals": [
+            {
+              "action_id": "INC-COLD-B:batch:BATCH-S03-DAIRY-001",
+              "approval_id": "approval_000001",
+              "approvers": [
+                "food_safety_owner"
+              ],
+              "created_at": "2026-08-28T09:04:00+08:00",
+              "deadline": "2026-08-28T09:34:00+08:00",
+              "decided_at": "2026-08-28T09:05:00+08:00",
+              "decided_by": "ScenarioEngine",
+              "decision_reason": "synthetic food safety owner approves controlled batch release",
+              "incident_id": "INC-COLD-B",
+              "status": "approved",
+              "subject": "released BATCH-S03-DAIRY-001"
+            },
+            {
+              "action_id": "INC-COLD-B:batch:BATCH-S03-FRESH-001",
+              "approval_id": "approval_000002",
+              "approvers": [
+                "food_safety_owner"
+              ],
+              "created_at": "2026-08-28T09:04:00+08:00",
+              "deadline": "2026-08-28T09:34:00+08:00",
+              "decided_at": "2026-08-28T09:05:00+08:00",
+              "decided_by": "ScenarioEngine",
+              "decision_reason": "synthetic food safety owner approves controlled batch release",
+              "incident_id": "INC-COLD-B",
+              "status": "approved",
+              "subject": "released BATCH-S03-FRESH-001"
+            },
+            {
+              "action_id": "INC-COLD-B:release-holds",
+              "approval_id": "approval_000003",
+              "approvers": [
+                "food_safety_owner"
+              ],
+              "created_at": "2026-08-28T09:05:00+08:00",
+              "deadline": "2026-08-28T09:35:00+08:00",
+              "decided_at": "2026-08-28T09:06:00+08:00",
+              "decided_by": "ScenarioEngine",
+              "decision_reason": "synthetic food safety owner approves POS hold release",
+              "incident_id": "INC-COLD-B",
+              "status": "approved",
+              "subject": "release sales holds for INC-COLD-B"
+            }
+          ]
+        },
+        "evidence_ids": [
+          "ev_53d2acb0769428b4"
+        ],
+        "result": "passed",
+        "verifier": "Auditor",
+        "verified_at": "2026-08-28T09:06:00+08:00"
+      },
+      {
+        "verification_id": "INC-COLD-B:verify:audit",
+        "subject": "audit",
+        "method": "audit_log_query",
+        "expected_condition": {
+          "minimum_entries": 1,
+          "request_id_required": true
+        },
+        "observed_value": {
+          "entry_count": 13
+        },
+        "evidence_ids": [],
+        "result": "passed",
+        "verifier": "Auditor",
+        "verified_at": "2026-08-28T09:06:00+08:00"
+      },
+      {
+        "verification_id": "INC-COLD-B:verify:release_guard",
+        "subject": "release_guard",
+        "method": "fresh_state_requery",
+        "expected_condition": {
+          "device_batches_approvals_audit": "passed",
+          "released_batch_hold_state": [
+            "active",
+            "released"
+          ]
+        },
+        "observed_value": {
+          "released_batch_holds": {
+            "BATCH-S03-DAIRY-001": "released",
+            "BATCH-S03-FRESH-001": "released"
+          }
+        },
+        "evidence_ids": [
+          "ev_4902606d962f298e",
+          "ev_53d2acb0769428b4",
+          "ev_a2aca6204230da1f",
+          "ev_f5774be83b90e1ca",
+          "ev_ff284a601d804b4b"
+        ],
+        "result": "passed",
+        "verifier": "Auditor",
+        "verified_at": "2026-08-28T09:06:00+08:00"
+      }
+    ],
+    "asset_states": {
+      "FROST-S03": "recovered"
+    },
+    "batch_dispositions": {
+      "BATCH-S03-DAIRY-001": "released",
+      "BATCH-S03-FRESH-001": "released"
+    },
+    "sales_hold_refs": [
+      "hold_000001",
+      "hold_000002"
+    ],
+    "approval_refs": [
+      "approval_000001",
+      "approval_000002",
+      "approval_000003"
+    ],
+    "workorder_refs": [
+      "wo_000001"
+    ],
+    "owner": "Orchestrator",
+    "next_wakeup_at": null,
+    "created_at": "2026-09-19T19:42:46+00:00",
+    "updated_at": "2026-08-28T09:06:00+08:00",
+    "version": 49
+  },
+  "phases": {
+    "DETECT_CONTAIN": {
+      "detected": true,
+      "partial": false,
+      "severity": "high",
+      "incident_type": "coldchain_temperature_loss",
+      "device_id": "FROST-S03",
+      "store_id": "S03",
+      "affected_batches": [
+        "BATCH-S03-DAIRY-001",
+        "BATCH-S03-FRESH-001"
+      ],
+      "device": {
+        "device_id": "FROST-S03",
+        "store_id": "S03",
+        "health": {
+          "state": "normal",
+          "compressor_state": "running",
+          "model": "FROST-X100"
+        },
+        "door": {
+          "state": "closed"
+        },
+        "power": {
+          "state": "on"
+        },
+        "maintenance": {
+          "summary": "No open history in seed"
+        },
+        "temperature_series": [
+          {
+            "reading_id": "seed-FROST-S03-01",
+            "device_id": "FROST-S03",
+            "observed_at": "2026-08-28T06:00:00+08:00",
+            "temp_c": 3.6,
+            "quality": "good",
+            "source": "seed"
+          },
+          {
+            "reading_id": "seed-FROST-S03-02",
+            "device_id": "FROST-S03",
+            "observed_at": "2026-08-28T06:30:00+08:00",
+            "temp_c": 3.3,
+            "quality": "good",
+            "source": "seed"
+          },
+          {
+            "reading_id": "seed-FROST-S03-03",
+            "device_id": "FROST-S03",
+            "observed_at": "2026-08-28T07:00:00+08:00",
+            "temp_c": 3.4,
+            "quality": "good",
+            "source": "seed"
+          },
+          {
+            "reading_id": "seed-FROST-S03-04",
+            "device_id": "FROST-S03",
+            "observed_at": "2026-08-28T07:30:00+08:00",
+            "temp_c": 3.4,
+            "quality": "good",
+            "source": "seed"
+          },
+          {
+            "reading_id": "reading_000003",
+            "device_id": "FROST-S03",
+            "observed_at": "2026-08-28T08:00:00+08:00",
+            "temp_c": 4.2,
+            "quality": "good",
+            "source": "synthetic-reference-probe"
+          },
+          {
+            "reading_id": "reading_000001",
+            "device_id": "FROST-S03",
+            "observed_at": "2026-08-28T08:30:00+08:00",
+            "temp_c": 9.1,
+            "quality": "suspect",
+            "source": "scenario"
+          },
+          {
+            "reading_id": "reading_000004",
+            "device_id": "FROST-S03",
+            "observed_at": "2026-08-28T08:30:00+08:00",
+            "temp_c": 4.2,
+            "quality": "good",
+            "source": "synthetic-reference-probe"
+          },
+          {
+            "reading_id": "reading_000002",
+            "device_id": "FROST-S03",
+            "observed_at": "2026-08-28T09:00:00+08:00",
+            "temp_c": 10.2,
+            "quality": "suspect",
+            "source": "scenario"
+          },
+          {
+            "reading_id": "reading_000005",
+            "device_id": "FROST-S03",
+            "observed_at": "2026-08-28T09:00:00+08:00",
+            "temp_c": 4.2,
+            "quality": "good",
+            "source": "synthetic-reference-probe"
+          }
+        ],
+        "ambient_temp_c": 26.0
+      },
+      "batches": [
+        {
+          "batch_id": "BATCH-S03-DAIRY-001",
+          "store_id": "S03",
+          "device_id": "FROST-S03",
+          "sku_id": "MILK-001",
+          "product_name": "巴氏鲜奶",
+          "quantity": 24,
+          "storage_min_c": 0.0,
+          "storage_max_c": 6.0,
+          "disposition": "unknown",
+          "safe_for_sale": true,
+          "policy_ref": "coldchain-demo:1.0.0",
+          "updated_at": "2026-08-28T09:00:00+08:00"
+        },
+        {
+          "batch_id": "BATCH-S03-FRESH-001",
+          "store_id": "S03",
+          "device_id": "FROST-S03",
+          "sku_id": "SANDWICH-001",
+          "product_name": "鲜食三明治",
+          "quantity": 18,
+          "storage_min_c": 0.0,
+          "storage_max_c": 8.0,
+          "disposition": "unknown",
+          "safe_for_sale": true,
+          "policy_ref": "coldchain-demo:1.0.0",
+          "updated_at": "2026-08-28T09:00:00+08:00"
+        }
+      ],
+      "evidence": [
+        {
+          "evidence_id": "ev_b54d1ab4a1bc6179",
+          "incident_id": "INC-COLD-B",
+          "type": "device_context",
+          "source": "state_store.devices",
+          "observed_at": "2026-08-28T09:00:00+08:00",
+          "collected_at": "2026-08-28T09:00:00+08:00",
+          "payload": {
+            "device_id": "FROST-S03",
+            "store_id": "S03",
+            "health": {
+              "state": "normal",
+              "compressor_state": "running",
+              "model": "FROST-X100"
+            },
+            "door": {
+              "state": "closed"
+            },
+            "power": {
+              "state": "on"
+            },
+            "maintenance": {
+              "summary": "No open history in seed"
+            },
+            "temperature_series": [
+              {
+                "reading_id": "seed-FROST-S03-01",
+                "device_id": "FROST-S03",
+                "observed_at": "2026-08-28T06:00:00+08:00",
+                "temp_c": 3.6,
+                "quality": "good",
+                "source": "seed"
+              },
+              {
+                "reading_id": "seed-FROST-S03-02",
+                "device_id": "FROST-S03",
+                "observed_at": "2026-08-28T06:30:00+08:00",
+                "temp_c": 3.3,
+                "quality": "good",
+                "source": "seed"
+              },
+              {
+                "reading_id": "seed-FROST-S03-03",
+                "device_id": "FROST-S03",
+                "observed_at": "2026-08-28T07:00:00+08:00",
+                "temp_c": 3.4,
+                "quality": "good",
+                "source": "seed"
+              },
+              {
+                "reading_id": "seed-FROST-S03-04",
+                "device_id": "FROST-S03",
+                "observed_at": "2026-08-28T07:30:00+08:00",
+                "temp_c": 3.4,
+                "quality": "good",
+                "source": "seed"
+              },
+              {
+                "reading_id": "reading_000003",
+                "device_id": "FROST-S03",
+                "observed_at": "2026-08-28T08:00:00+08:00",
+                "temp_c": 4.2,
+                "quality": "good",
+                "source": "synthetic-reference-probe"
+              },
+              {
+                "reading_id": "reading_000001",
+                "device_id": "FROST-S03",
+                "observed_at": "2026-08-28T08:30:00+08:00",
+                "temp_c": 9.1,
+                "quality": "suspect",
+                "source": "scenario"
+              },
+              {
+                "reading_id": "reading_000004",
+                "device_id": "FROST-S03",
+                "observed_at": "2026-08-28T08:30:00+08:00",
+                "temp_c": 4.2,
+                "quality": "good",
+                "source": "synthetic-reference-probe"
+              },
+              {
+                "reading_id": "reading_000002",
+                "device_id": "FROST-S03",
+                "observed_at": "2026-08-28T09:00:00+08:00",
+                "temp_c": 10.2,
+                "quality": "suspect",
+                "source": "scenario"
+              },
+              {
+                "reading_id": "reading_000005",
+                "device_id": "FROST-S03",
+                "observed_at": "2026-08-28T09:00:00+08:00",
+                "temp_c": 4.2,
+                "quality": "good",
+                "source": "synthetic-reference-probe"
+              }
+            ],
+            "ambient_temp_c": 26.0
+          },
+          "quality": "good",
+          "freshness": "fresh",
+          "request_id": "req_8836a4de576c4455",
+          "immutable_hash": "b54d1ab4a1bc6179b4acd79b98503e81a88dd5e11723fbe390dfc82e344401ae"
+        },
+        {
+          "evidence_id": "ev_ae07fea613c4ed6b",
+          "incident_id": "INC-COLD-B",
+          "type": "inventory_batches",
+          "source": "state_store.inventory_batches",
+          "observed_at": "2026-08-28T09:00:00+08:00",
+          "collected_at": "2026-08-28T09:00:00+08:00",
+          "payload": {
+            "batches": [
+              {
+                "batch_id": "BATCH-S03-DAIRY-001",
+                "store_id": "S03",
+                "device_id": "FROST-S03",
+                "sku_id": "MILK-001",
+                "product_name": "巴氏鲜奶",
+                "quantity": 24,
+                "storage_min_c": 0.0,
+                "storage_max_c": 6.0,
+                "disposition": "unknown",
+                "safe_for_sale": true,
+                "policy_ref": "coldchain-demo:1.0.0",
+                "updated_at": "2026-08-28T09:00:00+08:00"
+              },
+              {
+                "batch_id": "BATCH-S03-FRESH-001",
+                "store_id": "S03",
+                "device_id": "FROST-S03",
+                "sku_id": "SANDWICH-001",
+                "product_name": "鲜食三明治",
+                "quantity": 18,
+                "storage_min_c": 0.0,
+                "storage_max_c": 8.0,
+                "disposition": "unknown",
+                "safe_for_sale": true,
+                "policy_ref": "coldchain-demo:1.0.0",
+                "updated_at": "2026-08-28T09:00:00+08:00"
+              }
+            ]
+          },
+          "quality": "good",
+          "freshness": "current",
+          "request_id": "req_7938b694808c4160",
+          "immutable_hash": "ae07fea613c4ed6be1c1b3aa804d0af022ac0f39fb6e48653d9395c8778e79bc"
+        }
+      ],
+      "observations": {
+        "sustained_over_threshold": false,
+        "minimum_over_samples": 2,
+        "alarm_max_c": 8.0,
+        "max_temp_c": 4.2,
+        "equipment_fault": false,
+        "coverage_issues": [],
+        "excluded_readings": 2,
+        "alert_after_minutes": 15.0
+      },
+      "containment_request": {
+        "required": true,
+        "actions": [
+          "apply_sales_hold",
+          "quarantine_batches",
+          "request_manual_evidence"
+        ]
+      },
+      "containment": {
+        "ok": true,
+        "data": {
+          "holds": [
+            {
+              "hold_id": "hold_000001",
+              "batch_id": "BATCH-S03-DAIRY-001",
+              "status": "active"
+            },
+            {
+              "hold_id": "hold_000002",
+              "batch_id": "BATCH-S03-FRESH-001",
+              "status": "active"
+            }
+          ]
+        },
+        "error": null,
+        "request_id": "req_15b362f351164596",
+        "source": "dianxun-state-store",
+        "source_ts": "2026-08-28T09:00:00+08:00",
+        "partial": false,
+        "audit_ref": "audit_000001"
+      }
+    },
+    "DIAGNOSE_DECIDE": {
+      "hypotheses": [
+        {
+          "hypothesis_id": "INC-COLD-B:sensor-fault",
+          "label": "sensor_fault",
+          "confidence": 0.96,
+          "supporting_evidence_ids": [
+            "ev_be754435ea3487a7",
+            "manual_ev_000001",
+            "manual_ev_000002"
+          ],
+          "contradicting_evidence_ids": [],
+          "missing_evidence": [
+            "backup_sensor"
+          ],
+          "next_checks": [
+            "compare_backup_sensor",
+            "request_manual_measurement"
+          ],
+          "policy_notes": [
+            "suspect_readings_cannot_prove_product_exposure"
+          ]
+        },
+        {
+          "hypothesis_id": "INC-COLD-B:compressor-failure",
+          "label": "compressor_failure",
+          "confidence": 0.16,
+          "supporting_evidence_ids": [],
+          "contradicting_evidence_ids": [],
+          "missing_evidence": [
+            "compressor_current"
+          ],
+          "next_checks": [
+            "inspect_compressor",
+            "confirm_recovery_samples"
+          ],
+          "policy_notes": [
+            "cross_store_benchmark_is_supporting_only"
+          ]
+        },
+        {
+          "hypothesis_id": "INC-COLD-B:door-left-open",
+          "label": "door_left_open",
+          "confidence": 0.08,
+          "supporting_evidence_ids": [],
+          "contradicting_evidence_ids": [
+            "ev_be754435ea3487a7"
+          ],
+          "missing_evidence": [
+            "door_event_history"
+          ],
+          "next_checks": [
+            "inspect_door_seal"
+          ],
+          "policy_notes": []
+        }
+      ],
+      "evidence": [
+        {
+          "evidence_id": "ev_be754435ea3487a7",
+          "incident_id": "INC-COLD-B",
+          "type": "device_context",
+          "source": "state_store.devices",
+          "observed_at": "2026-08-28T09:00:00+08:00",
+          "collected_at": "2026-08-28T09:01:00+08:00",
+          "payload": {
+            "device_id": "FROST-S03",
+            "store_id": "S03",
+            "health": {
+              "state": "normal",
+              "compressor_state": "running",
+              "model": "FROST-X100"
+            },
+            "door": {
+              "state": "closed"
+            },
+            "power": {
+              "state": "on"
+            },
+            "maintenance": {
+              "summary": "No open history in seed"
+            },
+            "temperature_series": [
+              {
+                "reading_id": "seed-FROST-S03-02",
+                "device_id": "FROST-S03",
+                "observed_at": "2026-08-28T06:30:00+08:00",
+                "temp_c": 3.3,
+                "quality": "good",
+                "source": "seed"
+              },
+              {
+                "reading_id": "seed-FROST-S03-03",
+                "device_id": "FROST-S03",
+                "observed_at": "2026-08-28T07:00:00+08:00",
+                "temp_c": 3.4,
+                "quality": "good",
+                "source": "seed"
+              },
+              {
+                "reading_id": "seed-FROST-S03-04",
+                "device_id": "FROST-S03",
+                "observed_at": "2026-08-28T07:30:00+08:00",
+                "temp_c": 3.4,
+                "quality": "good",
+                "source": "seed"
+              },
+              {
+                "reading_id": "reading_000003",
+                "device_id": "FROST-S03",
+                "observed_at": "2026-08-28T08:00:00+08:00",
+                "temp_c": 4.2,
+                "quality": "good",
+                "source": "synthetic-reference-probe"
+              },
+              {
+                "reading_id": "reading_000001",
+                "device_id": "FROST-S03",
+                "observed_at": "2026-08-28T08:30:00+08:00",
+                "temp_c": 9.1,
+                "quality": "suspect",
+                "source": "scenario"
+              },
+              {
+                "reading_id": "reading_000004",
+                "device_id": "FROST-S03",
+                "observed_at": "2026-08-28T08:30:00+08:00",
+                "temp_c": 4.2,
+                "quality": "good",
+                "source": "synthetic-reference-probe"
+              },
+              {
+                "reading_id": "reading_000002",
+                "device_id": "FROST-S03",
+                "observed_at": "2026-08-28T09:00:00+08:00",
+                "temp_c": 10.2,
+                "quality": "suspect",
+                "source": "scenario"
+              },
+              {
+                "reading_id": "reading_000005",
+                "device_id": "FROST-S03",
+                "observed_at": "2026-08-28T09:00:00+08:00",
+                "temp_c": 4.2,
+                "quality": "good",
+                "source": "synthetic-reference-probe"
+              }
+            ],
+            "ambient_temp_c": 26.0
+          },
+          "quality": "good",
+          "freshness": "fresh",
+          "request_id": "req_f163a6ddb5534939",
+          "immutable_hash": "be754435ea3487a76bff8ca67b263026250920d16b2cf5c7cd203c9a551ffeeb"
+        }
+      ],
+      "quality": "partial",
+      "data_quality": {
+        "trusted_readings": 6,
+        "excluded_readings": 2,
+        "manual_measurements": 2
+      },
+      "rag": {
+        "status": "disabled",
+        "hits": []
+      },
+      "risk_assessment": {
+        "incident_id": "INC-COLD-B",
+        "affected_batches": [
+          "BATCH-S03-DAIRY-001",
+          "BATCH-S03-FRESH-001"
+        ],
+        "exposure_assessment": [
+          {
+            "batch_id": "BATCH-S03-DAIRY-001",
+            "storage_max_c": 6.0,
+            "degree_minutes": 0.0,
+            "over_limit_minutes": 0.0,
+            "recommendation": "released",
+            "reason": "no_trusted_exposure_and_manual_measurement_normal",
+            "policy_ref": "coldchain-demo:1.0.0",
+            "requires_approval": true,
+            "evidence_quality": "corroborated",
+            "coverage_status": "observed_window_only",
+            "coverage_issues": []
+          },
+          {
+            "batch_id": "BATCH-S03-FRESH-001",
+            "storage_max_c": 8.0,
+            "degree_minutes": 0.0,
+            "over_limit_minutes": 0.0,
+            "recommendation": "released",
+            "reason": "no_trusted_exposure_and_manual_measurement_normal",
+            "policy_ref": "coldchain-demo:1.0.0",
+            "requires_approval": true,
+            "evidence_quality": "corroborated",
+            "coverage_status": "observed_window_only",
+            "coverage_issues": []
+          }
+        ],
+        "containment_actions": [
+          "apply_sales_hold",
+          "quarantine_batches"
+        ],
+        "required_approvals": [
+          {
+            "batch_id": "BATCH-S03-DAIRY-001",
+            "disposition": "released"
+          },
+          {
+            "batch_id": "BATCH-S03-FRESH-001",
+            "disposition": "released"
+          }
+        ],
+        "manual_measurements": [
+          {
+            "evidence_id": "manual_ev_000001",
+            "incident_id": "INC-COLD-B",
+            "action_id": null,
+            "actor": "ScenarioEngine",
+            "evidence_type": "manual_temperature",
+            "observed_at": "2026-08-28T09:01:00+08:00",
+            "uri": null,
+            "note": "Synthetic calibrated handheld thermometer reads normal",
+            "sha256": "db470ce294cee820626c1e8a95137dae1b1f5bbe5e0e4cedb04a9a0f2b6a35c5",
+            "created_at": "2026-08-28T09:01:00+08:00",
+            "metadata": {
+              "batch_id": "BATCH-S03-DAIRY-001",
+              "calibrated_at": "2026-08-01T00:00:00+08:00",
+              "calibration_valid_until": "2026-09-01T00:00:00+08:00",
+              "device_id": "FROST-S03",
+              "instrument": "synthetic-calibrated-probe",
+              "instrument_id": "synthetic-calibrated-probe",
+              "measurement_point": "product",
+              "synthetic": true,
+              "temp_c": 4.2
+            }
+          },
+          {
+            "evidence_id": "manual_ev_000002",
+            "incident_id": "INC-COLD-B",
+            "action_id": null,
+            "actor": "ScenarioEngine",
+            "evidence_type": "manual_temperature",
+            "observed_at": "2026-08-28T09:01:00+08:00",
+            "uri": null,
+            "note": "Synthetic calibrated handheld thermometer reads normal",
+            "sha256": "03901c00a97a32a83226a7b6b62fe34ad882681963b0e3325960f6c111fef8ea",
+            "created_at": "2026-08-28T09:01:00+08:00",
+            "metadata": {
+              "batch_id": "BATCH-S03-FRESH-001",
+              "calibrated_at": "2026-08-01T00:00:00+08:00",
+              "calibration_valid_until": "2026-09-01T00:00:00+08:00",
+              "device_id": "FROST-S03",
+              "instrument": "synthetic-calibrated-probe",
+              "instrument_id": "synthetic-calibrated-probe",
+              "measurement_point": "product",
+              "synthetic": true,
+              "temp_c": 4.2
+            }
+          }
+        ],
+        "data_quality": {
+          "total_readings": 8,
+          "trusted_readings": 6,
+          "excluded_readings": 2,
+          "excluded_qualities": [
+            "suspect"
+          ]
+        },
+        "evidence_refs": [],
+        "policy": {
+          "policy_id": "coldchain-demo",
+          "policy_version": "1.0.0",
+          "source_ref": "project://config/policies/coldchain-demo.v1.json",
+          "scope": "competition_demo_only"
+        }
+      }
+    },
+    "EXECUTE": {
+      "repair": {
+        "result": "executed",
+        "approval": null,
+        "workorder": {
+          "ok": true,
+          "waiting": false,
+          "data": {
+            "workorder_id": "wo_000001",
+            "status": "assigned"
+          },
+          "error": null,
+          "request_id": "req_54a2871dd5b04e21",
+          "audit_ref": "audit_000004",
+          "compensation": "cancel_or_reassign_workorder"
+        }
+      },
+      "batch_dispositions": [
+        {
+          "action_id": "INC-COLD-B:batch:BATCH-S03-DAIRY-001",
+          "batch_id": "BATCH-S03-DAIRY-001",
+          "disposition": "released",
+          "approval_id": "approval_000001",
+          "result": "executed"
+        },
+        {
+          "action_id": "INC-COLD-B:batch:BATCH-S03-FRESH-001",
+          "batch_id": "BATCH-S03-FRESH-001",
+          "disposition": "released",
+          "approval_id": "approval_000002",
+          "result": "executed"
+        }
+      ],
+      "sales_hold_release": {
+        "result": "executed",
+        "approval": {
+          "approval_id": "approval_000003",
+          "incident_id": "INC-COLD-B",
+          "action_id": "INC-COLD-B:release-holds",
+          "subject": "release sales holds for INC-COLD-B",
+          "status": "approved",
+          "deadline": "2026-08-28T09:35:00+08:00",
+          "created_at": "2026-08-28T09:05:00+08:00",
+          "decided_at": "2026-08-28T09:06:00+08:00",
+          "decided_by": "ScenarioEngine",
+          "decision_reason": "synthetic food safety owner approves POS hold release",
+          "approvers": [
+            "food_safety_owner"
+          ]
+        },
+        "release": {
+          "ok": true,
+          "data": {
+            "hold_ids": [
+              "hold_000001",
+              "hold_000002"
+            ],
+            "status": "released"
+          },
+          "error": null,
+          "request_id": "req_08676328f12640e1",
+          "source": "dianxun-state-store",
+          "source_ts": "2026-08-28T09:06:00+08:00",
+          "partial": false,
+          "audit_ref": "audit_000013"
+        }
+      }
+    },
+    "VERIFY": {
+      "incident_id": "INC-COLD-B",
+      "result": "verified",
+      "checks": {
+        "device": {
+          "passed": true,
+          "expected": {
+            "recovery_samples": 3,
+            "max_c": 8.0,
+            "health": "normal",
+            "workorder": "done_with_evidence"
+          },
+          "observed": {
+            "device": {
+              "device_id": "FROST-S03",
+              "store_id": "S03",
+              "health": {
+                "state": "normal",
+                "compressor_state": "running",
+                "model": "FROST-X100"
+              },
+              "door": {
+                "state": "closed"
+              },
+              "power": {
+                "state": "on"
+              },
+              "maintenance": {
+                "summary": "No open history in seed"
+              },
+              "temperature_series": [
+                {
+                  "reading_id": "seed-FROST-S03-02",
+                  "device_id": "FROST-S03",
+                  "observed_at": "2026-08-28T06:30:00+08:00",
+                  "temp_c": 3.3,
+                  "quality": "good",
+                  "source": "seed"
+                },
+                {
+                  "reading_id": "seed-FROST-S03-03",
+                  "device_id": "FROST-S03",
+                  "observed_at": "2026-08-28T07:00:00+08:00",
+                  "temp_c": 3.4,
+                  "quality": "good",
+                  "source": "seed"
+                },
+                {
+                  "reading_id": "seed-FROST-S03-04",
+                  "device_id": "FROST-S03",
+                  "observed_at": "2026-08-28T07:30:00+08:00",
+                  "temp_c": 3.4,
+                  "quality": "good",
+                  "source": "seed"
+                },
+                {
+                  "reading_id": "reading_000003",
+                  "device_id": "FROST-S03",
+                  "observed_at": "2026-08-28T08:00:00+08:00",
+                  "temp_c": 4.2,
+                  "quality": "good",
+                  "source": "synthetic-reference-probe"
+                },
+                {
+                  "reading_id": "reading_000001",
+                  "device_id": "FROST-S03",
+                  "observed_at": "2026-08-28T08:30:00+08:00",
+                  "temp_c": 9.1,
+                  "quality": "suspect",
+                  "source": "scenario"
+                },
+                {
+                  "reading_id": "reading_000004",
+                  "device_id": "FROST-S03",
+                  "observed_at": "2026-08-28T08:30:00+08:00",
+                  "temp_c": 4.2,
+                  "quality": "good",
+                  "source": "synthetic-reference-probe"
+                },
+                {
+                  "reading_id": "reading_000002",
+                  "device_id": "FROST-S03",
+                  "observed_at": "2026-08-28T09:00:00+08:00",
+                  "temp_c": 10.2,
+                  "quality": "suspect",
+                  "source": "scenario"
+                },
+                {
+                  "reading_id": "reading_000005",
+                  "device_id": "FROST-S03",
+                  "observed_at": "2026-08-28T09:00:00+08:00",
+                  "temp_c": 4.2,
+                  "quality": "good",
+                  "source": "synthetic-reference-probe"
+                },
+                {
+                  "reading_id": "reading_000006",
+                  "device_id": "FROST-S03",
+                  "observed_at": "2026-08-28T09:02:00+08:00",
+                  "temp_c": 4.3,
+                  "quality": "good",
+                  "source": "scenario"
+                },
+                {
+                  "reading_id": "reading_000007",
+                  "device_id": "FROST-S03",
+                  "observed_at": "2026-08-28T09:03:00+08:00",
+                  "temp_c": 4.1,
+                  "quality": "good",
+                  "source": "scenario"
+                },
+                {
+                  "reading_id": "reading_000008",
+                  "device_id": "FROST-S03",
+                  "observed_at": "2026-08-28T09:04:00+08:00",
+                  "temp_c": 4.0,
+                  "quality": "good",
+                  "source": "scenario"
+                }
+              ],
+              "ambient_temp_c": 26.0
+            },
+            "latest_samples": [
+              {
+                "reading_id": "reading_000006",
+                "device_id": "FROST-S03",
+                "observed_at": "2026-08-28T01:02:00+00:00",
+                "temp_c": 4.3,
+                "quality": "good",
+                "source": "scenario"
+              },
+              {
+                "reading_id": "reading_000007",
+                "device_id": "FROST-S03",
+                "observed_at": "2026-08-28T01:03:00+00:00",
+                "temp_c": 4.1,
+                "quality": "good",
+                "source": "scenario"
+              },
+              {
+                "reading_id": "reading_000008",
+                "device_id": "FROST-S03",
+                "observed_at": "2026-08-28T01:04:00+00:00",
+                "temp_c": 4.0,
+                "quality": "good",
+                "source": "scenario"
+              }
+            ],
+            "excluded_readings": [
+              {
+                "reading_id": "reading_000001",
+                "device_id": "FROST-S03",
+                "observed_at": "2026-08-28T08:30:00+08:00",
+                "temp_c": 9.1,
+                "quality": "suspect",
+                "source": "scenario"
+              },
+              {
+                "reading_id": "reading_000002",
+                "device_id": "FROST-S03",
+                "observed_at": "2026-08-28T09:00:00+08:00",
+                "temp_c": 10.2,
+                "quality": "suspect",
+                "source": "scenario"
+              }
+            ],
+            "workorders": [
+              {
+                "workorder_id": "wo_000001",
+                "incident_id": "INC-COLD-B",
+                "action_id": "INC-COLD-B:repair",
+                "store_id": "S03",
+                "device_id": "FROST-S03",
+                "fault": "sensor_fault",
+                "budget": 500.0,
+                "status": "done",
+                "assignee": "vendor-a",
+                "created_at": "2026-08-28T09:01:00+08:00",
+                "updated_at": "2026-08-28T09:04:00+08:00",
+                "completion_evidence": {
+                  "sensor_replaced": true,
+                  "type": "synthetic_calibration_receipt"
+                }
+              }
+            ]
+          }
+        },
+        "batches": {
+          "passed": true,
+          "expected": {
+            "dispositions": [
+              "disposed",
+              "released",
+              "transferred"
+            ],
+            "batch_ids": [
+              "BATCH-S03-DAIRY-001",
+              "BATCH-S03-FRESH-001"
+            ],
+            "released_goods_safe_for_sale": true
+          },
+          "observed": {
+            "batches": [
+              {
+                "batch_id": "BATCH-S03-DAIRY-001",
+                "store_id": "S03",
+                "device_id": "FROST-S03",
+                "sku_id": "MILK-001",
+                "product_name": "巴氏鲜奶",
+                "quantity": 24,
+                "storage_min_c": 0.0,
+                "storage_max_c": 6.0,
+                "disposition": "released",
+                "safe_for_sale": true,
+                "policy_ref": "coldchain-demo:1.0.0",
+                "updated_at": "2026-08-28T09:05:00+08:00"
+              },
+              {
+                "batch_id": "BATCH-S03-FRESH-001",
+                "store_id": "S03",
+                "device_id": "FROST-S03",
+                "sku_id": "SANDWICH-001",
+                "product_name": "鲜食三明治",
+                "quantity": 18,
+                "storage_min_c": 0.0,
+                "storage_max_c": 8.0,
+                "disposition": "released",
+                "safe_for_sale": true,
+                "policy_ref": "coldchain-demo:1.0.0",
+                "updated_at": "2026-08-28T09:05:00+08:00"
+              }
+            ],
+            "disposition_receipts": [
+              {
+                "evidence_id": "manual_ev_000001",
+                "incident_id": "INC-COLD-B",
+                "action_id": null,
+                "actor": "ScenarioEngine",
+                "evidence_type": "manual_temperature",
+                "observed_at": "2026-08-28T09:01:00+08:00",
+                "uri": null,
+                "note": "Synthetic calibrated handheld thermometer reads normal",
+                "sha256": "db470ce294cee820626c1e8a95137dae1b1f5bbe5e0e4cedb04a9a0f2b6a35c5",
+                "created_at": "2026-08-28T09:01:00+08:00",
+                "metadata": {
+                  "batch_id": "BATCH-S03-DAIRY-001",
+                  "calibrated_at": "2026-08-01T00:00:00+08:00",
+                  "calibration_valid_until": "2026-09-01T00:00:00+08:00",
+                  "device_id": "FROST-S03",
+                  "instrument": "synthetic-calibrated-probe",
+                  "instrument_id": "synthetic-calibrated-probe",
+                  "measurement_point": "product",
+                  "synthetic": true,
+                  "temp_c": 4.2
+                }
+              },
+              {
+                "evidence_id": "manual_ev_000002",
+                "incident_id": "INC-COLD-B",
+                "action_id": null,
+                "actor": "ScenarioEngine",
+                "evidence_type": "manual_temperature",
+                "observed_at": "2026-08-28T09:01:00+08:00",
+                "uri": null,
+                "note": "Synthetic calibrated handheld thermometer reads normal",
+                "sha256": "03901c00a97a32a83226a7b6b62fe34ad882681963b0e3325960f6c111fef8ea",
+                "created_at": "2026-08-28T09:01:00+08:00",
+                "metadata": {
+                  "batch_id": "BATCH-S03-FRESH-001",
+                  "calibrated_at": "2026-08-01T00:00:00+08:00",
+                  "calibration_valid_until": "2026-09-01T00:00:00+08:00",
+                  "device_id": "FROST-S03",
+                  "instrument": "synthetic-calibrated-probe",
+                  "instrument_id": "synthetic-calibrated-probe",
+                  "measurement_point": "product",
+                  "synthetic": true,
+                  "temp_c": 4.2
+                }
+              }
+            ]
+          }
+        },
+        "sales_hold": {
+          "passed": true,
+          "expected": {
+            "terminal_batches_remain_held_unless_released": true
+          },
+          "observed": {
+            "sales_holds": [
+              {
+                "hold_id": "hold_000001",
+                "incident_id": "INC-COLD-B",
+                "action_id": "INC-COLD-B:hold",
+                "store_id": "S03",
+                "batch_id": "BATCH-S03-DAIRY-001",
+                "sku_id": "MILK-001",
+                "status": "released",
+                "reason": "coldchain temperature risk containment",
+                "applied_at": "2026-08-28T09:00:00+08:00",
+                "released_at": "2026-08-28T09:06:00+08:00",
+                "approval_id": "approval_000003",
+                "verification_id": "INC-COLD-B:verify:release_guard"
+              },
+              {
+                "hold_id": "hold_000002",
+                "incident_id": "INC-COLD-B",
+                "action_id": "INC-COLD-B:hold",
+                "store_id": "S03",
+                "batch_id": "BATCH-S03-FRESH-001",
+                "sku_id": "SANDWICH-001",
+                "status": "released",
+                "reason": "coldchain temperature risk containment",
+                "applied_at": "2026-08-28T09:00:00+08:00",
+                "released_at": "2026-08-28T09:06:00+08:00",
+                "approval_id": "approval_000003",
+                "verification_id": "INC-COLD-B:verify:release_guard"
+              }
+            ]
+          }
+        },
+        "approval": {
+          "passed": true,
+          "expected": {
+            "required_actions": [
+              "INC-COLD-B:batch:BATCH-S03-DAIRY-001",
+              "INC-COLD-B:batch:BATCH-S03-FRESH-001",
+              "INC-COLD-B:release-holds"
+            ],
+            "status": "approved"
+          },
+          "observed": {
+            "approvals": [
+              {
+                "approval_id": "approval_000001",
+                "incident_id": "INC-COLD-B",
+                "action_id": "INC-COLD-B:batch:BATCH-S03-DAIRY-001",
+                "subject": "released BATCH-S03-DAIRY-001",
+                "status": "approved",
+                "deadline": "2026-08-28T09:34:00+08:00",
+                "created_at": "2026-08-28T09:04:00+08:00",
+                "decided_at": "2026-08-28T09:05:00+08:00",
+                "decided_by": "ScenarioEngine",
+                "decision_reason": "synthetic food safety owner approves controlled batch release",
+                "approvers": [
+                  "food_safety_owner"
+                ]
+              },
+              {
+                "approval_id": "approval_000002",
+                "incident_id": "INC-COLD-B",
+                "action_id": "INC-COLD-B:batch:BATCH-S03-FRESH-001",
+                "subject": "released BATCH-S03-FRESH-001",
+                "status": "approved",
+                "deadline": "2026-08-28T09:34:00+08:00",
+                "created_at": "2026-08-28T09:04:00+08:00",
+                "decided_at": "2026-08-28T09:05:00+08:00",
+                "decided_by": "ScenarioEngine",
+                "decision_reason": "synthetic food safety owner approves controlled batch release",
+                "approvers": [
+                  "food_safety_owner"
+                ]
+              },
+              {
+                "approval_id": "approval_000003",
+                "incident_id": "INC-COLD-B",
+                "action_id": "INC-COLD-B:release-holds",
+                "subject": "release sales holds for INC-COLD-B",
+                "status": "approved",
+                "deadline": "2026-08-28T09:35:00+08:00",
+                "created_at": "2026-08-28T09:05:00+08:00",
+                "decided_at": "2026-08-28T09:06:00+08:00",
+                "decided_by": "ScenarioEngine",
+                "decision_reason": "synthetic food safety owner approves POS hold release",
+                "approvers": [
+                  "food_safety_owner"
+                ]
+              }
+            ]
+          }
+        },
+        "audit": {
+          "passed": true,
+          "expected": {
+            "minimum_entries": 1,
+            "request_id_required": true
+          },
+          "observed": {
+            "entry_count": 13
+          }
+        },
+        "release_guard": {
+          "passed": true,
+          "expected": {
+            "device_batches_approvals_audit": "passed",
+            "released_batch_hold_state": [
+              "active",
+              "released"
+            ]
+          },
+          "observed": {
+            "released_batch_holds": {
+              "BATCH-S03-DAIRY-001": "released",
+              "BATCH-S03-FRESH-001": "released"
+            }
+          }
+        }
+      },
+      "failed_conditions": [],
+      "evidence_refs": [
+        "ev_4902606d962f298e",
+        "ev_53d2acb0769428b4",
+        "ev_a2aca6204230da1f",
+        "ev_f5774be83b90e1ca",
+        "ev_ff284a601d804b4b"
+      ],
+      "next_actions": [
+        "enter_learn"
+      ],
+      "partial_tools": [],
+      "evidence": [
+        {
+          "evidence_id": "ev_a2aca6204230da1f",
+          "incident_id": "INC-COLD-B",
+          "type": "device_context",
+          "source": "state_store.devices",
+          "observed_at": "2026-08-28T09:04:00+08:00",
+          "collected_at": "2026-08-28T09:06:00+08:00",
+          "payload": {
+            "device_id": "FROST-S03",
+            "store_id": "S03",
+            "health": {
+              "state": "normal",
+              "compressor_state": "running",
+              "model": "FROST-X100"
+            },
+            "door": {
+              "state": "closed"
+            },
+            "power": {
+              "state": "on"
+            },
+            "maintenance": {
+              "summary": "No open history in seed"
+            },
+            "temperature_series": [
+              {
+                "reading_id": "seed-FROST-S03-02",
+                "device_id": "FROST-S03",
+                "observed_at": "2026-08-28T06:30:00+08:00",
+                "temp_c": 3.3,
+                "quality": "good",
+                "source": "seed"
+              },
+              {
+                "reading_id": "seed-FROST-S03-03",
+                "device_id": "FROST-S03",
+                "observed_at": "2026-08-28T07:00:00+08:00",
+                "temp_c": 3.4,
+                "quality": "good",
+                "source": "seed"
+              },
+              {
+                "reading_id": "seed-FROST-S03-04",
+                "device_id": "FROST-S03",
+                "observed_at": "2026-08-28T07:30:00+08:00",
+                "temp_c": 3.4,
+                "quality": "good",
+                "source": "seed"
+              },
+              {
+                "reading_id": "reading_000003",
+                "device_id": "FROST-S03",
+                "observed_at": "2026-08-28T08:00:00+08:00",
+                "temp_c": 4.2,
+                "quality": "good",
+                "source": "synthetic-reference-probe"
+              },
+              {
+                "reading_id": "reading_000001",
+                "device_id": "FROST-S03",
+                "observed_at": "2026-08-28T08:30:00+08:00",
+                "temp_c": 9.1,
+                "quality": "suspect",
+                "source": "scenario"
+              },
+              {
+                "reading_id": "reading_000004",
+                "device_id": "FROST-S03",
+                "observed_at": "2026-08-28T08:30:00+08:00",
+                "temp_c": 4.2,
+                "quality": "good",
+                "source": "synthetic-reference-probe"
+              },
+              {
+                "reading_id": "reading_000002",
+                "device_id": "FROST-S03",
+                "observed_at": "2026-08-28T09:00:00+08:00",
+                "temp_c": 10.2,
+                "quality": "suspect",
+                "source": "scenario"
+              },
+              {
+                "reading_id": "reading_000005",
+                "device_id": "FROST-S03",
+                "observed_at": "2026-08-28T09:00:00+08:00",
+                "temp_c": 4.2,
+                "quality": "good",
+                "source": "synthetic-reference-probe"
+              },
+              {
+                "reading_id": "reading_000006",
+                "device_id": "FROST-S03",
+                "observed_at": "2026-08-28T09:02:00+08:00",
+                "temp_c": 4.3,
+                "quality": "good",
+                "source": "scenario"
+              },
+              {
+                "reading_id": "reading_000007",
+                "device_id": "FROST-S03",
+                "observed_at": "2026-08-28T09:03:00+08:00",
+                "temp_c": 4.1,
+                "quality": "good",
+                "source": "scenario"
+              },
+              {
+                "reading_id": "reading_000008",
+                "device_id": "FROST-S03",
+                "observed_at": "2026-08-28T09:04:00+08:00",
+                "temp_c": 4.0,
+                "quality": "good",
+                "source": "scenario"
+              }
+            ],
+            "ambient_temp_c": 26.0
+          },
+          "quality": "good",
+          "freshness": "fresh",
+          "request_id": "req_e8fff10dbdca41a8",
+          "immutable_hash": "a2aca6204230da1f54983cd5551e262ccef53bb279ea63b12621ff73a45e52a9"
+        },
+        {
+          "evidence_id": "ev_4902606d962f298e",
+          "incident_id": "INC-COLD-B",
+          "type": "inventory_batches",
+          "source": "state_store.inventory_batches",
+          "observed_at": "2026-08-28T09:05:00+08:00",
+          "collected_at": "2026-08-28T09:06:00+08:00",
+          "payload": {
+            "batches": [
+              {
+                "batch_id": "BATCH-S03-DAIRY-001",
+                "store_id": "S03",
+                "device_id": "FROST-S03",
+                "sku_id": "MILK-001",
+                "product_name": "巴氏鲜奶",
+                "quantity": 24,
+                "storage_min_c": 0.0,
+                "storage_max_c": 6.0,
+                "disposition": "released",
+                "safe_for_sale": true,
+                "policy_ref": "coldchain-demo:1.0.0",
+                "updated_at": "2026-08-28T09:05:00+08:00"
+              },
+              {
+                "batch_id": "BATCH-S03-FRESH-001",
+                "store_id": "S03",
+                "device_id": "FROST-S03",
+                "sku_id": "SANDWICH-001",
+                "product_name": "鲜食三明治",
+                "quantity": 18,
+                "storage_min_c": 0.0,
+                "storage_max_c": 8.0,
+                "disposition": "released",
+                "safe_for_sale": true,
+                "policy_ref": "coldchain-demo:1.0.0",
+                "updated_at": "2026-08-28T09:05:00+08:00"
+              }
+            ]
+          },
+          "quality": "good",
+          "freshness": "current",
+          "request_id": "req_6c02c3cd11fd458d",
+          "immutable_hash": "4902606d962f298ea0930084a4018b89993c66dd32c41190c4bbed40996c6409"
+        },
+        {
+          "evidence_id": "ev_f5774be83b90e1ca",
+          "incident_id": "INC-COLD-B",
+          "type": "sales_holds",
+          "source": "state_store.sales_holds",
+          "observed_at": "2026-08-28T09:06:00+08:00",
+          "collected_at": "2026-08-28T09:06:00+08:00",
+          "payload": {
+            "sales_holds": [
+              {
+                "hold_id": "hold_000001",
+                "incident_id": "INC-COLD-B",
+                "action_id": "INC-COLD-B:hold",
+                "store_id": "S03",
+                "batch_id": "BATCH-S03-DAIRY-001",
+                "sku_id": "MILK-001",
+                "status": "released",
+                "reason": "coldchain temperature risk containment",
+                "applied_at": "2026-08-28T09:00:00+08:00",
+                "released_at": "2026-08-28T09:06:00+08:00",
+                "approval_id": "approval_000003",
+                "verification_id": "INC-COLD-B:verify:release_guard"
+              },
+              {
+                "hold_id": "hold_000002",
+                "incident_id": "INC-COLD-B",
+                "action_id": "INC-COLD-B:hold",
+                "store_id": "S03",
+                "batch_id": "BATCH-S03-FRESH-001",
+                "sku_id": "SANDWICH-001",
+                "status": "released",
+                "reason": "coldchain temperature risk containment",
+                "applied_at": "2026-08-28T09:00:00+08:00",
+                "released_at": "2026-08-28T09:06:00+08:00",
+                "approval_id": "approval_000003",
+                "verification_id": "INC-COLD-B:verify:release_guard"
+              }
+            ]
+          },
+          "quality": "good",
+          "freshness": "current",
+          "request_id": "req_fc08f991d6a347e2",
+          "immutable_hash": "f5774be83b90e1ca8bcc147533c449cf784ad7ca36a632150022639e32629a5c"
+        },
+        {
+          "evidence_id": "ev_ff284a601d804b4b",
+          "incident_id": "INC-COLD-B",
+          "type": "workorders",
+          "source": "state_store.workorders",
+          "observed_at": "2026-08-28T09:06:00+08:00",
+          "collected_at": "2026-08-28T09:06:00+08:00",
+          "payload": {
+            "workorders": [
+              {
+                "workorder_id": "wo_000001",
+                "incident_id": "INC-COLD-B",
+                "action_id": "INC-COLD-B:repair",
+                "store_id": "S03",
+                "device_id": "FROST-S03",
+                "fault": "sensor_fault",
+                "budget": 500.0,
+                "status": "done",
+                "assignee": "vendor-a",
+                "created_at": "2026-08-28T09:01:00+08:00",
+                "updated_at": "2026-08-28T09:04:00+08:00",
+                "completion_evidence": {
+                  "sensor_replaced": true,
+                  "type": "synthetic_calibration_receipt"
+                }
+              }
+            ]
+          },
+          "quality": "good",
+          "freshness": "current",
+          "request_id": "req_a6700a7b87134cb5",
+          "immutable_hash": "ff284a601d804b4bc42bdf95859e03db2b12ec29775796e945c4727ce7d67d54"
+        },
+        {
+          "evidence_id": "ev_53d2acb0769428b4",
+          "incident_id": "INC-COLD-B",
+          "type": "approvals",
+          "source": "state_store.approvals",
+          "observed_at": "2026-08-28T09:06:00+08:00",
+          "collected_at": "2026-08-28T09:06:00+08:00",
+          "payload": {
+            "approvals": [
+              {
+                "approval_id": "approval_000001",
+                "incident_id": "INC-COLD-B",
+                "action_id": "INC-COLD-B:batch:BATCH-S03-DAIRY-001",
+                "subject": "released BATCH-S03-DAIRY-001",
+                "status": "approved",
+                "deadline": "2026-08-28T09:34:00+08:00",
+                "created_at": "2026-08-28T09:04:00+08:00",
+                "decided_at": "2026-08-28T09:05:00+08:00",
+                "decided_by": "ScenarioEngine",
+                "decision_reason": "synthetic food safety owner approves controlled batch release",
+                "approvers": [
+                  "food_safety_owner"
+                ]
+              },
+              {
+                "approval_id": "approval_000002",
+                "incident_id": "INC-COLD-B",
+                "action_id": "INC-COLD-B:batch:BATCH-S03-FRESH-001",
+                "subject": "released BATCH-S03-FRESH-001",
+                "status": "approved",
+                "deadline": "2026-08-28T09:34:00+08:00",
+                "created_at": "2026-08-28T09:04:00+08:00",
+                "decided_at": "2026-08-28T09:05:00+08:00",
+                "decided_by": "ScenarioEngine",
+                "decision_reason": "synthetic food safety owner approves controlled batch release",
+                "approvers": [
+                  "food_safety_owner"
+                ]
+              },
+              {
+                "approval_id": "approval_000003",
+                "incident_id": "INC-COLD-B",
+                "action_id": "INC-COLD-B:release-holds",
+                "subject": "release sales holds for INC-COLD-B",
+                "status": "approved",
+                "deadline": "2026-08-28T09:35:00+08:00",
+                "created_at": "2026-08-28T09:05:00+08:00",
+                "decided_at": "2026-08-28T09:06:00+08:00",
+                "decided_by": "ScenarioEngine",
+                "decision_reason": "synthetic food safety owner approves POS hold release",
+                "approvers": [
+                  "food_safety_owner"
+                ]
+              }
+            ]
+          },
+          "quality": "good",
+          "freshness": "current",
+          "request_id": "req_a8963eeb1a4b423f",
+          "immutable_hash": "53d2acb0769428b4b872bee7d463d6fdecf420e94ece73b42a34b461d5056d88"
+        }
+      ],
+      "incident_status": "RESOLVED",
+      "attempts": [
+        {
+          "result": "release_ready",
+          "failed_conditions": [
+            "sales_hold"
+          ],
+          "partial_tools": []
+        },
+        {
+          "result": "verified",
+          "failed_conditions": [],
+          "partial_tools": []
+        }
+      ]
+    },
+    "LEARN": {
+      "report_id": "review:INC-COLD-B",
+      "incident_id": "INC-COLD-B",
+      "scenario_id": "coldchain-sensor-false-positive",
+      "trace_id": "tr_coldchain_sensor_false_positive",
+      "root_cause": {
+        "label": "sensor_fault",
+        "confidence": 0.96,
+        "evidence_ids": [
+          "ev_be754435ea3487a7",
+          "manual_ev_000001",
+          "manual_ev_000002"
+        ]
+      },
+      "actions": [
+        {
+          "action_id": "INC-COLD-B:hold",
+          "action_type": "apply_sales_hold",
+          "status": "completed",
+          "approval_id": null
+        },
+        {
+          "action_id": "INC-COLD-B:repair",
+          "action_type": "create_workorder",
+          "status": "completed",
+          "approval_id": null
+        },
+        {
+          "action_id": "INC-COLD-B:batch:BATCH-S03-DAIRY-001",
+          "action_type": "apply_batch_disposition:released",
+          "status": "completed",
+          "approval_id": "approval_000001"
+        },
+        {
+          "action_id": "INC-COLD-B:batch:BATCH-S03-FRESH-001",
+          "action_type": "apply_batch_disposition:released",
+          "status": "completed",
+          "approval_id": "approval_000002"
+        },
+        {
+          "action_id": "INC-COLD-B:release-holds",
+          "action_type": "release_sales_hold",
+          "status": "completed",
+          "approval_id": "approval_000003"
+        }
+      ],
+      "batch_reviews": [
+        {
+          "batch_id": "BATCH-S03-DAIRY-001",
+          "final_disposition": "released",
+          "action_ids": [
+            "INC-COLD-B:hold",
+            "INC-COLD-B:batch:BATCH-S03-DAIRY-001"
+          ],
+          "verification_ids": [
+            "INC-COLD-B:verify:batches",
+            "INC-COLD-B:verify:sales_hold"
+          ]
+        },
+        {
+          "batch_id": "BATCH-S03-FRESH-001",
+          "final_disposition": "released",
+          "action_ids": [
+            "INC-COLD-B:hold",
+            "INC-COLD-B:batch:BATCH-S03-FRESH-001"
+          ],
+          "verification_ids": [
+            "INC-COLD-B:verify:batches",
+            "INC-COLD-B:verify:sales_hold"
+          ]
+        }
+      ],
+      "verification": {
+        "incident_id": "INC-COLD-B",
+        "result": "verified",
+        "checks": {
+          "device": {
+            "passed": true,
+            "expected": {
+              "recovery_samples": 3,
+              "max_c": 8.0,
+              "health": "normal",
+              "workorder": "done_with_evidence"
+            },
+            "observed": {
+              "device": {
+                "device_id": "FROST-S03",
+                "store_id": "S03",
+                "health": {
+                  "state": "normal",
+                  "compressor_state": "running",
+                  "model": "FROST-X100"
+                },
+                "door": {
+                  "state": "closed"
+                },
+                "power": {
+                  "state": "on"
+                },
+                "maintenance": {
+                  "summary": "No open history in seed"
+                },
+                "temperature_series": [
+                  {
+                    "reading_id": "seed-FROST-S03-02",
+                    "device_id": "FROST-S03",
+                    "observed_at": "2026-08-28T06:30:00+08:00",
+                    "temp_c": 3.3,
+                    "quality": "good",
+                    "source": "seed"
+                  },
+                  {
+                    "reading_id": "seed-FROST-S03-03",
+                    "device_id": "FROST-S03",
+                    "observed_at": "2026-08-28T07:00:00+08:00",
+                    "temp_c": 3.4,
+                    "quality": "good",
+                    "source": "seed"
+                  },
+                  {
+                    "reading_id": "seed-FROST-S03-04",
+                    "device_id": "FROST-S03",
+                    "observed_at": "2026-08-28T07:30:00+08:00",
+                    "temp_c": 3.4,
+                    "quality": "good",
+                    "source": "seed"
+                  },
+                  {
+                    "reading_id": "reading_000003",
+                    "device_id": "FROST-S03",
+                    "observed_at": "2026-08-28T08:00:00+08:00",
+                    "temp_c": 4.2,
+                    "quality": "good",
+                    "source": "synthetic-reference-probe"
+                  },
+                  {
+                    "reading_id": "reading_000001",
+                    "device_id": "FROST-S03",
+                    "observed_at": "2026-08-28T08:30:00+08:00",
+                    "temp_c": 9.1,
+                    "quality": "suspect",
+                    "source": "scenario"
+                  },
+                  {
+                    "reading_id": "reading_000004",
+                    "device_id": "FROST-S03",
+                    "observed_at": "2026-08-28T08:30:00+08:00",
+                    "temp_c": 4.2,
+                    "quality": "good",
+                    "source": "synthetic-reference-probe"
+                  },
+                  {
+                    "reading_id": "reading_000002",
+                    "device_id": "FROST-S03",
+                    "observed_at": "2026-08-28T09:00:00+08:00",
+                    "temp_c": 10.2,
+                    "quality": "suspect",
+                    "source": "scenario"
+                  },
+                  {
+                    "reading_id": "reading_000005",
+                    "device_id": "FROST-S03",
+                    "observed_at": "2026-08-28T09:00:00+08:00",
+                    "temp_c": 4.2,
+                    "quality": "good",
+                    "source": "synthetic-reference-probe"
+                  },
+                  {
+                    "reading_id": "reading_000006",
+                    "device_id": "FROST-S03",
+                    "observed_at": "2026-08-28T09:02:00+08:00",
+                    "temp_c": 4.3,
+                    "quality": "good",
+                    "source": "scenario"
+                  },
+                  {
+                    "reading_id": "reading_000007",
+                    "device_id": "FROST-S03",
+                    "observed_at": "2026-08-28T09:03:00+08:00",
+                    "temp_c": 4.1,
+                    "quality": "good",
+                    "source": "scenario"
+                  },
+                  {
+                    "reading_id": "reading_000008",
+                    "device_id": "FROST-S03",
+                    "observed_at": "2026-08-28T09:04:00+08:00",
+                    "temp_c": 4.0,
+                    "quality": "good",
+                    "source": "scenario"
+                  }
+                ],
+                "ambient_temp_c": 26.0
+              },
+              "latest_samples": [
+                {
+                  "reading_id": "reading_000006",
+                  "device_id": "FROST-S03",
+                  "observed_at": "2026-08-28T01:02:00+00:00",
+                  "temp_c": 4.3,
+                  "quality": "good",
+                  "source": "scenario"
+                },
+                {
+                  "reading_id": "reading_000007",
+                  "device_id": "FROST-S03",
+                  "observed_at": "2026-08-28T01:03:00+00:00",
+                  "temp_c": 4.1,
+                  "quality": "good",
+                  "source": "scenario"
+                },
+                {
+                  "reading_id": "reading_000008",
+                  "device_id": "FROST-S03",
+                  "observed_at": "2026-08-28T01:04:00+00:00",
+                  "temp_c": 4.0,
+                  "quality": "good",
+                  "source": "scenario"
+                }
+              ],
+              "excluded_readings": [
+                {
+                  "reading_id": "reading_000001",
+                  "device_id": "FROST-S03",
+                  "observed_at": "2026-08-28T08:30:00+08:00",
+                  "temp_c": 9.1,
+                  "quality": "suspect",
+                  "source": "scenario"
+                },
+                {
+                  "reading_id": "reading_000002",
+                  "device_id": "FROST-S03",
+                  "observed_at": "2026-08-28T09:00:00+08:00",
+                  "temp_c": 10.2,
+                  "quality": "suspect",
+                  "source": "scenario"
+                }
+              ],
+              "workorders": [
+                {
+                  "workorder_id": "wo_000001",
+                  "incident_id": "INC-COLD-B",
+                  "action_id": "INC-COLD-B:repair",
+                  "store_id": "S03",
+                  "device_id": "FROST-S03",
+                  "fault": "sensor_fault",
+                  "budget": 500.0,
+                  "status": "done",
+                  "assignee": "vendor-a",
+                  "created_at": "2026-08-28T09:01:00+08:00",
+                  "updated_at": "2026-08-28T09:04:00+08:00",
+                  "completion_evidence": {
+                    "sensor_replaced": true,
+                    "type": "synthetic_calibration_receipt"
+                  }
+                }
+              ]
+            }
+          },
+          "batches": {
+            "passed": true,
+            "expected": {
+              "dispositions": [
+                "disposed",
+                "released",
+                "transferred"
+              ],
+              "batch_ids": [
+                "BATCH-S03-DAIRY-001",
+                "BATCH-S03-FRESH-001"
+              ],
+              "released_goods_safe_for_sale": true
+            },
+            "observed": {
+              "batches": [
+                {
+                  "batch_id": "BATCH-S03-DAIRY-001",
+                  "store_id": "S03",
+                  "device_id": "FROST-S03",
+                  "sku_id": "MILK-001",
+                  "product_name": "巴氏鲜奶",
+                  "quantity": 24,
+                  "storage_min_c": 0.0,
+                  "storage_max_c": 6.0,
+                  "disposition": "released",
+                  "safe_for_sale": true,
+                  "policy_ref": "coldchain-demo:1.0.0",
+                  "updated_at": "2026-08-28T09:05:00+08:00"
+                },
+                {
+                  "batch_id": "BATCH-S03-FRESH-001",
+                  "store_id": "S03",
+                  "device_id": "FROST-S03",
+                  "sku_id": "SANDWICH-001",
+                  "product_name": "鲜食三明治",
+                  "quantity": 18,
+                  "storage_min_c": 0.0,
+                  "storage_max_c": 8.0,
+                  "disposition": "released",
+                  "safe_for_sale": true,
+                  "policy_ref": "coldchain-demo:1.0.0",
+                  "updated_at": "2026-08-28T09:05:00+08:00"
+                }
+              ],
+              "disposition_receipts": [
+                {
+                  "evidence_id": "manual_ev_000001",
+                  "incident_id": "INC-COLD-B",
+                  "action_id": null,
+                  "actor": "ScenarioEngine",
+                  "evidence_type": "manual_temperature",
+                  "observed_at": "2026-08-28T09:01:00+08:00",
+                  "uri": null,
+                  "note": "Synthetic calibrated handheld thermometer reads normal",
+                  "sha256": "db470ce294cee820626c1e8a95137dae1b1f5bbe5e0e4cedb04a9a0f2b6a35c5",
+                  "created_at": "2026-08-28T09:01:00+08:00",
+                  "metadata": {
+                    "batch_id": "BATCH-S03-DAIRY-001",
+                    "calibrated_at": "2026-08-01T00:00:00+08:00",
+                    "calibration_valid_until": "2026-09-01T00:00:00+08:00",
+                    "device_id": "FROST-S03",
+                    "instrument": "synthetic-calibrated-probe",
+                    "instrument_id": "synthetic-calibrated-probe",
+                    "measurement_point": "product",
+                    "synthetic": true,
+                    "temp_c": 4.2
+                  }
+                },
+                {
+                  "evidence_id": "manual_ev_000002",
+                  "incident_id": "INC-COLD-B",
+                  "action_id": null,
+                  "actor": "ScenarioEngine",
+                  "evidence_type": "manual_temperature",
+                  "observed_at": "2026-08-28T09:01:00+08:00",
+                  "uri": null,
+                  "note": "Synthetic calibrated handheld thermometer reads normal",
+                  "sha256": "03901c00a97a32a83226a7b6b62fe34ad882681963b0e3325960f6c111fef8ea",
+                  "created_at": "2026-08-28T09:01:00+08:00",
+                  "metadata": {
+                    "batch_id": "BATCH-S03-FRESH-001",
+                    "calibrated_at": "2026-08-01T00:00:00+08:00",
+                    "calibration_valid_until": "2026-09-01T00:00:00+08:00",
+                    "device_id": "FROST-S03",
+                    "instrument": "synthetic-calibrated-probe",
+                    "instrument_id": "synthetic-calibrated-probe",
+                    "measurement_point": "product",
+                    "synthetic": true,
+                    "temp_c": 4.2
+                  }
+                }
+              ]
+            }
+          },
+          "sales_hold": {
+            "passed": true,
+            "expected": {
+              "terminal_batches_remain_held_unless_released": true
+            },
+            "observed": {
+              "sales_holds": [
+                {
+                  "hold_id": "hold_000001",
+                  "incident_id": "INC-COLD-B",
+                  "action_id": "INC-COLD-B:hold",
+                  "store_id": "S03",
+                  "batch_id": "BATCH-S03-DAIRY-001",
+                  "sku_id": "MILK-001",
+                  "status": "released",
+                  "reason": "coldchain temperature risk containment",
+                  "applied_at": "2026-08-28T09:00:00+08:00",
+                  "released_at": "2026-08-28T09:06:00+08:00",
+                  "approval_id": "approval_000003",
+                  "verification_id": "INC-COLD-B:verify:release_guard"
+                },
+                {
+                  "hold_id": "hold_000002",
+                  "incident_id": "INC-COLD-B",
+                  "action_id": "INC-COLD-B:hold",
+                  "store_id": "S03",
+                  "batch_id": "BATCH-S03-FRESH-001",
+                  "sku_id": "SANDWICH-001",
+                  "status": "released",
+                  "reason": "coldchain temperature risk containment",
+                  "applied_at": "2026-08-28T09:00:00+08:00",
+                  "released_at": "2026-08-28T09:06:00+08:00",
+                  "approval_id": "approval_000003",
+                  "verification_id": "INC-COLD-B:verify:release_guard"
+                }
+              ]
+            }
+          },
+          "approval": {
+            "passed": true,
+            "expected": {
+              "required_actions": [
+                "INC-COLD-B:batch:BATCH-S03-DAIRY-001",
+                "INC-COLD-B:batch:BATCH-S03-FRESH-001",
+                "INC-COLD-B:release-holds"
+              ],
+              "status": "approved"
+            },
+            "observed": {
+              "approvals": [
+                {
+                  "approval_id": "approval_000001",
+                  "incident_id": "INC-COLD-B",
+                  "action_id": "INC-COLD-B:batch:BATCH-S03-DAIRY-001",
+                  "subject": "released BATCH-S03-DAIRY-001",
+                  "status": "approved",
+                  "deadline": "2026-08-28T09:34:00+08:00",
+                  "created_at": "2026-08-28T09:04:00+08:00",
+                  "decided_at": "2026-08-28T09:05:00+08:00",
+                  "decided_by": "ScenarioEngine",
+                  "decision_reason": "synthetic food safety owner approves controlled batch release",
+                  "approvers": [
+                    "food_safety_owner"
+                  ]
+                },
+                {
+                  "approval_id": "approval_000002",
+                  "incident_id": "INC-COLD-B",
+                  "action_id": "INC-COLD-B:batch:BATCH-S03-FRESH-001",
+                  "subject": "released BATCH-S03-FRESH-001",
+                  "status": "approved",
+                  "deadline": "2026-08-28T09:34:00+08:00",
+                  "created_at": "2026-08-28T09:04:00+08:00",
+                  "decided_at": "2026-08-28T09:05:00+08:00",
+                  "decided_by": "ScenarioEngine",
+                  "decision_reason": "synthetic food safety owner approves controlled batch release",
+                  "approvers": [
+                    "food_safety_owner"
+                  ]
+                },
+                {
+                  "approval_id": "approval_000003",
+                  "incident_id": "INC-COLD-B",
+                  "action_id": "INC-COLD-B:release-holds",
+                  "subject": "release sales holds for INC-COLD-B",
+                  "status": "approved",
+                  "deadline": "2026-08-28T09:35:00+08:00",
+                  "created_at": "2026-08-28T09:05:00+08:00",
+                  "decided_at": "2026-08-28T09:06:00+08:00",
+                  "decided_by": "ScenarioEngine",
+                  "decision_reason": "synthetic food safety owner approves POS hold release",
+                  "approvers": [
+                    "food_safety_owner"
+                  ]
+                }
+              ]
+            }
+          },
+          "audit": {
+            "passed": true,
+            "expected": {
+              "minimum_entries": 1,
+              "request_id_required": true
+            },
+            "observed": {
+              "entry_count": 13
+            }
+          },
+          "release_guard": {
+            "passed": true,
+            "expected": {
+              "device_batches_approvals_audit": "passed",
+              "released_batch_hold_state": [
+                "active",
+                "released"
+              ]
+            },
+            "observed": {
+              "released_batch_holds": {
+                "BATCH-S03-DAIRY-001": "released",
+                "BATCH-S03-FRESH-001": "released"
+              }
+            }
+          }
+        },
+        "failed_conditions": [],
+        "evidence_refs": [
+          "ev_4902606d962f298e",
+          "ev_53d2acb0769428b4",
+          "ev_a2aca6204230da1f",
+          "ev_f5774be83b90e1ca",
+          "ev_ff284a601d804b4b"
+        ],
+        "next_actions": [
+          "enter_learn"
+        ],
+        "partial_tools": [],
+        "evidence": [
+          {
+            "evidence_id": "ev_a2aca6204230da1f",
+            "incident_id": "INC-COLD-B",
+            "type": "device_context",
+            "source": "state_store.devices",
+            "observed_at": "2026-08-28T09:04:00+08:00",
+            "collected_at": "2026-08-28T09:06:00+08:00",
+            "payload": {
+              "device_id": "FROST-S03",
+              "store_id": "S03",
+              "health": {
+                "state": "normal",
+                "compressor_state": "running",
+                "model": "FROST-X100"
+              },
+              "door": {
+                "state": "closed"
+              },
+              "power": {
+                "state": "on"
+              },
+              "maintenance": {
+                "summary": "No open history in seed"
+              },
+              "temperature_series": [
+                {
+                  "reading_id": "seed-FROST-S03-02",
+                  "device_id": "FROST-S03",
+                  "observed_at": "2026-08-28T06:30:00+08:00",
+                  "temp_c": 3.3,
+                  "quality": "good",
+                  "source": "seed"
+                },
+                {
+                  "reading_id": "seed-FROST-S03-03",
+                  "device_id": "FROST-S03",
+                  "observed_at": "2026-08-28T07:00:00+08:00",
+                  "temp_c": 3.4,
+                  "quality": "good",
+                  "source": "seed"
+                },
+                {
+                  "reading_id": "seed-FROST-S03-04",
+                  "device_id": "FROST-S03",
+                  "observed_at": "2026-08-28T07:30:00+08:00",
+                  "temp_c": 3.4,
+                  "quality": "good",
+                  "source": "seed"
+                },
+                {
+                  "reading_id": "reading_000003",
+                  "device_id": "FROST-S03",
+                  "observed_at": "2026-08-28T08:00:00+08:00",
+                  "temp_c": 4.2,
+                  "quality": "good",
+                  "source": "synthetic-reference-probe"
+                },
+                {
+                  "reading_id": "reading_000001",
+                  "device_id": "FROST-S03",
+                  "observed_at": "2026-08-28T08:30:00+08:00",
+                  "temp_c": 9.1,
+                  "quality": "suspect",
+                  "source": "scenario"
+                },
+                {
+                  "reading_id": "reading_000004",
+                  "device_id": "FROST-S03",
+                  "observed_at": "2026-08-28T08:30:00+08:00",
+                  "temp_c": 4.2,
+                  "quality": "good",
+                  "source": "synthetic-reference-probe"
+                },
+                {
+                  "reading_id": "reading_000002",
+                  "device_id": "FROST-S03",
+                  "observed_at": "2026-08-28T09:00:00+08:00",
+                  "temp_c": 10.2,
+                  "quality": "suspect",
+                  "source": "scenario"
+                },
+                {
+                  "reading_id": "reading_000005",
+                  "device_id": "FROST-S03",
+                  "observed_at": "2026-08-28T09:00:00+08:00",
+                  "temp_c": 4.2,
+                  "quality": "good",
+                  "source": "synthetic-reference-probe"
+                },
+                {
+                  "reading_id": "reading_000006",
+                  "device_id": "FROST-S03",
+                  "observed_at": "2026-08-28T09:02:00+08:00",
+                  "temp_c": 4.3,
+                  "quality": "good",
+                  "source": "scenario"
+                },
+                {
+                  "reading_id": "reading_000007",
+                  "device_id": "FROST-S03",
+                  "observed_at": "2026-08-28T09:03:00+08:00",
+                  "temp_c": 4.1,
+                  "quality": "good",
+                  "source": "scenario"
+                },
+                {
+                  "reading_id": "reading_000008",
+                  "device_id": "FROST-S03",
+                  "observed_at": "2026-08-28T09:04:00+08:00",
+                  "temp_c": 4.0,
+                  "quality": "good",
+                  "source": "scenario"
+                }
+              ],
+              "ambient_temp_c": 26.0
+            },
+            "quality": "good",
+            "freshness": "fresh",
+            "request_id": "req_e8fff10dbdca41a8",
+            "immutable_hash": "a2aca6204230da1f54983cd5551e262ccef53bb279ea63b12621ff73a45e52a9"
+          },
+          {
+            "evidence_id": "ev_4902606d962f298e",
+            "incident_id": "INC-COLD-B",
+            "type": "inventory_batches",
+            "source": "state_store.inventory_batches",
+            "observed_at": "2026-08-28T09:05:00+08:00",
+            "collected_at": "2026-08-28T09:06:00+08:00",
+            "payload": {
+              "batches": [
+                {
+                  "batch_id": "BATCH-S03-DAIRY-001",
+                  "store_id": "S03",
+                  "device_id": "FROST-S03",
+                  "sku_id": "MILK-001",
+                  "product_name": "巴氏鲜奶",
+                  "quantity": 24,
+                  "storage_min_c": 0.0,
+                  "storage_max_c": 6.0,
+                  "disposition": "released",
+                  "safe_for_sale": true,
+                  "policy_ref": "coldchain-demo:1.0.0",
+                  "updated_at": "2026-08-28T09:05:00+08:00"
+                },
+                {
+                  "batch_id": "BATCH-S03-FRESH-001",
+                  "store_id": "S03",
+                  "device_id": "FROST-S03",
+                  "sku_id": "SANDWICH-001",
+                  "product_name": "鲜食三明治",
+                  "quantity": 18,
+                  "storage_min_c": 0.0,
+                  "storage_max_c": 8.0,
+                  "disposition": "released",
+                  "safe_for_sale": true,
+                  "policy_ref": "coldchain-demo:1.0.0",
+                  "updated_at": "2026-08-28T09:05:00+08:00"
+                }
+              ]
+            },
+            "quality": "good",
+            "freshness": "current",
+            "request_id": "req_6c02c3cd11fd458d",
+            "immutable_hash": "4902606d962f298ea0930084a4018b89993c66dd32c41190c4bbed40996c6409"
+          },
+          {
+            "evidence_id": "ev_f5774be83b90e1ca",
+            "incident_id": "INC-COLD-B",
+            "type": "sales_holds",
+            "source": "state_store.sales_holds",
+            "observed_at": "2026-08-28T09:06:00+08:00",
+            "collected_at": "2026-08-28T09:06:00+08:00",
+            "payload": {
+              "sales_holds": [
+                {
+                  "hold_id": "hold_000001",
+                  "incident_id": "INC-COLD-B",
+                  "action_id": "INC-COLD-B:hold",
+                  "store_id": "S03",
+                  "batch_id": "BATCH-S03-DAIRY-001",
+                  "sku_id": "MILK-001",
+                  "status": "released",
+                  "reason": "coldchain temperature risk containment",
+                  "applied_at": "2026-08-28T09:00:00+08:00",
+                  "released_at": "2026-08-28T09:06:00+08:00",
+                  "approval_id": "approval_000003",
+                  "verification_id": "INC-COLD-B:verify:release_guard"
+                },
+                {
+                  "hold_id": "hold_000002",
+                  "incident_id": "INC-COLD-B",
+                  "action_id": "INC-COLD-B:hold",
+                  "store_id": "S03",
+                  "batch_id": "BATCH-S03-FRESH-001",
+                  "sku_id": "SANDWICH-001",
+                  "status": "released",
+                  "reason": "coldchain temperature risk containment",
+                  "applied_at": "2026-08-28T09:00:00+08:00",
+                  "released_at": "2026-08-28T09:06:00+08:00",
+                  "approval_id": "approval_000003",
+                  "verification_id": "INC-COLD-B:verify:release_guard"
+                }
+              ]
+            },
+            "quality": "good",
+            "freshness": "current",
+            "request_id": "req_fc08f991d6a347e2",
+            "immutable_hash": "f5774be83b90e1ca8bcc147533c449cf784ad7ca36a632150022639e32629a5c"
+          },
+          {
+            "evidence_id": "ev_ff284a601d804b4b",
+            "incident_id": "INC-COLD-B",
+            "type": "workorders",
+            "source": "state_store.workorders",
+            "observed_at": "2026-08-28T09:06:00+08:00",
+            "collected_at": "2026-08-28T09:06:00+08:00",
+            "payload": {
+              "workorders": [
+                {
+                  "workorder_id": "wo_000001",
+                  "incident_id": "INC-COLD-B",
+                  "action_id": "INC-COLD-B:repair",
+                  "store_id": "S03",
+                  "device_id": "FROST-S03",
+                  "fault": "sensor_fault",
+                  "budget": 500.0,
+                  "status": "done",
+                  "assignee": "vendor-a",
+                  "created_at": "2026-08-28T09:01:00+08:00",
+                  "updated_at": "2026-08-28T09:04:00+08:00",
+                  "completion_evidence": {
+                    "sensor_replaced": true,
+                    "type": "synthetic_calibration_receipt"
+                  }
+                }
+              ]
+            },
+            "quality": "good",
+            "freshness": "current",
+            "request_id": "req_a6700a7b87134cb5",
+            "immutable_hash": "ff284a601d804b4bc42bdf95859e03db2b12ec29775796e945c4727ce7d67d54"
+          },
+          {
+            "evidence_id": "ev_53d2acb0769428b4",
+            "incident_id": "INC-COLD-B",
+            "type": "approvals",
+            "source": "state_store.approvals",
+            "observed_at": "2026-08-28T09:06:00+08:00",
+            "collected_at": "2026-08-28T09:06:00+08:00",
+            "payload": {
+              "approvals": [
+                {
+                  "approval_id": "approval_000001",
+                  "incident_id": "INC-COLD-B",
+                  "action_id": "INC-COLD-B:batch:BATCH-S03-DAIRY-001",
+                  "subject": "released BATCH-S03-DAIRY-001",
+                  "status": "approved",
+                  "deadline": "2026-08-28T09:34:00+08:00",
+                  "created_at": "2026-08-28T09:04:00+08:00",
+                  "decided_at": "2026-08-28T09:05:00+08:00",
+                  "decided_by": "ScenarioEngine",
+                  "decision_reason": "synthetic food safety owner approves controlled batch release",
+                  "approvers": [
+                    "food_safety_owner"
+                  ]
+                },
+                {
+                  "approval_id": "approval_000002",
+                  "incident_id": "INC-COLD-B",
+                  "action_id": "INC-COLD-B:batch:BATCH-S03-FRESH-001",
+                  "subject": "released BATCH-S03-FRESH-001",
+                  "status": "approved",
+                  "deadline": "2026-08-28T09:34:00+08:00",
+                  "created_at": "2026-08-28T09:04:00+08:00",
+                  "decided_at": "2026-08-28T09:05:00+08:00",
+                  "decided_by": "ScenarioEngine",
+                  "decision_reason": "synthetic food safety owner approves controlled batch release",
+                  "approvers": [
+                    "food_safety_owner"
+                  ]
+                },
+                {
+                  "approval_id": "approval_000003",
+                  "incident_id": "INC-COLD-B",
+                  "action_id": "INC-COLD-B:release-holds",
+                  "subject": "release sales holds for INC-COLD-B",
+                  "status": "approved",
+                  "deadline": "2026-08-28T09:35:00+08:00",
+                  "created_at": "2026-08-28T09:05:00+08:00",
+                  "decided_at": "2026-08-28T09:06:00+08:00",
+                  "decided_by": "ScenarioEngine",
+                  "decision_reason": "synthetic food safety owner approves POS hold release",
+                  "approvers": [
+                    "food_safety_owner"
+                  ]
+                }
+              ]
+            },
+            "quality": "good",
+            "freshness": "current",
+            "request_id": "req_a8963eeb1a4b423f",
+            "immutable_hash": "53d2acb0769428b4b872bee7d463d6fdecf420e94ece73b42a34b461d5056d88"
+          }
+        ],
+        "incident_status": "RESOLVED",
+        "attempts": [
+          {
+            "result": "release_ready",
+            "failed_conditions": [
+              "sales_hold"
+            ],
+            "partial_tools": []
+          },
+          {
+            "result": "verified",
+            "failed_conditions": [],
+            "partial_tools": []
+          }
+        ]
+      },
+      "lessons": [
+        "containment_precedes_complete_diagnosis",
+        "device_recovery_does_not_release_goods",
+        "auditor_requeries_business_state"
+      ],
+      "knowledge": {
+        "retrieval_status": "disabled",
+        "candidate_status": "pending_not_persisted",
+        "reason": "Knowledge service is not configured for this runtime"
+      },
+      "skill_update_suggestions": []
+    }
+  },
+  "verification": {
+    "incident_id": "INC-COLD-B",
+    "result": "verified",
+    "checks": {
+      "device": {
+        "passed": true,
+        "expected": {
+          "recovery_samples": 3,
+          "max_c": 8.0,
+          "health": "normal",
+          "workorder": "done_with_evidence"
+        },
+        "observed": {
+          "device": {
+            "device_id": "FROST-S03",
+            "store_id": "S03",
+            "health": {
+              "state": "normal",
+              "compressor_state": "running",
+              "model": "FROST-X100"
+            },
+            "door": {
+              "state": "closed"
+            },
+            "power": {
+              "state": "on"
+            },
+            "maintenance": {
+              "summary": "No open history in seed"
+            },
+            "temperature_series": [
+              {
+                "reading_id": "seed-FROST-S03-02",
+                "device_id": "FROST-S03",
+                "observed_at": "2026-08-28T06:30:00+08:00",
+                "temp_c": 3.3,
+                "quality": "good",
+                "source": "seed"
+              },
+              {
+                "reading_id": "seed-FROST-S03-03",
+                "device_id": "FROST-S03",
+                "observed_at": "2026-08-28T07:00:00+08:00",
+                "temp_c": 3.4,
+                "quality": "good",
+                "source": "seed"
+              },
+              {
+                "reading_id": "seed-FROST-S03-04",
+                "device_id": "FROST-S03",
+                "observed_at": "2026-08-28T07:30:00+08:00",
+                "temp_c": 3.4,
+                "quality": "good",
+                "source": "seed"
+              },
+              {
+                "reading_id": "reading_000003",
+                "device_id": "FROST-S03",
+                "observed_at": "2026-08-28T08:00:00+08:00",
+                "temp_c": 4.2,
+                "quality": "good",
+                "source": "synthetic-reference-probe"
+              },
+              {
+                "reading_id": "reading_000001",
+                "device_id": "FROST-S03",
+                "observed_at": "2026-08-28T08:30:00+08:00",
+                "temp_c": 9.1,
+                "quality": "suspect",
+                "source": "scenario"
+              },
+              {
+                "reading_id": "reading_000004",
+                "device_id": "FROST-S03",
+                "observed_at": "2026-08-28T08:30:00+08:00",
+                "temp_c": 4.2,
+                "quality": "good",
+                "source": "synthetic-reference-probe"
+              },
+              {
+                "reading_id": "reading_000002",
+                "device_id": "FROST-S03",
+                "observed_at": "2026-08-28T09:00:00+08:00",
+                "temp_c": 10.2,
+                "quality": "suspect",
+                "source": "scenario"
+              },
+              {
+                "reading_id": "reading_000005",
+                "device_id": "FROST-S03",
+                "observed_at": "2026-08-28T09:00:00+08:00",
+                "temp_c": 4.2,
+                "quality": "good",
+                "source": "synthetic-reference-probe"
+              },
+              {
+                "reading_id": "reading_000006",
+                "device_id": "FROST-S03",
+                "observed_at": "2026-08-28T09:02:00+08:00",
+                "temp_c": 4.3,
+                "quality": "good",
+                "source": "scenario"
+              },
+              {
+                "reading_id": "reading_000007",
+                "device_id": "FROST-S03",
+                "observed_at": "2026-08-28T09:03:00+08:00",
+                "temp_c": 4.1,
+                "quality": "good",
+                "source": "scenario"
+              },
+              {
+                "reading_id": "reading_000008",
+                "device_id": "FROST-S03",
+                "observed_at": "2026-08-28T09:04:00+08:00",
+                "temp_c": 4.0,
+                "quality": "good",
+                "source": "scenario"
+              }
+            ],
+            "ambient_temp_c": 26.0
+          },
+          "latest_samples": [
+            {
+              "reading_id": "reading_000006",
+              "device_id": "FROST-S03",
+              "observed_at": "2026-08-28T01:02:00+00:00",
+              "temp_c": 4.3,
+              "quality": "good",
+              "source": "scenario"
+            },
+            {
+              "reading_id": "reading_000007",
+              "device_id": "FROST-S03",
+              "observed_at": "2026-08-28T01:03:00+00:00",
+              "temp_c": 4.1,
+              "quality": "good",
+              "source": "scenario"
+            },
+            {
+              "reading_id": "reading_000008",
+              "device_id": "FROST-S03",
+              "observed_at": "2026-08-28T01:04:00+00:00",
+              "temp_c": 4.0,
+              "quality": "good",
+              "source": "scenario"
+            }
+          ],
+          "excluded_readings": [
+            {
+              "reading_id": "reading_000001",
+              "device_id": "FROST-S03",
+              "observed_at": "2026-08-28T08:30:00+08:00",
+              "temp_c": 9.1,
+              "quality": "suspect",
+              "source": "scenario"
+            },
+            {
+              "reading_id": "reading_000002",
+              "device_id": "FROST-S03",
+              "observed_at": "2026-08-28T09:00:00+08:00",
+              "temp_c": 10.2,
+              "quality": "suspect",
+              "source": "scenario"
+            }
+          ],
+          "workorders": [
+            {
+              "workorder_id": "wo_000001",
+              "incident_id": "INC-COLD-B",
+              "action_id": "INC-COLD-B:repair",
+              "store_id": "S03",
+              "device_id": "FROST-S03",
+              "fault": "sensor_fault",
+              "budget": 500.0,
+              "status": "done",
+              "assignee": "vendor-a",
+              "created_at": "2026-08-28T09:01:00+08:00",
+              "updated_at": "2026-08-28T09:04:00+08:00",
+              "completion_evidence": {
+                "sensor_replaced": true,
+                "type": "synthetic_calibration_receipt"
+              }
+            }
+          ]
+        }
+      },
+      "batches": {
+        "passed": true,
+        "expected": {
+          "dispositions": [
+            "disposed",
+            "released",
+            "transferred"
+          ],
+          "batch_ids": [
+            "BATCH-S03-DAIRY-001",
+            "BATCH-S03-FRESH-001"
+          ],
+          "released_goods_safe_for_sale": true
+        },
+        "observed": {
+          "batches": [
+            {
+              "batch_id": "BATCH-S03-DAIRY-001",
+              "store_id": "S03",
+              "device_id": "FROST-S03",
+              "sku_id": "MILK-001",
+              "product_name": "巴氏鲜奶",
+              "quantity": 24,
+              "storage_min_c": 0.0,
+              "storage_max_c": 6.0,
+              "disposition": "released",
+              "safe_for_sale": true,
+              "policy_ref": "coldchain-demo:1.0.0",
+              "updated_at": "2026-08-28T09:05:00+08:00"
+            },
+            {
+              "batch_id": "BATCH-S03-FRESH-001",
+              "store_id": "S03",
+              "device_id": "FROST-S03",
+              "sku_id": "SANDWICH-001",
+              "product_name": "鲜食三明治",
+              "quantity": 18,
+              "storage_min_c": 0.0,
+              "storage_max_c": 8.0,
+              "disposition": "released",
+              "safe_for_sale": true,
+              "policy_ref": "coldchain-demo:1.0.0",
+              "updated_at": "2026-08-28T09:05:00+08:00"
+            }
+          ],
+          "disposition_receipts": [
+            {
+              "evidence_id": "manual_ev_000001",
+              "incident_id": "INC-COLD-B",
+              "action_id": null,
+              "actor": "ScenarioEngine",
+              "evidence_type": "manual_temperature",
+              "observed_at": "2026-08-28T09:01:00+08:00",
+              "uri": null,
+              "note": "Synthetic calibrated handheld thermometer reads normal",
+              "sha256": "db470ce294cee820626c1e8a95137dae1b1f5bbe5e0e4cedb04a9a0f2b6a35c5",
+              "created_at": "2026-08-28T09:01:00+08:00",
+              "metadata": {
+                "batch_id": "BATCH-S03-DAIRY-001",
+                "calibrated_at": "2026-08-01T00:00:00+08:00",
+                "calibration_valid_until": "2026-09-01T00:00:00+08:00",
+                "device_id": "FROST-S03",
+                "instrument": "synthetic-calibrated-probe",
+                "instrument_id": "synthetic-calibrated-probe",
+                "measurement_point": "product",
+                "synthetic": true,
+                "temp_c": 4.2
+              }
+            },
+            {
+              "evidence_id": "manual_ev_000002",
+              "incident_id": "INC-COLD-B",
+              "action_id": null,
+              "actor": "ScenarioEngine",
+              "evidence_type": "manual_temperature",
+              "observed_at": "2026-08-28T09:01:00+08:00",
+              "uri": null,
+              "note": "Synthetic calibrated handheld thermometer reads normal",
+              "sha256": "03901c00a97a32a83226a7b6b62fe34ad882681963b0e3325960f6c111fef8ea",
+              "created_at": "2026-08-28T09:01:00+08:00",
+              "metadata": {
+                "batch_id": "BATCH-S03-FRESH-001",
+                "calibrated_at": "2026-08-01T00:00:00+08:00",
+                "calibration_valid_until": "2026-09-01T00:00:00+08:00",
+                "device_id": "FROST-S03",
+                "instrument": "synthetic-calibrated-probe",
+                "instrument_id": "synthetic-calibrated-probe",
+                "measurement_point": "product",
+                "synthetic": true,
+                "temp_c": 4.2
+              }
+            }
+          ]
+        }
+      },
+      "sales_hold": {
+        "passed": true,
+        "expected": {
+          "terminal_batches_remain_held_unless_released": true
+        },
+        "observed": {
+          "sales_holds": [
+            {
+              "hold_id": "hold_000001",
+              "incident_id": "INC-COLD-B",
+              "action_id": "INC-COLD-B:hold",
+              "store_id": "S03",
+              "batch_id": "BATCH-S03-DAIRY-001",
+              "sku_id": "MILK-001",
+              "status": "released",
+              "reason": "coldchain temperature risk containment",
+              "applied_at": "2026-08-28T09:00:00+08:00",
+              "released_at": "2026-08-28T09:06:00+08:00",
+              "approval_id": "approval_000003",
+              "verification_id": "INC-COLD-B:verify:release_guard"
+            },
+            {
+              "hold_id": "hold_000002",
+              "incident_id": "INC-COLD-B",
+              "action_id": "INC-COLD-B:hold",
+              "store_id": "S03",
+              "batch_id": "BATCH-S03-FRESH-001",
+              "sku_id": "SANDWICH-001",
+              "status": "released",
+              "reason": "coldchain temperature risk containment",
+              "applied_at": "2026-08-28T09:00:00+08:00",
+              "released_at": "2026-08-28T09:06:00+08:00",
+              "approval_id": "approval_000003",
+              "verification_id": "INC-COLD-B:verify:release_guard"
+            }
+          ]
+        }
+      },
+      "approval": {
+        "passed": true,
+        "expected": {
+          "required_actions": [
+            "INC-COLD-B:batch:BATCH-S03-DAIRY-001",
+            "INC-COLD-B:batch:BATCH-S03-FRESH-001",
+            "INC-COLD-B:release-holds"
+          ],
+          "status": "approved"
+        },
+        "observed": {
+          "approvals": [
+            {
+              "approval_id": "approval_000001",
+              "incident_id": "INC-COLD-B",
+              "action_id": "INC-COLD-B:batch:BATCH-S03-DAIRY-001",
+              "subject": "released BATCH-S03-DAIRY-001",
+              "status": "approved",
+              "deadline": "2026-08-28T09:34:00+08:00",
+              "created_at": "2026-08-28T09:04:00+08:00",
+              "decided_at": "2026-08-28T09:05:00+08:00",
+              "decided_by": "ScenarioEngine",
+              "decision_reason": "synthetic food safety owner approves controlled batch release",
+              "approvers": [
+                "food_safety_owner"
+              ]
+            },
+            {
+              "approval_id": "approval_000002",
+              "incident_id": "INC-COLD-B",
+              "action_id": "INC-COLD-B:batch:BATCH-S03-FRESH-001",
+              "subject": "released BATCH-S03-FRESH-001",
+              "status": "approved",
+              "deadline": "2026-08-28T09:34:00+08:00",
+              "created_at": "2026-08-28T09:04:00+08:00",
+              "decided_at": "2026-08-28T09:05:00+08:00",
+              "decided_by": "ScenarioEngine",
+              "decision_reason": "synthetic food safety owner approves controlled batch release",
+              "approvers": [
+                "food_safety_owner"
+              ]
+            },
+            {
+              "approval_id": "approval_000003",
+              "incident_id": "INC-COLD-B",
+              "action_id": "INC-COLD-B:release-holds",
+              "subject": "release sales holds for INC-COLD-B",
+              "status": "approved",
+              "deadline": "2026-08-28T09:35:00+08:00",
+              "created_at": "2026-08-28T09:05:00+08:00",
+              "decided_at": "2026-08-28T09:06:00+08:00",
+              "decided_by": "ScenarioEngine",
+              "decision_reason": "synthetic food safety owner approves POS hold release",
+              "approvers": [
+                "food_safety_owner"
+              ]
+            }
+          ]
+        }
+      },
+      "audit": {
+        "passed": true,
+        "expected": {
+          "minimum_entries": 1,
+          "request_id_required": true
+        },
+        "observed": {
+          "entry_count": 13
+        }
+      },
+      "release_guard": {
+        "passed": true,
+        "expected": {
+          "device_batches_approvals_audit": "passed",
+          "released_batch_hold_state": [
+            "active",
+            "released"
+          ]
+        },
+        "observed": {
+          "released_batch_holds": {
+            "BATCH-S03-DAIRY-001": "released",
+            "BATCH-S03-FRESH-001": "released"
+          }
+        }
+      }
+    },
+    "failed_conditions": [],
+    "evidence_refs": [
+      "ev_4902606d962f298e",
+      "ev_53d2acb0769428b4",
+      "ev_a2aca6204230da1f",
+      "ev_f5774be83b90e1ca",
+      "ev_ff284a601d804b4b"
+    ],
+    "next_actions": [
+      "enter_learn"
+    ],
+    "partial_tools": [],
+    "evidence": [
+      {
+        "evidence_id": "ev_a2aca6204230da1f",
+        "incident_id": "INC-COLD-B",
+        "type": "device_context",
+        "source": "state_store.devices",
+        "observed_at": "2026-08-28T09:04:00+08:00",
+        "collected_at": "2026-08-28T09:06:00+08:00",
+        "payload": {
+          "device_id": "FROST-S03",
+          "store_id": "S03",
+          "health": {
+            "state": "normal",
+            "compressor_state": "running",
+            "model": "FROST-X100"
+          },
+          "door": {
+            "state": "closed"
+          },
+          "power": {
+            "state": "on"
+          },
+          "maintenance": {
+            "summary": "No open history in seed"
+          },
+          "temperature_series": [
+            {
+              "reading_id": "seed-FROST-S03-02",
+              "device_id": "FROST-S03",
+              "observed_at": "2026-08-28T06:30:00+08:00",
+              "temp_c": 3.3,
+              "quality": "good",
+              "source": "seed"
+            },
+            {
+              "reading_id": "seed-FROST-S03-03",
+              "device_id": "FROST-S03",
+              "observed_at": "2026-08-28T07:00:00+08:00",
+              "temp_c": 3.4,
+              "quality": "good",
+              "source": "seed"
+            },
+            {
+              "reading_id": "seed-FROST-S03-04",
+              "device_id": "FROST-S03",
+              "observed_at": "2026-08-28T07:30:00+08:00",
+              "temp_c": 3.4,
+              "quality": "good",
+              "source": "seed"
+            },
+            {
+              "reading_id": "reading_000003",
+              "device_id": "FROST-S03",
+              "observed_at": "2026-08-28T08:00:00+08:00",
+              "temp_c": 4.2,
+              "quality": "good",
+              "source": "synthetic-reference-probe"
+            },
+            {
+              "reading_id": "reading_000001",
+              "device_id": "FROST-S03",
+              "observed_at": "2026-08-28T08:30:00+08:00",
+              "temp_c": 9.1,
+              "quality": "suspect",
+              "source": "scenario"
+            },
+            {
+              "reading_id": "reading_000004",
+              "device_id": "FROST-S03",
+              "observed_at": "2026-08-28T08:30:00+08:00",
+              "temp_c": 4.2,
+              "quality": "good",
+              "source": "synthetic-reference-probe"
+            },
+            {
+              "reading_id": "reading_000002",
+              "device_id": "FROST-S03",
+              "observed_at": "2026-08-28T09:00:00+08:00",
+              "temp_c": 10.2,
+              "quality": "suspect",
+              "source": "scenario"
+            },
+            {
+              "reading_id": "reading_000005",
+              "device_id": "FROST-S03",
+              "observed_at": "2026-08-28T09:00:00+08:00",
+              "temp_c": 4.2,
+              "quality": "good",
+              "source": "synthetic-reference-probe"
+            },
+            {
+              "reading_id": "reading_000006",
+              "device_id": "FROST-S03",
+              "observed_at": "2026-08-28T09:02:00+08:00",
+              "temp_c": 4.3,
+              "quality": "good",
+              "source": "scenario"
+            },
+            {
+              "reading_id": "reading_000007",
+              "device_id": "FROST-S03",
+              "observed_at": "2026-08-28T09:03:00+08:00",
+              "temp_c": 4.1,
+              "quality": "good",
+              "source": "scenario"
+            },
+            {
+              "reading_id": "reading_000008",
+              "device_id": "FROST-S03",
+              "observed_at": "2026-08-28T09:04:00+08:00",
+              "temp_c": 4.0,
+              "quality": "good",
+              "source": "scenario"
+            }
+          ],
+          "ambient_temp_c": 26.0
+        },
+        "quality": "good",
+        "freshness": "fresh",
+        "request_id": "req_e8fff10dbdca41a8",
+        "immutable_hash": "a2aca6204230da1f54983cd5551e262ccef53bb279ea63b12621ff73a45e52a9"
+      },
+      {
+        "evidence_id": "ev_4902606d962f298e",
+        "incident_id": "INC-COLD-B",
+        "type": "inventory_batches",
+        "source": "state_store.inventory_batches",
+        "observed_at": "2026-08-28T09:05:00+08:00",
+        "collected_at": "2026-08-28T09:06:00+08:00",
+        "payload": {
+          "batches": [
+            {
+              "batch_id": "BATCH-S03-DAIRY-001",
+              "store_id": "S03",
+              "device_id": "FROST-S03",
+              "sku_id": "MILK-001",
+              "product_name": "巴氏鲜奶",
+              "quantity": 24,
+              "storage_min_c": 0.0,
+              "storage_max_c": 6.0,
+              "disposition": "released",
+              "safe_for_sale": true,
+              "policy_ref": "coldchain-demo:1.0.0",
+              "updated_at": "2026-08-28T09:05:00+08:00"
+            },
+            {
+              "batch_id": "BATCH-S03-FRESH-001",
+              "store_id": "S03",
+              "device_id": "FROST-S03",
+              "sku_id": "SANDWICH-001",
+              "product_name": "鲜食三明治",
+              "quantity": 18,
+              "storage_min_c": 0.0,
+              "storage_max_c": 8.0,
+              "disposition": "released",
+              "safe_for_sale": true,
+              "policy_ref": "coldchain-demo:1.0.0",
+              "updated_at": "2026-08-28T09:05:00+08:00"
+            }
+          ]
+        },
+        "quality": "good",
+        "freshness": "current",
+        "request_id": "req_6c02c3cd11fd458d",
+        "immutable_hash": "4902606d962f298ea0930084a4018b89993c66dd32c41190c4bbed40996c6409"
+      },
+      {
+        "evidence_id": "ev_f5774be83b90e1ca",
+        "incident_id": "INC-COLD-B",
+        "type": "sales_holds",
+        "source": "state_store.sales_holds",
+        "observed_at": "2026-08-28T09:06:00+08:00",
+        "collected_at": "2026-08-28T09:06:00+08:00",
+        "payload": {
+          "sales_holds": [
+            {
+              "hold_id": "hold_000001",
+              "incident_id": "INC-COLD-B",
+              "action_id": "INC-COLD-B:hold",
+              "store_id": "S03",
+              "batch_id": "BATCH-S03-DAIRY-001",
+              "sku_id": "MILK-001",
+              "status": "released",
+              "reason": "coldchain temperature risk containment",
+              "applied_at": "2026-08-28T09:00:00+08:00",
+              "released_at": "2026-08-28T09:06:00+08:00",
+              "approval_id": "approval_000003",
+              "verification_id": "INC-COLD-B:verify:release_guard"
+            },
+            {
+              "hold_id": "hold_000002",
+              "incident_id": "INC-COLD-B",
+              "action_id": "INC-COLD-B:hold",
+              "store_id": "S03",
+              "batch_id": "BATCH-S03-FRESH-001",
+              "sku_id": "SANDWICH-001",
+              "status": "released",
+              "reason": "coldchain temperature risk containment",
+              "applied_at": "2026-08-28T09:00:00+08:00",
+              "released_at": "2026-08-28T09:06:00+08:00",
+              "approval_id": "approval_000003",
+              "verification_id": "INC-COLD-B:verify:release_guard"
+            }
+          ]
+        },
+        "quality": "good",
+        "freshness": "current",
+        "request_id": "req_fc08f991d6a347e2",
+        "immutable_hash": "f5774be83b90e1ca8bcc147533c449cf784ad7ca36a632150022639e32629a5c"
+      },
+      {
+        "evidence_id": "ev_ff284a601d804b4b",
+        "incident_id": "INC-COLD-B",
+        "type": "workorders",
+        "source": "state_store.workorders",
+        "observed_at": "2026-08-28T09:06:00+08:00",
+        "collected_at": "2026-08-28T09:06:00+08:00",
+        "payload": {
+          "workorders": [
+            {
+              "workorder_id": "wo_000001",
+              "incident_id": "INC-COLD-B",
+              "action_id": "INC-COLD-B:repair",
+              "store_id": "S03",
+              "device_id": "FROST-S03",
+              "fault": "sensor_fault",
+              "budget": 500.0,
+              "status": "done",
+              "assignee": "vendor-a",
+              "created_at": "2026-08-28T09:01:00+08:00",
+              "updated_at": "2026-08-28T09:04:00+08:00",
+              "completion_evidence": {
+                "sensor_replaced": true,
+                "type": "synthetic_calibration_receipt"
+              }
+            }
+          ]
+        },
+        "quality": "good",
+        "freshness": "current",
+        "request_id": "req_a6700a7b87134cb5",
+        "immutable_hash": "ff284a601d804b4bc42bdf95859e03db2b12ec29775796e945c4727ce7d67d54"
+      },
+      {
+        "evidence_id": "ev_53d2acb0769428b4",
+        "incident_id": "INC-COLD-B",
+        "type": "approvals",
+        "source": "state_store.approvals",
+        "observed_at": "2026-08-28T09:06:00+08:00",
+        "collected_at": "2026-08-28T09:06:00+08:00",
+        "payload": {
+          "approvals": [
+            {
+              "approval_id": "approval_000001",
+              "incident_id": "INC-COLD-B",
+              "action_id": "INC-COLD-B:batch:BATCH-S03-DAIRY-001",
+              "subject": "released BATCH-S03-DAIRY-001",
+              "status": "approved",
+              "deadline": "2026-08-28T09:34:00+08:00",
+              "created_at": "2026-08-28T09:04:00+08:00",
+              "decided_at": "2026-08-28T09:05:00+08:00",
+              "decided_by": "ScenarioEngine",
+              "decision_reason": "synthetic food safety owner approves controlled batch release",
+              "approvers": [
+                "food_safety_owner"
+              ]
+            },
+            {
+              "approval_id": "approval_000002",
+              "incident_id": "INC-COLD-B",
+              "action_id": "INC-COLD-B:batch:BATCH-S03-FRESH-001",
+              "subject": "released BATCH-S03-FRESH-001",
+              "status": "approved",
+              "deadline": "2026-08-28T09:34:00+08:00",
+              "created_at": "2026-08-28T09:04:00+08:00",
+              "decided_at": "2026-08-28T09:05:00+08:00",
+              "decided_by": "ScenarioEngine",
+              "decision_reason": "synthetic food safety owner approves controlled batch release",
+              "approvers": [
+                "food_safety_owner"
+              ]
+            },
+            {
+              "approval_id": "approval_000003",
+              "incident_id": "INC-COLD-B",
+              "action_id": "INC-COLD-B:release-holds",
+              "subject": "release sales holds for INC-COLD-B",
+              "status": "approved",
+              "deadline": "2026-08-28T09:35:00+08:00",
+              "created_at": "2026-08-28T09:05:00+08:00",
+              "decided_at": "2026-08-28T09:06:00+08:00",
+              "decided_by": "ScenarioEngine",
+              "decision_reason": "synthetic food safety owner approves POS hold release",
+              "approvers": [
+                "food_safety_owner"
+              ]
+            }
+          ]
+        },
+        "quality": "good",
+        "freshness": "current",
+        "request_id": "req_a8963eeb1a4b423f",
+        "immutable_hash": "53d2acb0769428b4b872bee7d463d6fdecf420e94ece73b42a34b461d5056d88"
+      }
+    ],
+    "incident_status": "RESOLVED",
+    "attempts": [
+      {
+        "result": "release_ready",
+        "failed_conditions": [
+          "sales_hold"
+        ],
+        "partial_tools": []
+      },
+      {
+        "result": "verified",
+        "failed_conditions": [],
+        "partial_tools": []
+      }
+    ]
+  },
+  "review": {
+    "report_id": "review:INC-COLD-B",
+    "incident_id": "INC-COLD-B",
+    "scenario_id": "coldchain-sensor-false-positive",
+    "trace_id": "tr_coldchain_sensor_false_positive",
+    "root_cause": {
+      "label": "sensor_fault",
+      "confidence": 0.96,
+      "evidence_ids": [
+        "ev_be754435ea3487a7",
+        "manual_ev_000001",
+        "manual_ev_000002"
+      ]
+    },
+    "actions": [
+      {
+        "action_id": "INC-COLD-B:hold",
+        "action_type": "apply_sales_hold",
+        "status": "completed",
+        "approval_id": null
+      },
+      {
+        "action_id": "INC-COLD-B:repair",
+        "action_type": "create_workorder",
+        "status": "completed",
+        "approval_id": null
+      },
+      {
+        "action_id": "INC-COLD-B:batch:BATCH-S03-DAIRY-001",
+        "action_type": "apply_batch_disposition:released",
+        "status": "completed",
+        "approval_id": "approval_000001"
+      },
+      {
+        "action_id": "INC-COLD-B:batch:BATCH-S03-FRESH-001",
+        "action_type": "apply_batch_disposition:released",
+        "status": "completed",
+        "approval_id": "approval_000002"
+      },
+      {
+        "action_id": "INC-COLD-B:release-holds",
+        "action_type": "release_sales_hold",
+        "status": "completed",
+        "approval_id": "approval_000003"
+      }
+    ],
+    "batch_reviews": [
+      {
+        "batch_id": "BATCH-S03-DAIRY-001",
+        "final_disposition": "released",
+        "action_ids": [
+          "INC-COLD-B:hold",
+          "INC-COLD-B:batch:BATCH-S03-DAIRY-001"
+        ],
+        "verification_ids": [
+          "INC-COLD-B:verify:batches",
+          "INC-COLD-B:verify:sales_hold"
+        ]
+      },
+      {
+        "batch_id": "BATCH-S03-FRESH-001",
+        "final_disposition": "released",
+        "action_ids": [
+          "INC-COLD-B:hold",
+          "INC-COLD-B:batch:BATCH-S03-FRESH-001"
+        ],
+        "verification_ids": [
+          "INC-COLD-B:verify:batches",
+          "INC-COLD-B:verify:sales_hold"
+        ]
+      }
+    ],
+    "verification": {
+      "incident_id": "INC-COLD-B",
+      "result": "verified",
+      "checks": {
+        "device": {
+          "passed": true,
+          "expected": {
+            "recovery_samples": 3,
+            "max_c": 8.0,
+            "health": "normal",
+            "workorder": "done_with_evidence"
+          },
+          "observed": {
+            "device": {
+              "device_id": "FROST-S03",
+              "store_id": "S03",
+              "health": {
+                "state": "normal",
+                "compressor_state": "running",
+                "model": "FROST-X100"
+              },
+              "door": {
+                "state": "closed"
+              },
+              "power": {
+                "state": "on"
+              },
+              "maintenance": {
+                "summary": "No open history in seed"
+              },
+              "temperature_series": [
+                {
+                  "reading_id": "seed-FROST-S03-02",
+                  "device_id": "FROST-S03",
+                  "observed_at": "2026-08-28T06:30:00+08:00",
+                  "temp_c": 3.3,
+                  "quality": "good",
+                  "source": "seed"
+                },
+                {
+                  "reading_id": "seed-FROST-S03-03",
+                  "device_id": "FROST-S03",
+                  "observed_at": "2026-08-28T07:00:00+08:00",
+                  "temp_c": 3.4,
+                  "quality": "good",
+                  "source": "seed"
+                },
+                {
+                  "reading_id": "seed-FROST-S03-04",
+                  "device_id": "FROST-S03",
+                  "observed_at": "2026-08-28T07:30:00+08:00",
+                  "temp_c": 3.4,
+                  "quality": "good",
+                  "source": "seed"
+                },
+                {
+                  "reading_id": "reading_000003",
+                  "device_id": "FROST-S03",
+                  "observed_at": "2026-08-28T08:00:00+08:00",
+                  "temp_c": 4.2,
+                  "quality": "good",
+                  "source": "synthetic-reference-probe"
+                },
+                {
+                  "reading_id": "reading_000001",
+                  "device_id": "FROST-S03",
+                  "observed_at": "2026-08-28T08:30:00+08:00",
+                  "temp_c": 9.1,
+                  "quality": "suspect",
+                  "source": "scenario"
+                },
+                {
+                  "reading_id": "reading_000004",
+                  "device_id": "FROST-S03",
+                  "observed_at": "2026-08-28T08:30:00+08:00",
+                  "temp_c": 4.2,
+                  "quality": "good",
+                  "source": "synthetic-reference-probe"
+                },
+                {
+                  "reading_id": "reading_000002",
+                  "device_id": "FROST-S03",
+                  "observed_at": "2026-08-28T09:00:00+08:00",
+                  "temp_c": 10.2,
+                  "quality": "suspect",
+                  "source": "scenario"
+                },
+                {
+                  "reading_id": "reading_000005",
+                  "device_id": "FROST-S03",
+                  "observed_at": "2026-08-28T09:00:00+08:00",
+                  "temp_c": 4.2,
+                  "quality": "good",
+                  "source": "synthetic-reference-probe"
+                },
+                {
+                  "reading_id": "reading_000006",
+                  "device_id": "FROST-S03",
+                  "observed_at": "2026-08-28T09:02:00+08:00",
+                  "temp_c": 4.3,
+                  "quality": "good",
+                  "source": "scenario"
+                },
+                {
+                  "reading_id": "reading_000007",
+                  "device_id": "FROST-S03",
+                  "observed_at": "2026-08-28T09:03:00+08:00",
+                  "temp_c": 4.1,
+                  "quality": "good",
+                  "source": "scenario"
+                },
+                {
+                  "reading_id": "reading_000008",
+                  "device_id": "FROST-S03",
+                  "observed_at": "2026-08-28T09:04:00+08:00",
+                  "temp_c": 4.0,
+                  "quality": "good",
+                  "source": "scenario"
+                }
+              ],
+              "ambient_temp_c": 26.0
+            },
+            "latest_samples": [
+              {
+                "reading_id": "reading_000006",
+                "device_id": "FROST-S03",
+                "observed_at": "2026-08-28T01:02:00+00:00",
+                "temp_c": 4.3,
+                "quality": "good",
+                "source": "scenario"
+              },
+              {
+                "reading_id": "reading_000007",
+                "device_id": "FROST-S03",
+                "observed_at": "2026-08-28T01:03:00+00:00",
+                "temp_c": 4.1,
+                "quality": "good",
+                "source": "scenario"
+              },
+              {
+                "reading_id": "reading_000008",
+                "device_id": "FROST-S03",
+                "observed_at": "2026-08-28T01:04:00+00:00",
+                "temp_c": 4.0,
+                "quality": "good",
+                "source": "scenario"
+              }
+            ],
+            "excluded_readings": [
+              {
+                "reading_id": "reading_000001",
+                "device_id": "FROST-S03",
+                "observed_at": "2026-08-28T08:30:00+08:00",
+                "temp_c": 9.1,
+                "quality": "suspect",
+                "source": "scenario"
+              },
+              {
+                "reading_id": "reading_000002",
+                "device_id": "FROST-S03",
+                "observed_at": "2026-08-28T09:00:00+08:00",
+                "temp_c": 10.2,
+                "quality": "suspect",
+                "source": "scenario"
+              }
+            ],
+            "workorders": [
+              {
+                "workorder_id": "wo_000001",
+                "incident_id": "INC-COLD-B",
+                "action_id": "INC-COLD-B:repair",
+                "store_id": "S03",
+                "device_id": "FROST-S03",
+                "fault": "sensor_fault",
+                "budget": 500.0,
+                "status": "done",
+                "assignee": "vendor-a",
+                "created_at": "2026-08-28T09:01:00+08:00",
+                "updated_at": "2026-08-28T09:04:00+08:00",
+                "completion_evidence": {
+                  "sensor_replaced": true,
+                  "type": "synthetic_calibration_receipt"
+                }
+              }
+            ]
+          }
+        },
+        "batches": {
+          "passed": true,
+          "expected": {
+            "dispositions": [
+              "disposed",
+              "released",
+              "transferred"
+            ],
+            "batch_ids": [
+              "BATCH-S03-DAIRY-001",
+              "BATCH-S03-FRESH-001"
+            ],
+            "released_goods_safe_for_sale": true
+          },
+          "observed": {
+            "batches": [
+              {
+                "batch_id": "BATCH-S03-DAIRY-001",
+                "store_id": "S03",
+                "device_id": "FROST-S03",
+                "sku_id": "MILK-001",
+                "product_name": "巴氏鲜奶",
+                "quantity": 24,
+                "storage_min_c": 0.0,
+                "storage_max_c": 6.0,
+                "disposition": "released",
+                "safe_for_sale": true,
+                "policy_ref": "coldchain-demo:1.0.0",
+                "updated_at": "2026-08-28T09:05:00+08:00"
+              },
+              {
+                "batch_id": "BATCH-S03-FRESH-001",
+                "store_id": "S03",
+                "device_id": "FROST-S03",
+                "sku_id": "SANDWICH-001",
+                "product_name": "鲜食三明治",
+                "quantity": 18,
+                "storage_min_c": 0.0,
+                "storage_max_c": 8.0,
+                "disposition": "released",
+                "safe_for_sale": true,
+                "policy_ref": "coldchain-demo:1.0.0",
+                "updated_at": "2026-08-28T09:05:00+08:00"
+              }
+            ],
+            "disposition_receipts": [
+              {
+                "evidence_id": "manual_ev_000001",
+                "incident_id": "INC-COLD-B",
+                "action_id": null,
+                "actor": "ScenarioEngine",
+                "evidence_type": "manual_temperature",
+                "observed_at": "2026-08-28T09:01:00+08:00",
+                "uri": null,
+                "note": "Synthetic calibrated handheld thermometer reads normal",
+                "sha256": "db470ce294cee820626c1e8a95137dae1b1f5bbe5e0e4cedb04a9a0f2b6a35c5",
+                "created_at": "2026-08-28T09:01:00+08:00",
+                "metadata": {
+                  "batch_id": "BATCH-S03-DAIRY-001",
+                  "calibrated_at": "2026-08-01T00:00:00+08:00",
+                  "calibration_valid_until": "2026-09-01T00:00:00+08:00",
+                  "device_id": "FROST-S03",
+                  "instrument": "synthetic-calibrated-probe",
+                  "instrument_id": "synthetic-calibrated-probe",
+                  "measurement_point": "product",
+                  "synthetic": true,
+                  "temp_c": 4.2
+                }
+              },
+              {
+                "evidence_id": "manual_ev_000002",
+                "incident_id": "INC-COLD-B",
+                "action_id": null,
+                "actor": "ScenarioEngine",
+                "evidence_type": "manual_temperature",
+                "observed_at": "2026-08-28T09:01:00+08:00",
+                "uri": null,
+                "note": "Synthetic calibrated handheld thermometer reads normal",
+                "sha256": "03901c00a97a32a83226a7b6b62fe34ad882681963b0e3325960f6c111fef8ea",
+                "created_at": "2026-08-28T09:01:00+08:00",
+                "metadata": {
+                  "batch_id": "BATCH-S03-FRESH-001",
+                  "calibrated_at": "2026-08-01T00:00:00+08:00",
+                  "calibration_valid_until": "2026-09-01T00:00:00+08:00",
+                  "device_id": "FROST-S03",
+                  "instrument": "synthetic-calibrated-probe",
+                  "instrument_id": "synthetic-calibrated-probe",
+                  "measurement_point": "product",
+                  "synthetic": true,
+                  "temp_c": 4.2
+                }
+              }
+            ]
+          }
+        },
+        "sales_hold": {
+          "passed": true,
+          "expected": {
+            "terminal_batches_remain_held_unless_released": true
+          },
+          "observed": {
+            "sales_holds": [
+              {
+                "hold_id": "hold_000001",
+                "incident_id": "INC-COLD-B",
+                "action_id": "INC-COLD-B:hold",
+                "store_id": "S03",
+                "batch_id": "BATCH-S03-DAIRY-001",
+                "sku_id": "MILK-001",
+                "status": "released",
+                "reason": "coldchain temperature risk containment",
+                "applied_at": "2026-08-28T09:00:00+08:00",
+                "released_at": "2026-08-28T09:06:00+08:00",
+                "approval_id": "approval_000003",
+                "verification_id": "INC-COLD-B:verify:release_guard"
+              },
+              {
+                "hold_id": "hold_000002",
+                "incident_id": "INC-COLD-B",
+                "action_id": "INC-COLD-B:hold",
+                "store_id": "S03",
+                "batch_id": "BATCH-S03-FRESH-001",
+                "sku_id": "SANDWICH-001",
+                "status": "released",
+                "reason": "coldchain temperature risk containment",
+                "applied_at": "2026-08-28T09:00:00+08:00",
+                "released_at": "2026-08-28T09:06:00+08:00",
+                "approval_id": "approval_000003",
+                "verification_id": "INC-COLD-B:verify:release_guard"
+              }
+            ]
+          }
+        },
+        "approval": {
+          "passed": true,
+          "expected": {
+            "required_actions": [
+              "INC-COLD-B:batch:BATCH-S03-DAIRY-001",
+              "INC-COLD-B:batch:BATCH-S03-FRESH-001",
+              "INC-COLD-B:release-holds"
+            ],
+            "status": "approved"
+          },
+          "observed": {
+            "approvals": [
+              {
+                "approval_id": "approval_000001",
+                "incident_id": "INC-COLD-B",
+                "action_id": "INC-COLD-B:batch:BATCH-S03-DAIRY-001",
+                "subject": "released BATCH-S03-DAIRY-001",
+                "status": "approved",
+                "deadline": "2026-08-28T09:34:00+08:00",
+                "created_at": "2026-08-28T09:04:00+08:00",
+                "decided_at": "2026-08-28T09:05:00+08:00",
+                "decided_by": "ScenarioEngine",
+                "decision_reason": "synthetic food safety owner approves controlled batch release",
+                "approvers": [
+                  "food_safety_owner"
+                ]
+              },
+              {
+                "approval_id": "approval_000002",
+                "incident_id": "INC-COLD-B",
+                "action_id": "INC-COLD-B:batch:BATCH-S03-FRESH-001",
+                "subject": "released BATCH-S03-FRESH-001",
+                "status": "approved",
+                "deadline": "2026-08-28T09:34:00+08:00",
+                "created_at": "2026-08-28T09:04:00+08:00",
+                "decided_at": "2026-08-28T09:05:00+08:00",
+                "decided_by": "ScenarioEngine",
+                "decision_reason": "synthetic food safety owner approves controlled batch release",
+                "approvers": [
+                  "food_safety_owner"
+                ]
+              },
+              {
+                "approval_id": "approval_000003",
+                "incident_id": "INC-COLD-B",
+                "action_id": "INC-COLD-B:release-holds",
+                "subject": "release sales holds for INC-COLD-B",
+                "status": "approved",
+                "deadline": "2026-08-28T09:35:00+08:00",
+                "created_at": "2026-08-28T09:05:00+08:00",
+                "decided_at": "2026-08-28T09:06:00+08:00",
+                "decided_by": "ScenarioEngine",
+                "decision_reason": "synthetic food safety owner approves POS hold release",
+                "approvers": [
+                  "food_safety_owner"
+                ]
+              }
+            ]
+          }
+        },
+        "audit": {
+          "passed": true,
+          "expected": {
+            "minimum_entries": 1,
+            "request_id_required": true
+          },
+          "observed": {
+            "entry_count": 13
+          }
+        },
+        "release_guard": {
+          "passed": true,
+          "expected": {
+            "device_batches_approvals_audit": "passed",
+            "released_batch_hold_state": [
+              "active",
+              "released"
+            ]
+          },
+          "observed": {
+            "released_batch_holds": {
+              "BATCH-S03-DAIRY-001": "released",
+              "BATCH-S03-FRESH-001": "released"
+            }
+          }
+        }
+      },
+      "failed_conditions": [],
+      "evidence_refs": [
+        "ev_4902606d962f298e",
+        "ev_53d2acb0769428b4",
+        "ev_a2aca6204230da1f",
+        "ev_f5774be83b90e1ca",
+        "ev_ff284a601d804b4b"
+      ],
+      "next_actions": [
+        "enter_learn"
+      ],
+      "partial_tools": [],
+      "evidence": [
+        {
+          "evidence_id": "ev_a2aca6204230da1f",
+          "incident_id": "INC-COLD-B",
+          "type": "device_context",
+          "source": "state_store.devices",
+          "observed_at": "2026-08-28T09:04:00+08:00",
+          "collected_at": "2026-08-28T09:06:00+08:00",
+          "payload": {
+            "device_id": "FROST-S03",
+            "store_id": "S03",
+            "health": {
+              "state": "normal",
+              "compressor_state": "running",
+              "model": "FROST-X100"
+            },
+            "door": {
+              "state": "closed"
+            },
+            "power": {
+              "state": "on"
+            },
+            "maintenance": {
+              "summary": "No open history in seed"
+            },
+            "temperature_series": [
+              {
+                "reading_id": "seed-FROST-S03-02",
+                "device_id": "FROST-S03",
+                "observed_at": "2026-08-28T06:30:00+08:00",
+                "temp_c": 3.3,
+                "quality": "good",
+                "source": "seed"
+              },
+              {
+                "reading_id": "seed-FROST-S03-03",
+                "device_id": "FROST-S03",
+                "observed_at": "2026-08-28T07:00:00+08:00",
+                "temp_c": 3.4,
+                "quality": "good",
+                "source": "seed"
+              },
+              {
+                "reading_id": "seed-FROST-S03-04",
+                "device_id": "FROST-S03",
+                "observed_at": "2026-08-28T07:30:00+08:00",
+                "temp_c": 3.4,
+                "quality": "good",
+                "source": "seed"
+              },
+              {
+                "reading_id": "reading_000003",
+                "device_id": "FROST-S03",
+                "observed_at": "2026-08-28T08:00:00+08:00",
+                "temp_c": 4.2,
+                "quality": "good",
+                "source": "synthetic-reference-probe"
+              },
+              {
+                "reading_id": "reading_000001",
+                "device_id": "FROST-S03",
+                "observed_at": "2026-08-28T08:30:00+08:00",
+                "temp_c": 9.1,
+                "quality": "suspect",
+                "source": "scenario"
+              },
+              {
+                "reading_id": "reading_000004",
+                "device_id": "FROST-S03",
+                "observed_at": "2026-08-28T08:30:00+08:00",
+                "temp_c": 4.2,
+                "quality": "good",
+                "source": "synthetic-reference-probe"
+              },
+              {
+                "reading_id": "reading_000002",
+                "device_id": "FROST-S03",
+                "observed_at": "2026-08-28T09:00:00+08:00",
+                "temp_c": 10.2,
+                "quality": "suspect",
+                "source": "scenario"
+              },
+              {
+                "reading_id": "reading_000005",
+                "device_id": "FROST-S03",
+                "observed_at": "2026-08-28T09:00:00+08:00",
+                "temp_c": 4.2,
+                "quality": "good",
+                "source": "synthetic-reference-probe"
+              },
+              {
+                "reading_id": "reading_000006",
+                "device_id": "FROST-S03",
+                "observed_at": "2026-08-28T09:02:00+08:00",
+                "temp_c": 4.3,
+                "quality": "good",
+                "source": "scenario"
+              },
+              {
+                "reading_id": "reading_000007",
+                "device_id": "FROST-S03",
+                "observed_at": "2026-08-28T09:03:00+08:00",
+                "temp_c": 4.1,
+                "quality": "good",
+                "source": "scenario"
+              },
+              {
+                "reading_id": "reading_000008",
+                "device_id": "FROST-S03",
+                "observed_at": "2026-08-28T09:04:00+08:00",
+                "temp_c": 4.0,
+                "quality": "good",
+                "source": "scenario"
+              }
+            ],
+            "ambient_temp_c": 26.0
+          },
+          "quality": "good",
+          "freshness": "fresh",
+          "request_id": "req_e8fff10dbdca41a8",
+          "immutable_hash": "a2aca6204230da1f54983cd5551e262ccef53bb279ea63b12621ff73a45e52a9"
+        },
+        {
+          "evidence_id": "ev_4902606d962f298e",
+          "incident_id": "INC-COLD-B",
+          "type": "inventory_batches",
+          "source": "state_store.inventory_batches",
+          "observed_at": "2026-08-28T09:05:00+08:00",
+          "collected_at": "2026-08-28T09:06:00+08:00",
+          "payload": {
+            "batches": [
+              {
+                "batch_id": "BATCH-S03-DAIRY-001",
+                "store_id": "S03",
+                "device_id": "FROST-S03",
+                "sku_id": "MILK-001",
+                "product_name": "巴氏鲜奶",
+                "quantity": 24,
+                "storage_min_c": 0.0,
+                "storage_max_c": 6.0,
+                "disposition": "released",
+                "safe_for_sale": true,
+                "policy_ref": "coldchain-demo:1.0.0",
+                "updated_at": "2026-08-28T09:05:00+08:00"
+              },
+              {
+                "batch_id": "BATCH-S03-FRESH-001",
+                "store_id": "S03",
+                "device_id": "FROST-S03",
+                "sku_id": "SANDWICH-001",
+                "product_name": "鲜食三明治",
+                "quantity": 18,
+                "storage_min_c": 0.0,
+                "storage_max_c": 8.0,
+                "disposition": "released",
+                "safe_for_sale": true,
+                "policy_ref": "coldchain-demo:1.0.0",
+                "updated_at": "2026-08-28T09:05:00+08:00"
+              }
+            ]
+          },
+          "quality": "good",
+          "freshness": "current",
+          "request_id": "req_6c02c3cd11fd458d",
+          "immutable_hash": "4902606d962f298ea0930084a4018b89993c66dd32c41190c4bbed40996c6409"
+        },
+        {
+          "evidence_id": "ev_f5774be83b90e1ca",
+          "incident_id": "INC-COLD-B",
+          "type": "sales_holds",
+          "source": "state_store.sales_holds",
+          "observed_at": "2026-08-28T09:06:00+08:00",
+          "collected_at": "2026-08-28T09:06:00+08:00",
+          "payload": {
+            "sales_holds": [
+              {
+                "hold_id": "hold_000001",
+                "incident_id": "INC-COLD-B",
+                "action_id": "INC-COLD-B:hold",
+                "store_id": "S03",
+                "batch_id": "BATCH-S03-DAIRY-001",
+                "sku_id": "MILK-001",
+                "status": "released",
+                "reason": "coldchain temperature risk containment",
+                "applied_at": "2026-08-28T09:00:00+08:00",
+                "released_at": "2026-08-28T09:06:00+08:00",
+                "approval_id": "approval_000003",
+                "verification_id": "INC-COLD-B:verify:release_guard"
+              },
+              {
+                "hold_id": "hold_000002",
+                "incident_id": "INC-COLD-B",
+                "action_id": "INC-COLD-B:hold",
+                "store_id": "S03",
+                "batch_id": "BATCH-S03-FRESH-001",
+                "sku_id": "SANDWICH-001",
+                "status": "released",
+                "reason": "coldchain temperature risk containment",
+                "applied_at": "2026-08-28T09:00:00+08:00",
+                "released_at": "2026-08-28T09:06:00+08:00",
+                "approval_id": "approval_000003",
+                "verification_id": "INC-COLD-B:verify:release_guard"
+              }
+            ]
+          },
+          "quality": "good",
+          "freshness": "current",
+          "request_id": "req_fc08f991d6a347e2",
+          "immutable_hash": "f5774be83b90e1ca8bcc147533c449cf784ad7ca36a632150022639e32629a5c"
+        },
+        {
+          "evidence_id": "ev_ff284a601d804b4b",
+          "incident_id": "INC-COLD-B",
+          "type": "workorders",
+          "source": "state_store.workorders",
+          "observed_at": "2026-08-28T09:06:00+08:00",
+          "collected_at": "2026-08-28T09:06:00+08:00",
+          "payload": {
+            "workorders": [
+              {
+                "workorder_id": "wo_000001",
+                "incident_id": "INC-COLD-B",
+                "action_id": "INC-COLD-B:repair",
+                "store_id": "S03",
+                "device_id": "FROST-S03",
+                "fault": "sensor_fault",
+                "budget": 500.0,
+                "status": "done",
+                "assignee": "vendor-a",
+                "created_at": "2026-08-28T09:01:00+08:00",
+                "updated_at": "2026-08-28T09:04:00+08:00",
+                "completion_evidence": {
+                  "sensor_replaced": true,
+                  "type": "synthetic_calibration_receipt"
+                }
+              }
+            ]
+          },
+          "quality": "good",
+          "freshness": "current",
+          "request_id": "req_a6700a7b87134cb5",
+          "immutable_hash": "ff284a601d804b4bc42bdf95859e03db2b12ec29775796e945c4727ce7d67d54"
+        },
+        {
+          "evidence_id": "ev_53d2acb0769428b4",
+          "incident_id": "INC-COLD-B",
+          "type": "approvals",
+          "source": "state_store.approvals",
+          "observed_at": "2026-08-28T09:06:00+08:00",
+          "collected_at": "2026-08-28T09:06:00+08:00",
+          "payload": {
+            "approvals": [
+              {
+                "approval_id": "approval_000001",
+                "incident_id": "INC-COLD-B",
+                "action_id": "INC-COLD-B:batch:BATCH-S03-DAIRY-001",
+                "subject": "released BATCH-S03-DAIRY-001",
+                "status": "approved",
+                "deadline": "2026-08-28T09:34:00+08:00",
+                "created_at": "2026-08-28T09:04:00+08:00",
+                "decided_at": "2026-08-28T09:05:00+08:00",
+                "decided_by": "ScenarioEngine",
+                "decision_reason": "synthetic food safety owner approves controlled batch release",
+                "approvers": [
+                  "food_safety_owner"
+                ]
+              },
+              {
+                "approval_id": "approval_000002",
+                "incident_id": "INC-COLD-B",
+                "action_id": "INC-COLD-B:batch:BATCH-S03-FRESH-001",
+                "subject": "released BATCH-S03-FRESH-001",
+                "status": "approved",
+                "deadline": "2026-08-28T09:34:00+08:00",
+                "created_at": "2026-08-28T09:04:00+08:00",
+                "decided_at": "2026-08-28T09:05:00+08:00",
+                "decided_by": "ScenarioEngine",
+                "decision_reason": "synthetic food safety owner approves controlled batch release",
+                "approvers": [
+                  "food_safety_owner"
+                ]
+              },
+              {
+                "approval_id": "approval_000003",
+                "incident_id": "INC-COLD-B",
+                "action_id": "INC-COLD-B:release-holds",
+                "subject": "release sales holds for INC-COLD-B",
+                "status": "approved",
+                "deadline": "2026-08-28T09:35:00+08:00",
+                "created_at": "2026-08-28T09:05:00+08:00",
+                "decided_at": "2026-08-28T09:06:00+08:00",
+                "decided_by": "ScenarioEngine",
+                "decision_reason": "synthetic food safety owner approves POS hold release",
+                "approvers": [
+                  "food_safety_owner"
+                ]
+              }
+            ]
+          },
+          "quality": "good",
+          "freshness": "current",
+          "request_id": "req_a8963eeb1a4b423f",
+          "immutable_hash": "53d2acb0769428b4b872bee7d463d6fdecf420e94ece73b42a34b461d5056d88"
+        }
+      ],
+      "incident_status": "RESOLVED",
+      "attempts": [
+        {
+          "result": "release_ready",
+          "failed_conditions": [
+            "sales_hold"
+          ],
+          "partial_tools": []
+        },
+        {
+          "result": "verified",
+          "failed_conditions": [],
+          "partial_tools": []
+        }
+      ]
+    },
+    "lessons": [
+      "containment_precedes_complete_diagnosis",
+      "device_recovery_does_not_release_goods",
+      "auditor_requeries_business_state"
+    ],
+    "knowledge": {
+      "retrieval_status": "disabled",
+      "candidate_status": "pending_not_persisted",
+      "reason": "Knowledge service is not configured for this runtime"
+    },
+    "skill_update_suggestions": []
+  },
+  "acceptance": {
+    "passed": true,
+    "mismatches": []
+  },
+  "evidence_level": {
+    "local_demo": "implemented",
+    "external_systems": "stateful_mock",
+    "agentteams": "not_proven_by_local_adapter"
+  }
+}

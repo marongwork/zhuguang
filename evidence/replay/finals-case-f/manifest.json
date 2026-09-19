@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "source_kind": "synthetic_local_run",
+  "incident_id": "INC-COLD-F",
+  "trace_id": "tr_coldchain_workorder_query_partial",
+  "scenario_id": "coldchain-workorder-query-partial",
+  "provenance": {
+    "git_commit": "bfa4b66cbd62dfeb3bc3ecf78c10abcc363d0b5e",
+    "dirty_worktree": true
+  },
+  "claim_boundary": "Local synthetic SQLite run; no AgentTeams, PolarDB, OSS or real-store evidence. Hashes detect accidental changes, not source authenticity.",
+  "files": {
+    "audit.jsonl": "61221e976e985edde79bb70ba99dd85457031a77b1f740aef7d6119d9dbd0eba",
+    "policy.json": "f0fb8eb893655398340fb277c8697ecc5841bde58d988a75b6996b4d920ddd73",
+    "result.json": "7a758ce29b9a87d6a4844831b859e0239c898ed2db105577de7d16ff112088f1",
+    "scenario.json": "377f9a9c6f2f84105e52aa254dac0f80cb7f8d9400c46332bdefe59c124d48b5",
+    "state.sqlite": "2d9ea12b22b641f2900d3465a30be7eadc4534d5823ea3d32ba2d4fd524e0554",
+    "trace.jsonl": "b1f7a053ad28157f8a4f4daf080f12020361d55581ff99ff0aff108d5458b53e",
+    "trace.sqlite": "ba8e7139b6e81eab1702ce55c4a5ec5962d494400097a6bca578f882323ef7b1"
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "source_kind": "synthetic_local_run",
+  "incident_id": "INC-COLD-C",
+  "trace_id": "tr_coldchain_door_left_open",
+  "scenario_id": "coldchain-door-left-open",
+  "provenance": {
+    "git_commit": "bfa4b66cbd62dfeb3bc3ecf78c10abcc363d0b5e",
+    "dirty_worktree": true
+  },
+  "claim_boundary": "Local synthetic SQLite run; no AgentTeams, PolarDB, OSS or real-store evidence. Hashes detect accidental changes, not source authenticity.",
+  "files": {
+    "audit.jsonl": "fb501cffb283411a53582a7e6c20fbe0bb5440f5bcf711e0d4e51e4f34896341",
+    "policy.json": "f0fb8eb893655398340fb277c8697ecc5841bde58d988a75b6996b4d920ddd73",
+    "result.json": "801f311789d123f7032cd01c751e31b2de4af84e3291e3ed5de2b953844d0400",
+    "scenario.json": "14d14da85cec481381319c175f2a85462edb7751310a0aeffa5e668bf4d2f35e",
+    "state.sqlite": "f0be6e1f0e0f2808c021312761f3c0d94968df09d641d391f5fbf06e8250612e",
+    "trace.jsonl": "3530e41c5600a07289ac33b2342a7b3928e80d466f4de1969f14b4dfb7879db3",
+    "trace.sqlite": "d5273866d004728dc9f0e8deef75523ba3a090f2c8aeb4ebacd58b739a99d224"
+  }
+}

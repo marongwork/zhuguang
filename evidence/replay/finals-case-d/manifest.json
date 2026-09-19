@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "source_kind": "synthetic_local_run",
+  "incident_id": "INC-COLD-D",
+  "trace_id": "tr_coldchain_approval_timeout",
+  "scenario_id": "coldchain-approval-timeout",
+  "provenance": {
+    "git_commit": "bfa4b66cbd62dfeb3bc3ecf78c10abcc363d0b5e",
+    "dirty_worktree": true
+  },
+  "claim_boundary": "Local synthetic SQLite run; no AgentTeams, PolarDB, OSS or real-store evidence. Hashes detect accidental changes, not source authenticity.",
+  "files": {
+    "audit.jsonl": "8357da8f06370d39f7b1c9b6b446bad175f95671ac8e1eda608cc832eb30b847",
+    "policy.json": "f0fb8eb893655398340fb277c8697ecc5841bde58d988a75b6996b4d920ddd73",
+    "result.json": "9f95f0467254a09a4d1b56455fbd654e0c3d779fb4865147d9023ee2a971d532",
+    "scenario.json": "14e91beff9e0ba271db6c4233300f9bbfdab56c84003b9fa4737a77ed354febb",
+    "state.sqlite": "756a36b17b75f67876345f90c71bb4dcc658d51fa1dde71e544d84ff923295ae",
+    "trace.jsonl": "40598cdd5cd0656e01498077df890ad8f45a7de8ee195f6a78a8cdb5cfe19565",
+    "trace.sqlite": "e5b25300c59a7c65ba6c262f26cd6c206739dd9f426b8f79144e770cee9402aa"
+  }
+}
