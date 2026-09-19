@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
-"""逐光 · 5大独立智能体机器人【高对比度视觉头像卡片】全网实盘演练脚本.
+"""逐光 · 5大独立智能体机器人【高对比度交互卡片】全网实盘演练脚本.
 
 演练场景：S03 杭州总仓冷链断电与跨仓智能协同调度
 卡片特性：
-  - 独立机器人身份：哨兵、诊断、调度、执行、稽核
-  - 专属视觉头像徽章：每个智能体拥有专属色彩与科技感 App Icon
-  - 结构化卡片排版：视觉 Banner + 状态徽章 + 核心指标表 + 决策动作 + 交互跳转按钮
+  - 独立机器人身份与专属头像：哨兵、诊断、调度、执行、稽核
+  - 纯净结构化卡片排版：状态徽章 + 核心指标表 + 决策动作 + 交互跳转按钮
+  - 消息正文无多余插图，保持高密度、清爽专业的信息展示
   - 原生支持 Markdown 高亮、引用块与外链跳转直达孪生大屏
 """
 
@@ -22,7 +22,6 @@ from pathlib import Path
 DEFAULT_GROUP_ID = os.getenv("DINGTALK_GROUP_ID", "cidQ/jo5PdSay6XcxMXR5oOOg==")
 DEFAULT_GROUP_NAME = os.getenv("DINGTALK_GROUP_NAME", "逐光.店巡")
 DASHBOARD_URL = "https://sh.mazhi.icu/zhuguang/phx-fleet.html"
-AVATAR_BASE_URL = "https://sh.mazhi.icu/zhuguang/avatars"
 
 # 5大独立企业应用机器人
 ROBOTS = {
@@ -30,31 +29,26 @@ ROBOTS = {
         "name": "哨兵智能体",
         "robot_code": "dingg5v94ncw5yr2qg7o",
         "app_id": "f61a6b54-c6bd-4a2d-9fa3-4da6f64a3a9e",
-        "avatar": f"{AVATAR_BASE_URL}/sentinel.jpg",
     },
     "diagnostician": {
         "name": "诊断智能体",
         "robot_code": "dingasjymfh2afuzqzor",
         "app_id": "ce0ef71f-80e4-4a62-a1a3-c74cc45c5b66",
-        "avatar": f"{AVATAR_BASE_URL}/diagnostician.jpg",
     },
     "dispatcher": {
         "name": "调度智能体",
         "robot_code": "dingpoerqwmhlwf311t9",
         "app_id": "e225edb9-f4d2-483a-a743-f411b65cb7aa",
-        "avatar": f"{AVATAR_BASE_URL}/dispatcher.jpg",
     },
     "executor": {
         "name": "执行智能体",
         "robot_code": "dingqaeemmjnnhedqhfv",
         "app_id": "9381a8b0-e974-4c67-a2e3-2bac0532008d",
-        "avatar": f"{AVATAR_BASE_URL}/executor.jpg",
     },
     "auditor": {
         "name": "稽核智能体",
         "robot_code": "dingje7ywqjjfgzqecaq",
         "app_id": "03009f11-f93b-428d-a609-c6c5126fad04",
-        "avatar": f"{AVATAR_BASE_URL}/auditor.jpg",
     },
 }
 
@@ -93,7 +87,7 @@ def send_robot_card(robot_key: str, group_id: str, title: str, card_content: str
     try:
         res = subprocess.run(cmd, capture_output=True, text=True, check=False)
         if res.returncode == 0:
-            print(f"  🤖 [{robot_name} · 专属头像卡片已送达] (code={robot_code})")
+            print(f"  🤖 [{robot_name} · 交互卡片已送达] (code={robot_code})")
             return True
         else:
             print(f"  ❌ [{robot_name} 发送失败] code={res.returncode}, stderr={res.stderr.strip()}")
@@ -105,9 +99,9 @@ def send_robot_card(robot_key: str, group_id: str, title: str, card_content: str
 
 def run_card_drill(group_id: str = DEFAULT_GROUP_ID, interval: float = 3.0):
     print("\n=======================================================")
-    print(f"🚀 【逐光·零售应急中枢】5大独立智能体【专属视觉头像卡片】实盘演练")
+    print(f"🚀 【逐光·零售应急中枢】5大独立智能体【清爽专业交互卡片】实盘演练")
     print(f"🎯 目标群聊: {DEFAULT_GROUP_NAME} (ID: {group_id})")
-    print(f"🤖 呈现形式: 5 独立企业机器人专属交互式卡片 (ActionCard + 专属Avatar)")
+    print(f"🤖 呈现形式: 5 独立企业机器人专属交互式卡片 (机器人专属头像 + 纯净结构化卡片)")
     print(f"⏱️ 阶段间隔: {interval} 秒")
     print("=======================================================\n")
 
@@ -115,8 +109,7 @@ def run_card_drill(group_id: str = DEFAULT_GROUP_ID, interval: float = 3.0):
         (
             "sentinel",
             "🚨 哨兵智能体 · P0 级温控越限告警卡片",
-            f"""![哨兵智能体]({ROBOTS['sentinel']['avatar']})
-### 🚨【哨兵智能体】全网秒级异常预警卡片 (Stage 1/5)
+            f"""### 🚨【哨兵智能体】全网秒级异常预警卡片 (Stage 1/5)
 ---
 | 指标项 | 遥测数据 / 状态 |
 | :--- | :--- |
@@ -134,8 +127,7 @@ def run_card_drill(group_id: str = DEFAULT_GROUP_ID, interval: float = 3.0):
         (
             "diagnostician",
             "🧠 诊断智能体 · 动力学推演与损耗预测卡片",
-            f"""![诊断智能体]({ROBOTS['diagnostician']['avatar']})
-### 🧠【诊断智能体】动力学推演与损耗预测卡片 (Stage 2/5)
+            f"""### 🧠【诊断智能体】动力学推演与损耗预测卡片 (Stage 2/5)
 ---
 | 分析维度 | 模型计算结果 |
 | :--- | :--- |
@@ -153,8 +145,7 @@ def run_card_drill(group_id: str = DEFAULT_GROUP_ID, interval: float = 3.0):
         (
             "dispatcher",
             "⚡️ 调度智能体 · 跨仓应急调拨决策卡片",
-            f"""![调度智能体]({ROBOTS['dispatcher']['avatar']})
-### ⚡️【调度智能体】跨仓应急调拨决策卡片 (Stage 3/5)
+            f"""### ⚡️【调度智能体】跨仓应急调拨决策卡片 (Stage 3/5)
 ---
 | 调度项 | 智能算法推荐策略 |
 | :--- | :--- |
@@ -172,8 +163,7 @@ def run_card_drill(group_id: str = DEFAULT_GROUP_ID, interval: float = 3.0):
         (
             "executor",
             "🚚 执行智能体 · 干线冷链与多端联锁卡片",
-            f"""![执行智能体]({ROBOTS['executor']['avatar']})
-### 🚚【执行智能体】干线冷链与多端联锁卡片 (Stage 4/5)
+            f"""### 🚚【执行智能体】干线冷链与多端联锁卡片 (Stage 4/5)
 ---
 | 执行动作 | 闭环执行状态 |
 | :--- | :--- |
@@ -190,8 +180,7 @@ def run_card_drill(group_id: str = DEFAULT_GROUP_ID, interval: float = 3.0):
         (
             "auditor",
             "🏆 稽核智能体 · 飞轮沉淀与合规结案卡片",
-            f"""![稽核智能体]({ROBOTS['auditor']['avatar']})
-### 🏆【稽核智能体】双重校验与知识沉淀卡片 (Stage 5/5)
+            f"""### 🏆【稽核智能体】双重校验与知识沉淀卡片 (Stage 5/5)
 ---
 | 稽核维度 | 审计与沉淀结论 |
 | :--- | :--- |
@@ -213,7 +202,7 @@ def run_card_drill(group_id: str = DEFAULT_GROUP_ID, interval: float = 3.0):
         if idx < len(stages):
             time.sleep(interval)
 
-    print("\n✅ 5大独立智能体【专属视觉头像卡片】实盘演练圆满完成！\n")
+    print("\n✅ 5大独立智能体【清爽专业交互卡片】实盘演练圆满完成！\n")
 
 
 if __name__ == "__main__":
