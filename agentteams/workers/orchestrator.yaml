@@ -3,7 +3,7 @@ kind: Worker
 metadata:
   name: orchestrator
 spec:
-  model: qwen3.5-plus
+  model: qwen3.8-max
   runtime: qwenpaw
   identity: |
     - Name: Orchestrator

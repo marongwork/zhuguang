@@ -3,7 +3,7 @@ kind: Worker
 metadata:
   name: auditor
 spec:
-  model: qwen3.5-plus
+  model: qwen3.8-flash
   runtime: qwenpaw
   identity: |
     - Name: Auditor

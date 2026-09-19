@@ -3,7 +3,7 @@ kind: Worker
 metadata:
   name: sentry
 spec:
-  model: qwen3.5-plus
+  model: qwen3.8-flash
   runtime: qwenpaw
   identity: |
     - Name: Sentry
