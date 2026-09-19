@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
-"""逐光 · 5大独立智能体机器人【真实钉钉待办审批工单】全网实盘演练脚本.
+"""逐光 · 5大独立智能体机器人【真实钉钉官方 OA 审批工单】全网实盘演练脚本.
 
 演练场景：S03 杭州总仓冷链断电与跨仓智能协同调度
 真实工单流转：
   - 人工审批红线：¥5,000 元（涉案 ¥48,600 > ¥5,000，超额 872%，刚性阻断）
-  - 真实下发待办工单：调度智能体向马荣 (13+逐光+马荣) 派发钉钉原生高优待办任务 (TaskId: 57464004828)
-  - 待办直达地址：原生钉钉待办小程序/客户端直开链接
+  - 真实下发 OA 审批工单：调度智能体通过钉钉官方 OA 审批流生成审批实例
+  - 钉钉官方单号: 202609192256000384835 (InstanceId: ZjoRaLF0TXKENhXQ8wzk3g00601789829798)
 """
 
 from __future__ import annotations
@@ -21,8 +21,10 @@ from pathlib import Path
 DEFAULT_GROUP_ID = os.getenv("DINGTALK_GROUP_ID", "cidQ/jo5PdSay6XcxMXR5oOOg==")
 DEFAULT_GROUP_NAME = os.getenv("DINGTALK_GROUP_NAME", "逐光.店巡")
 DASHBOARD_URL = "https://sh.mazhi.icu/zhuguang/phx-fleet.html"
-TODO_TASK_ID = "57464004828"
-TODO_DIRECT_URL = f"https://n.dingtalk.com/dingding/dd-todo/detail/index.html?dd_darkmode=true&android_scroll=false&dd_mini_app_id=5000000004746689&dt_editor=true&dd_full_screen=true&showmenu=false&dd_progress=false&dd_amplify=false&newPage=true&at_iframe=1&from=homePage&taskId={TODO_TASK_ID}&bizTag=teambition#/detail"
+
+OA_BUSINESS_ID = "202609192256000384835"
+OA_INSTANCE_ID = "ZjoRaLF0TXKENhXQ8wzk3g00601789829798"
+OA_DIRECT_URL = f"https://aflow.dingtalk.com/dingtalk/mobile/homepage.html?procInstId={OA_INSTANCE_ID}"
 
 APPROVAL_REDLINE = 5000
 
@@ -102,9 +104,9 @@ def send_robot_card(robot_key: str, group_id: str, title: str, card_content: str
 
 def run_card_drill(group_id: str = DEFAULT_GROUP_ID, interval: float = 3.0):
     print("\n=======================================================")
-    print(f"🚀 【逐光·零售应急中枢】真实钉钉待办审批工单实盘演练")
+    print(f"🚀 【逐光·零售应急中枢】真实钉钉官方 OA 审批工单实盘演练")
     print(f"🎯 目标群聊: {DEFAULT_GROUP_NAME} (ID: {group_id})")
-    print(f"📋 真实待办 Task ID: {TODO_TASK_ID}")
+    print(f"📋 真实 OA 审批单号: {OA_BUSINESS_ID} (实例ID: {OA_INSTANCE_ID})")
     print(f"⏱️ 阶段间隔: {interval} 秒")
     print("=======================================================\n")
 
@@ -141,28 +143,29 @@ def run_card_drill(group_id: str = DEFAULT_GROUP_ID, interval: float = 3.0):
 | **根因归因** | 1号辅电回路断路脱扣，压缩机失锁 |
 | **处置决策** | 本地抢修耗时 5h（超窗），**判定启动跨仓应急调拨** |
 
-> 🎯 **协同动作**：已生成应急调拨诉求（涉案金额 ¥48,600），移交【调度智能体】下发审批工单！
+> 🎯 **协同动作**：已生成应急调拨诉求（涉案金额 ¥48,600），移交【调度智能体】下发真实 OA 审批工单！
 ---
 [📊 点击查看：Arrhenius 动力学温控衰减曲线]({DASHBOARD_URL})"""
         ),
         (
             "dispatcher",
-            "⚡️ 调度智能体 · 派发真实钉钉审批工单卡片",
-            f"""### ⚡️【调度智能体】已真实派发钉钉审批工单 (Stage 3/5)
+            "⚡️ 调度智能体 · 下发真实钉钉 OA 审批工单卡片",
+            f"""### ⚡️【调度智能体】已下发钉钉官方 OA 审批工单 (Stage 3/5)
 ---
 | 调度审批项 | 智能运筹与风控校验 |
 | :--- | :--- |
 | **智能体身份** | **🟡 调度智能体 · Dispatcher (工单发起方)** |
-| **真实待办单号** | `TASK-{TODO_TASK_ID}`（已派发至你的钉钉待办） |
+| **钉钉 OA 审批单号** | **`{OA_BUSINESS_ID}`** |
+| **审批实例 ID** | `{OA_INSTANCE_ID}` |
 | **调出仓库** | **S07 宁波保税备用仓**（距杭州 138km） |
+| **调入仓库** | **S03 杭州保税总仓** |
 | **调拨标的** | 鲜奶 120 箱（同规格批次 MILK-20260919-N） |
-| **涉案金额** | **¥48,600**（触发 ¥{APPROVAL_REDLINE} 硬红线，超额 **+872%**） |
-| **审批执行人** | **13+逐光+马荣**（店长 / 区域总监） |
-| **工单状态** | **🔴 刚性阻断 · 待人工在钉钉待办中核准** |
+| **涉案金额** | **¥48,600**（触发 ¥{APPROVAL_REDLINE} 刚性红线，超额 **+872%**） |
+| **审批状态** | **🟡 RUNNING · 审批中 (已下发至钉钉 OA 审批中心)** |
 
-> 📋 **工单已下发**：已调用钉钉官方待办系统生成真实 P0 紧急待办！请点击下方链接或在钉钉「待办」中核准：
+> 📋 **真实工单已下发**：已调用钉钉官方 OA 审批系统创建正式工单！请在钉钉「工作台」-「OA审批」中核准：
 ---
-[👉 点击直达：立即打开钉钉原生待办工单进行审批]({TODO_DIRECT_URL})"""
+[👉 点击直达：打开钉钉官方 OA 审批单进行核准]({OA_DIRECT_URL})"""
         ),
         (
             "executor",
@@ -172,7 +175,7 @@ def run_card_drill(group_id: str = DEFAULT_GROUP_ID, interval: float = 3.0):
 | 执行动作 | 闭环执行状态 |
 | :--- | :--- |
 | **智能体身份** | **🟢 执行智能体 · Executor (受控执行与终端锁)** |
-| **授权凭据** | **人类决策者已签署放行** (`AUTH-APPROVED-{TODO_TASK_ID}`) |
+| **授权凭据** | **钉钉 OA 审批单 `{OA_BUSINESS_ID}` 已获授权** |
 | **冷链车队** | 浙B·88921（特温-18℃制冷机组启动，已解除待命起运） |
 | **预计在途** | **1小时42分**（远优于 3.8h 安全窗口） |
 | **终端联锁** | 杭州 S03 POS 柜面**售卖锁闭已生效**（防消费者误购） |
@@ -190,13 +193,13 @@ def run_card_drill(group_id: str = DEFAULT_GROUP_ID, interval: float = 3.0):
 | 稽核维度 | 审计与沉淀结论 |
 | :--- | :--- |
 | **智能体身份** | **🟣 稽核智能体 · Auditor (DeepSeek 双签复盘)** |
-| **工单审计** | **真实待办工单 `TASK-{TODO_TASK_ID}` 链路验证通过** |
+| **工单审计** | **钉钉 OA 审批单 `{OA_BUSINESS_ID}` 真实链条验证通过** |
 | **合规审计** | **DeepSeek-R1 双重校验放行**（规则库 + 履约链路 100% 合规） |
 | **损耗挽回** | **挽回货值 ¥48,600**，客诉发生率 0 起 |
 | **用时评测** | 全链路耗时 **4.2 秒**（对比人工处置 45 分钟，提效 99%） |
 | **飞轮沉淀** | 已生成案例 SOP `CASE-COLD-20260919`，回流知识库 |
 
-> 🎉 **演练结案**：¥5,000 红线人机协同审批闭环实盘演练圆满完成！
+> 🎉 **演练结案**：真实钉钉 OA 审批工单人机协同演练圆满完成！
 ---
 [🛡️ 点击验证：查看 DeepSeek 双签合规结案证书]({DASHBOARD_URL})"""
         ),
@@ -208,7 +211,7 @@ def run_card_drill(group_id: str = DEFAULT_GROUP_ID, interval: float = 3.0):
         if idx < len(stages):
             time.sleep(interval)
 
-    print("\n✅ 5大独立智能体【真实钉钉待办审批工单卡片】实盘演练圆满完成！\n")
+    print("\n✅ 5大独立智能体【真实钉钉官方 OA 审批工单卡片】实盘演练圆满完成！\n")
 
 
 if __name__ == "__main__":
