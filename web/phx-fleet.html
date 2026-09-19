@@ -3320,6 +3320,69 @@ window.addEventListener('DOMContentLoaded', () => {
   }, 100);
 });
 
+
+// ==========================================
+// 真实物理事件流自动驱动引擎 (Real Live Engine Bridge)
+// 彻底替换前端纯 Mock，直连后端 /zhuguang/api/live/events
+// ==========================================
+let lastSeenEventId = null;
+let liveStreamActive = true;
+
+async function pollLiveEvents() {
+  if (!liveStreamActive) return;
+  try {
+    const res = await fetch('/zhuguang/api/live/events');
+    const data = await res.json();
+    if (!data.ok || !data.events || data.events.length === 0) return;
+
+    const latest = data.events[0];
+    if (latest.event_id === lastSeenEventId) return;
+    lastSeenEventId = latest.event_id;
+
+    // 1. 自动同步大屏阶段
+    const stageIdx = Math.min(5, Math.max(0, latest.stage !== undefined ? latest.stage : 0));
+    if (typeof updateFleetDrillUI === 'function') {
+      updateFleetDrillUI(stageIdx);
+    }
+
+    // 2. 状态标牌实时显示真实状态
+    const statusPill = document.getElementById('drill-widget-status');
+    if (statusPill) {
+      statusPill.innerHTML = `🟢 真实物理事件流: ${latest.store_id} · ${latest.stage_name} (${latest.temp_c}°C)`;
+      statusPill.style.color = '#34d399';
+    }
+
+    // 3. 自动高亮并切换到真实异常门店
+    if (typeof selectStore === 'function' && latest.store_id) {
+      selectStore(latest.store_id);
+    }
+
+    // 4. 如果有真实 OpenAPI 凭证，在钉钉面板右侧动态更新最新通知
+    const chatBody = document.getElementById('dingtalk-chat-body');
+    if (chatBody && latest.receipt && latest.stage === 3) {
+      const liveBadge = document.createElement('div');
+      liveBadge.style.cssText = 'background:rgba(16,185,129,0.12); border:1.5px solid rgba(16,185,129,0.4); border-radius:8px; padding:10px 12px; margin:8px 0; font-size:11.5px; color:#a7f3d0; font-family:var(--font-mono);';
+      liveBadge.innerHTML = `
+        <div style="font-weight:800; color:#34d399; font-size:12px;">🔔 【真实 OpenAPI 钉钉工单实时下发】</div>
+        <div style="margin-top:4px; line-height:1.6; color:#cbd5e1;">
+          • 事件单号: <b>${latest.event_id}</b><br>
+          • 触发门店: <b>${latest.store_id}</b> (${latest.temp_c}℃ · 货值 ¥${Number(latest.loss_val).toLocaleString()})<br>
+          • 钉钉 OpenAPI 凭证: <span style="color:#67e8f9;">${latest.receipt}</span><br>
+          • 审批责任人: <b style="color:#38bdf8;">@马荣</b> (请查看手机钉钉)
+        </div>
+      `;
+      chatBody.appendChild(liveBadge);
+      chatBody.scrollTop = chatBody.scrollHeight;
+    }
+  } catch (err) {
+    console.warn('Realtime poll warning:', err);
+  }
+}
+
+// 自动启动真实流
+setInterval(pollLiveEvents, 3000);
+setTimeout(pollLiveEvents, 800);
+
 </script>
 
 </body>
