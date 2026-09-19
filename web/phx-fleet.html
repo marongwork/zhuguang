@@ -393,6 +393,35 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   border-radius: 4px;
   border: 1px solid rgba(56,189,248,0.25);
 }
+.store-lock-btn {
+  font-size: 11px;
+  font-family: var(--font-mono);
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.store-lock-btn.locked {
+  background: rgba(16, 185, 129, 0.15);
+  color: #34d399;
+  border: 1px solid rgba(16, 185, 129, 0.4);
+  box-shadow: 0 0 8px rgba(16, 185, 129, 0.15);
+}
+.store-lock-btn.locked:hover {
+  background: rgba(16, 185, 129, 0.25);
+}
+.store-lock-btn.following {
+  background: rgba(56, 189, 248, 0.15);
+  color: #38bdf8;
+  border: 1px solid rgba(56, 189, 248, 0.4);
+}
+.store-lock-btn.following:hover {
+  background: rgba(56, 189, 248, 0.25);
+}
 .store-grid-scroll {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
@@ -1799,10 +1828,13 @@ table.incident-table tr:hover td {
     <!-- Right: Selected Store & Device Deep Dive -->
     <div class="pane-card">
       <div class="pane-header">
-        <div class="pane-title">
+        <div class="pane-title" style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
           门店微观冷链与设备深度透视
           <span id="active-store-tag" class="pane-badge">S014</span>
+          <button id="btn-store-lock" class="store-lock-btn locked" onclick="toggleStoreLock()" title="点击切换视图锁定或自动跟随">
+            🔒 视图已锁定: <span id="lock-store-id-text" style="color:#67e8f9; font-weight:700;">S014</span> <span style="font-size:10px; opacity:0.85; margin-left:4px;">[点击解锁跟随]</span>
+          </button>
         </div>
         <span id="active-store-health" class="store-status-badge badge-crit">CRITICAL 异常告警</span>
       </div>
@@ -1942,6 +1974,8 @@ let currentCity = 'ALL';
 let currentStatus = 'ALL';
 let searchQuery = '';
 let selectedStoreId = 'S014'; // Default to store with fault for dramatic demo
+let userLockedStoreId = 'S014'; // 默认进入即锁定S014，保护操作者视角，严防后台事件窃取焦点
+let isFollowModeActive = false; // 是否自动跟随事件流（默认关闭，需用户主动开启）
 
 // Fault names map
 const faultNameMap = {
@@ -2032,6 +2066,38 @@ function filterByStatus(status) {
 
 function handleSearch(val) {
   searchQuery = val.trim().toLowerCase();
+  
+  // 用户输入搜索时，如果当前处于某一特定状态（比如"异常告警 0"），自动重置为全部，避免状态冲突导致查无此店
+  if (searchQuery) {
+    if (currentStatus !== 'ALL') {
+      currentStatus = 'ALL';
+      document.querySelectorAll('.status-pill').forEach(btn => {
+        btn.classList.toggle('active', btn.classList.contains('all'));
+      });
+    }
+    if (currentCity !== 'ALL') {
+      currentCity = 'ALL';
+      document.querySelectorAll('.city-pill').forEach(btn => {
+        btn.classList.toggle('active', btn.textContent.startsWith('全部'));
+      });
+    }
+  }
+  
+  renderStoreGrid();
+
+  // 如果输入的是完整店号（如 s014 或 S014），直接自动高亮并锁定该店！
+  if (searchQuery && fleetData && fleetData.stores) {
+    const matched = fleetData.stores.find(s => s.id.toLowerCase() === searchQuery);
+    if (matched) {
+      selectStore(matched.id, true);
+    }
+  }
+}
+
+function clearSearch() {
+  const input = document.getElementById('store-search');
+  if (input) input.value = '';
+  searchQuery = '';
   renderStoreGrid();
 }
 
@@ -2054,29 +2120,31 @@ function renderStoreGrid() {
   
   let list = fleetData.stores;
   
-  // City filter
-  if (currentCity !== 'ALL') {
-    list = list.filter(s => s.city === currentCity);
-  }
-  
-  // Status filter
-  if (currentStatus !== 'ALL') {
-    list = list.filter(s => s.status === currentStatus);
-  }
-  
-  // Search filter
+  // 搜索过滤优先级最高：当用户在搜索框输入时，全局300家门店检索
   if (searchQuery) {
     list = list.filter(s => 
       s.id.toLowerCase().includes(searchQuery) || 
       s.name.toLowerCase().includes(searchQuery) ||
       s.city.toLowerCase().includes(searchQuery)
     );
+  } else {
+    // City filter
+    if (currentCity !== 'ALL') {
+      list = list.filter(s => s.city === currentCity);
+    }
+    // Status filter
+    if (currentStatus !== 'ALL') {
+      list = list.filter(s => s.status === currentStatus);
+    }
   }
   
   document.getElementById('filtered-count').textContent = `${list.length} 家门店 (共300家)`;
   
   if (list.length === 0) {
-    container.innerHTML = '<div style="grid-column: 1/-1; text-align:center; padding:40px; color:var(--text-muted);">未找到符合条件的门店</div>';
+    container.innerHTML = `<div style="grid-column: 1/-1; text-align:center; padding:40px; color:var(--text-muted);">
+      未找到包含 "${searchQuery}" 的门店。<br>
+      <button onclick="clearSearch()" style="margin-top:10px; background:rgba(255,255,255,0.08); border:1px solid var(--border); color:#cbd5e1; padding:4px 12px; border-radius:6px; cursor:pointer;">清空搜索</button>
+    </div>`;
     return;
   }
   
@@ -2085,7 +2153,7 @@ function renderStoreGrid() {
     const isSelected = s.id === selectedStoreId;
     const isCrit = s.status === 'CRITICAL';
     html += `
-      <div class="store-card ${isSelected ? 'active-selected' : ''}" onclick="selectStore('${s.id}')">
+      <div class="store-card ${isSelected ? 'active-selected' : ''}" onclick="selectStore('${s.id}', true)">
         <div class="store-card-head">
           <span class="store-id-tag">${s.id}</span>
           <span class="store-status-badge ${isCrit ? 'badge-crit' : 'badge-norm'}">
@@ -2108,8 +2176,67 @@ function renderStoreGrid() {
   container.innerHTML = html;
 }
 
-function selectStore(storeId) {
+function updateLockBtnUI() {
+  const btn = document.getElementById('btn-store-lock');
+  if (!btn) return;
+  if (userLockedStoreId) {
+    btn.className = 'store-lock-btn locked';
+    btn.innerHTML = `🔒 视图已锁定: <span style="color:#67e8f9; font-weight:700;">${userLockedStoreId}</span> <span style="font-size:10.5px; opacity:0.85; margin-left:4px;">[点击解锁跟随]</span>`;
+    btn.title = `已锁定 ${userLockedStoreId} 门店视图，后台实时多智能体演练事件不会自动切走屏幕。点击可解锁开启自动跟随。`;
+  } else {
+    btn.className = 'store-lock-btn following';
+    btn.innerHTML = `📡 自动跟随事件流 <span style="font-size:10.5px; opacity:0.85; margin-left:4px;">[点击锁定当前店]</span>`;
+    btn.title = '当前为自动跟随模式：当全网捕获新事件时将自动切到该店。点击可固定在当前门店。';
+  }
+}
+
+function toggleStoreLock() {
+  if (userLockedStoreId) {
+    userLockedStoreId = null;
+    isFollowModeActive = true;
+    showToast('📡 已开启事件流自动跟随模式，右侧面板将跟随最新告警门店');
+  } else {
+    userLockedStoreId = selectedStoreId;
+    isFollowModeActive = false;
+    showToast(`🔒 已锁定门店视图: ${selectedStoreId}，视角固定不随事件跳转`);
+  }
+  updateLockBtnUI();
+}
+
+function showToast(msg) {
+  let toast = document.getElementById('fleet-floating-toast');
+  if (!toast) {
+    toast = document.createElement('div');
+    toast.id = 'fleet-floating-toast';
+    toast.style.cssText = 'position:fixed; bottom:24px; right:24px; z-index:9999; background:rgba(15,23,42,0.95); border:1px solid rgba(56,189,248,0.4); box-shadow:0 10px 25px rgba(0,0,0,0.6); border-radius:8px; padding:10px 16px; font-size:12px; color:#f8fafc; font-family:var(--font-mono); pointer-events:none; transition:opacity 0.3s ease; opacity:0; backdrop-filter:blur(8px);';
+    document.body.appendChild(toast);
+  }
+  toast.innerHTML = msg;
+  toast.style.opacity = '1';
+  clearTimeout(toast._timer);
+  toast._timer = setTimeout(() => {
+    toast.style.opacity = '0';
+  }, 2600);
+}
+
+function selectStore(storeId, isManual = false) {
+  // 核心防跳规则：
+  // 1. 如果是后台事件轮询或自动触发（isManual=false）
+  // 2. 且用户当前处于锁定模式（userLockedStoreId 存在）
+  // 3. 且触发的目标门店与锁定门店不同 -> 坚决不跳转！
+  if (!isManual && userLockedStoreId && userLockedStoreId !== storeId) {
+    return;
+  }
+
+  // 如果是用户主动操作（点击门店、输入检索精确命中、点击工单/专线）：
+  // 确立用户当前锁定目标，并退出自动跟随
+  if (isManual) {
+    userLockedStoreId = storeId;
+    isFollowModeActive = false;
+  }
+
   selectedStoreId = storeId;
+  updateLockBtnUI();
   
   // Update card styles
   document.querySelectorAll('.store-card').forEach(el => {
@@ -2373,7 +2500,7 @@ function renderIncidents() {
 }
 
 function selectStoreAndJump(storeId, deviceId) {
-  selectStore(storeId);
+  selectStore(storeId, true);
   if (deviceId) {
     showDeviceTelemetry(deviceId);
   }
@@ -2398,7 +2525,7 @@ function focusIncidentTrack(storeId) {
     pill.classList.toggle('active', pill.id === `track-${storeId}`);
   });
   if (typeof selectStore === 'function') {
-    selectStore(storeId);
+    selectStore(storeId, true);
   }
 }
 
@@ -3063,8 +3190,8 @@ function updateFleetDrillUI(stepIdx) {
 
   // 5. Dashboard Linkage
   if (stepIdx === 0) {
-    // Select S014 / HZ-018
-    if (typeof selectStore === 'function') selectStore('S014');
+    // Select S014 only if user has not locked another store
+    if (typeof selectStore === 'function' && !userLockedStoreId) selectStore('S014', false);
   } else if (stepIdx === 1) {
     // Locked batches increment
     const lockedEl = document.getElementById('detail-store-locked');
@@ -3378,16 +3505,28 @@ async function pollLiveEvents() {
       updateFleetDrillUI(stageIdx);
     }
 
-    // 2. 状态标牌实时显示真实状态
+    // 2. 状态标牌实时显示真实状态（若用户锁定了其他门店，提供非侵入式快速跳转查看按钮）
     const statusPill = document.getElementById('drill-widget-status');
     if (statusPill) {
-      statusPill.innerHTML = `🟢 真实物理事件流: ${latest.store_id} · ${latest.stage_name} (${latest.temp_c}°C)`;
+      if (userLockedStoreId && userLockedStoreId !== latest.store_id) {
+        statusPill.innerHTML = `🟢 真实事件流: <b>${latest.store_id}</b> · ${latest.stage_name} (${latest.temp_c}°C) <button onclick="selectStore('${latest.store_id}', true)" style="background:rgba(56,189,248,0.2); border:1px solid rgba(56,189,248,0.4); color:#38bdf8; border-radius:4px; padding:1px 6px; font-size:10.5px; cursor:pointer; margin-left:6px;">查看该店</button>`;
+      } else {
+        statusPill.innerHTML = `🟢 真实物理事件流: ${latest.store_id} · ${latest.stage_name} (${latest.temp_c}°C)`;
+      }
       statusPill.style.color = '#34d399';
     }
 
-    // 3. 自动高亮并切换到真实异常门店
+    // 3. 自动高亮并切换到真实异常门店（遵循锁定保护规则）
     if (typeof selectStore === 'function' && latest.store_id) {
-      selectStore(latest.store_id);
+      if (!userLockedStoreId) {
+        selectStore(latest.store_id, false);
+      } else if (latest.store_id === userLockedStoreId) {
+        // 当前锁定的店刚好发生事件，局部更新指标，绝不跳走
+        const lockedEl = document.getElementById('detail-store-locked');
+        if (lockedEl && latest.stage >= 1) {
+          lockedEl.textContent = '1 批次 (已POS锁止)';
+        }
+      }
     }
 
     // 4. 如果有真实 OpenAPI 凭证，在钉钉面板右侧动态更新最新通知
