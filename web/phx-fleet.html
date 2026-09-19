@@ -1402,10 +1402,19 @@ table.incident-table tr:hover td {
       </div>
     </div>
     <div class="header-actions">
-      <span style="font-family:var(--font-mono); font-size:12px; color:var(--green); display:inline-flex; align-items:center; gap:6px;">
-        <span class="pulse-online"></span>
-        🟢 PHX 真实数据库集群直连 (100.95.247.115:5433) · 300 店冷链全网实时在线
-      </span>
+      <div class="phx-live-clock-pill" style="display:inline-flex; align-items:center; gap:10px; background:linear-gradient(90deg, rgba(16,185,129,0.12), rgba(6,78,59,0.25)); border:1.5px solid rgba(16,185,129,0.4); border-radius:8px; padding:5px 12px; font-family:var(--font-mono); box-shadow:0 0 12px rgba(16,185,129,0.15);">
+        <span class="pulse-online" style="width:8px; height:8px; border-radius:50%; background:#10b981; box-shadow:0 0 8px #10b981; display:inline-block;"></span>
+        <div style="display:flex; flex-direction:column; text-align:left;">
+          <div style="font-size:9.5px; color:#6ee7b7; font-weight:700; letter-spacing:0.04em;">
+            🟢 PHX 边缘集群直连 (100.95.247.115:5433)
+          </div>
+          <div style="font-size:12px; color:#f8fafc; font-weight:800; display:flex; align-items:center; gap:6px; margin-top:1px;">
+            <span>🕒 物理时序基准:</span>
+            <span id="phx-db-live-clock" style="color:#38bdf8; font-family:'JetBrains Mono',monospace;">加载中...</span>
+            <span id="phx-db-row-counter" style="font-size:10px; color:#a7f3d0; background:rgba(16,185,129,0.2); padding:1px 5px; border-radius:3px; border:1px solid rgba(16,185,129,0.3);">434k+ 帧</span>
+          </div>
+        </div>
+      </div>
       <a href="./index.html" class="nav-link-btn">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
         返回总决赛评审中心
@@ -1514,7 +1523,7 @@ table.incident-table tr:hover td {
       <div class="fleet-drill-controls">
         <div style="display:flex; flex-direction:column; align-items:flex-end; gap:2px; margin-right:6px;">
           <div style="font-size:10px; color:var(--text-muted); font-family:var(--font-mono);">实时仿真时钟 / 时序帧</div>
-          <div class="fleet-drill-timer" id="fleet-drill-timer" style="font-size:14px; min-width:145px; padding:4px 10px;">09:00:00 (F001)</div>
+          <div class="fleet-drill-timer" id="fleet-drill-timer" style="font-size:13.5px; min-width:165px; padding:4px 10px; color:#38bdf8; font-family:'JetBrains Mono',monospace;">实时时钟同步中...</div>
         </div>
         <div style="display:flex; gap:6px; align-items:center; flex-wrap:wrap;">
           <button class="fleet-drill-btn primary" id="fleet-drill-play-btn" onclick="toggleFleetDrillPlay()">
@@ -3385,6 +3394,66 @@ async function pollLiveEvents() {
 // 自动启动真实流
 setInterval(pollLiveEvents, 3000);
 setTimeout(pollLiveEvents, 800);
+
+
+// =======================================================
+// PHX 实时数据库物理时钟与读数计数器驱动引擎
+// =======================================================
+let phxTotalReadings = 434370;
+
+function formatLiveTime(d) {
+  const pad = n => String(n).padStart(2, '0');
+  const Y = d.getFullYear();
+  const M = pad(d.getMonth() + 1);
+  const D = pad(d.getDate());
+  const h = pad(d.getHours());
+  const m = pad(d.getMinutes());
+  const s = pad(d.getSeconds());
+  return `${Y}-${M}-${D} ${h}:${m}:${s}`;
+}
+
+function tickLiveClock() {
+  const now = new Date();
+  const timeStr = formatLiveTime(now);
+
+  // 1. 顶栏 PHX 数据库基准时钟
+  const clockEl = document.getElementById('phx-db-live-clock');
+  if (clockEl) {
+    clockEl.textContent = timeStr;
+  }
+
+  // 2. 中间演练仪表盘物理时序时钟
+  const drillTimerEl = document.getElementById('fleet-drill-timer');
+  if (drillTimerEl) {
+    const timeOnly = timeStr.split(' ')[1];
+    drillTimerEl.innerHTML = `${timeOnly} <span style="font-size:10px; color:#34d399; font-weight:700;">(PHX实时流)</span>`;
+  }
+}
+
+// 刷新计数器与时序
+function updatePhxDbStats(summary) {
+  if (!summary) return;
+  if (summary.total_readings_in_db) {
+    phxTotalReadings = summary.total_readings_in_db;
+  }
+  const counterEl = document.getElementById('phx-db-row-counter');
+  if (counterEl) {
+    counterEl.textContent = `${Number(phxTotalReadings).toLocaleString()} 帧入库`;
+  }
+}
+
+// 启动实时秒针跳动
+setInterval(tickLiveClock, 1000);
+tickLiveClock();
+
+// 在 loadFleetData 成功后更新读数
+const origInitDashboard = window.initDashboard;
+window.initDashboard = function() {
+  if (origInitDashboard) origInitDashboard.apply(this, arguments);
+  if (window.fleetData && window.fleetData.summary) {
+    updatePhxDbStats(window.fleetData.summary);
+  }
+};
 
 </script>
 
