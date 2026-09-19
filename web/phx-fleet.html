@@ -195,6 +195,79 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   font-family: var(--font-mono);
 }
 
+/* View Mode Switcher */
+.view-mode-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 10px 16px;
+  margin-bottom: 20px;
+  backdrop-filter: blur(12px);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+  flex-wrap: wrap;
+}
+.view-mode-tabs {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.view-mode-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--border-subtle);
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.view-mode-btn:hover {
+  background: rgba(56, 189, 248, 0.1);
+  color: #fff;
+  border-color: rgba(56, 189, 248, 0.3);
+}
+.view-mode-btn.active {
+  background: linear-gradient(135deg, rgba(56, 189, 248, 0.2), rgba(99, 102, 241, 0.25));
+  border-color: var(--cyan);
+  color: #fff;
+  box-shadow: 0 0 16px rgba(56, 189, 248, 0.25);
+}
+.view-mode-btn .badge-count {
+  font-size: 10.5px;
+  font-family: var(--font-mono);
+  background: rgba(255,255,255,0.08);
+  padding: 2px 6px;
+  border-radius: 4px;
+  color: var(--text-secondary);
+}
+.view-mode-btn.active .badge-count {
+  background: rgba(56, 189, 248, 0.25);
+  color: #7dd3fc;
+}
+.view-mode-btn .badge-status {
+  font-size: 10.5px;
+  font-family: var(--font-mono);
+  background: rgba(16, 185, 129, 0.15);
+  padding: 2px 6px;
+  border-radius: 4px;
+  color: var(--green);
+}
+.view-mode-hint {
+  font-size: 12px;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
 /* Control & Filter Strip */
 .filter-strip {
   background: var(--bg-card);
@@ -214,6 +287,18 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   gap: 8px;
   flex-wrap: wrap;
 }
+.filter-group.cities-group {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  overflow-x: auto;
+  white-space: nowrap;
+  padding-bottom: 2px;
+  max-width: 100%;
+  scrollbar-width: thin;
+}
+.filter-group.cities-group::-webkit-scrollbar { height: 4px; }
+.filter-group.cities-group::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 2px; }
 .city-pill {
   padding: 4px 10px;
   border-radius: 6px;
@@ -310,22 +395,22 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 }
 .store-grid-scroll {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  gap: 12px;
-  max-height: 640px;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 14px;
+  max-height: 780px;
   overflow-y: auto;
-  padding-right: 6px;
+  padding-right: 8px;
 }
 .store-grid-scroll::-webkit-scrollbar { width: 6px; }
-.store-grid-scroll::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 3px; }
+.store-grid-scroll::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.18); border-radius: 3px; }
 
 .store-card {
-  background: rgba(255,255,255,0.02);
+  background: rgba(255,255,255,0.025);
   border: 1px solid var(--border-subtle);
-  border-radius: 8px;
-  padding: 12px;
+  border-radius: 10px;
+  padding: 14px;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
 }
 .store-card:hover {
@@ -1384,6 +1469,33 @@ table.incident-table tr:hover td {
     </div>
   </section>
 
+  <!-- View Mode Switcher -->
+  <div class="view-mode-bar">
+    <div class="view-mode-tabs">
+      <button class="view-mode-btn active" id="btn-view-fleet" onclick="switchFleetView('fleet')">
+        <span class="icon">🏪</span>
+        <span>全国 300 门店数智孪生矩阵</span>
+        <span class="badge-count">300 店 / 1,500 设备</span>
+      </button>
+      <button class="view-mode-btn" id="btn-view-drill" onclick="switchFleetView('drill')">
+        <span class="icon">⚡️</span>
+        <span>五智能体全网并发事实演练</span>
+        <span class="badge-status">156 起并发闭环</span>
+      </button>
+      <button class="view-mode-btn" id="btn-view-table" onclick="switchFleetView('table')">
+        <span class="icon">📋</span>
+        <span>实时在途工单流水</span>
+        <span class="badge-count">156 张工单</span>
+      </button>
+      <button class="view-mode-btn" id="btn-view-all" onclick="switchFleetView('all')">
+        <span class="icon">🔍</span>
+        <span>全景平铺视图</span>
+      </button>
+    </div>
+    <div class="view-mode-hint">
+      <span style="color:var(--cyan)">💡 分视角排版：</span>聚焦核心视窗，彻底告别单屏多层堆叠
+    </div>
+  </div>
 
   <!-- ==================== 1-MINUTE MULTI-AGENT SWARM DRILL COCKPIT ==================== -->
   <section class="fleet-drill-section" id="fleet-drill-cockpit">
@@ -1621,7 +1733,7 @@ table.incident-table tr:hover td {
 
   <!-- Filter & Search Strip -->
   <section class="filter-strip">
-    <div class="filter-group">
+    <div class="filter-group cities-group">
       <span style="font-size:12px; color:var(--text-muted); font-weight:700;">城市筛选:</span>
       <button class="city-pill active" onclick="filterByCity('ALL')">全部 <span class="badge">300</span></button>
       <button class="city-pill" onclick="filterByCity('广州')">广州 <span class="badge">25</span></button>
@@ -2244,6 +2356,9 @@ window.addEventListener('DOMContentLoaded', loadFleetData);
 let currentFocusedTrack = 'S006';
 
 function focusIncidentTrack(storeId) {
+  if (typeof currentFleetView !== 'undefined' && (currentFleetView === 'fleet' || currentFleetView === 'table')) {
+    switchFleetView('drill');
+  }
   currentFocusedTrack = storeId;
   document.querySelectorAll('.track-pill').forEach(pill => {
     pill.classList.toggle('active', pill.id === `track-${storeId}`);
@@ -3028,7 +3143,49 @@ function toggleFleetDrillPlay() {
   }
 }
 
+function switchFleetView(mode) {
+  currentFleetView = mode;
+  const fleetSec = document.querySelector('.split-view');
+  const filterSec = document.querySelector('.filter-strip');
+  const drillSec = document.getElementById('fleet-drill-cockpit');
+  const incidentSec = document.querySelector('.incident-pane');
+  
+  const btns = document.querySelectorAll('.view-mode-btn');
+  btns.forEach(b => b.classList.remove('active'));
+  
+  const btn = document.getElementById(`btn-view-${mode}`);
+  if (btn) btn.classList.add('active');
+
+  if (mode === 'fleet') {
+    if (filterSec) filterSec.style.display = 'flex';
+    if (fleetSec) fleetSec.style.display = 'grid';
+    if (drillSec) drillSec.style.display = 'none';
+    if (incidentSec) incidentSec.style.display = 'none';
+  } else if (mode === 'drill') {
+    if (filterSec) filterSec.style.display = 'none';
+    if (fleetSec) fleetSec.style.display = 'none';
+    if (drillSec) drillSec.style.display = 'block';
+    if (incidentSec) incidentSec.style.display = 'none';
+  } else if (mode === 'table') {
+    if (filterSec) filterSec.style.display = 'none';
+    if (fleetSec) fleetSec.style.display = 'none';
+    if (drillSec) drillSec.style.display = 'none';
+    if (incidentSec) incidentSec.style.display = 'block';
+  } else {
+    // all
+    if (filterSec) filterSec.style.display = 'flex';
+    if (fleetSec) fleetSec.style.display = 'grid';
+    if (drillSec) drillSec.style.display = 'block';
+    if (incidentSec) incidentSec.style.display = 'block';
+  }
+}
+
+let currentFleetView = 'fleet';
+
 function startFleetDrillPlay() {
+  if (currentFleetView === 'fleet' || currentFleetView === 'table') {
+    switchFleetView('drill');
+  }
   fleetDrillIsPlaying = true;
   const playBtn = document.getElementById('fleet-drill-play-btn');
   if (playBtn) {
@@ -3057,6 +3214,9 @@ function stopFleetDrillPlay() {
 }
 
 window.addEventListener('DOMContentLoaded', () => {
+  const urlParams = new URLSearchParams(window.location.search);
+  const initialView = urlParams.get('view') || 'fleet';
+  switchFleetView(initialView);
   setTimeout(() => {
     updateFleetDrillUI(0);
   }, 100);
