@@ -1281,57 +1281,52 @@
       <div class="r">03 / 10 · THE VERIPATROL STACK &amp; 5 KERNEL AGENTS</div>
     </div>
     <div data-anim="kicker" class="t-meta" style="color:var(--accent-bright);letter-spacing:.2em">THREE-LAYER KERNEL · STRICT PRIVILEGE ISOLATION · ORACLE ANTI-SELF-VERIFICATION</div>
-    <div data-anim="grid" style="flex:1;display:grid;grid-template-columns:1fr 1fr;gap:3vw;align-items:stretch;margin-top:1.5vh">
-      <div style="display:flex;flex-direction:column;gap:1.4vh">
-        <div style="background:var(--surface-card);border:1px solid var(--border-subtle);border-top:3px solid var(--accent-bright);padding:1.8vh 1.4vw;border-radius:4px">
-          <div class="t-meta" style="color:var(--accent-bright);margin-bottom:.6vh">TOP · DOMAIN PROFILES (无侵入插件)</div>
-          <div style="font-size:max(14px,.86vw);line-height:1.5;color:var(--text-secondary)">
-            • <b>零售冷链</b>: Arrhenius动力学 / POS熔断<br/>
-            • <b>医药温控</b>: GSP ±0.5℃ / 血液制品验真<br/>
-            • <b>HPC机房</b>: GPU功耗墙 / 算力热迁移
+    <div data-anim="grid" style="flex:1;display:grid;grid-template-columns:1fr 1.45fr;gap:2.5vw;align-items:stretch;margin-top:1.2vh">
+      <!-- LEFT: 三层架构栈 -->
+      <div style="display:flex;flex-direction:column;gap:1.2vh">
+        <div style="background:var(--surface-card);border:1px solid var(--border-subtle);border-top:3px solid var(--accent-bright);padding:1.6vh 1.4vw;border-radius:4px">
+          <div class="t-meta" style="color:var(--accent-bright);margin-bottom:.5vh">TOP · DOMAIN PROFILES</div>
+          <div style="font-size:max(13px,.82vw);line-height:1.5;color:var(--text-secondary)">
+            • <b style="color:#fff">零售冷链</b>：Arrhenius 动力学 / POS 熔断<br/>
+            • <b style="color:#fff">医药温控</b>：GSP ±0.5℃ / 血液制品验真<br/>
+            • <b style="color:#fff">HPC 机房</b>：GPU 功耗墙 / 算力热迁移
           </div>
-          <div style="font-size:max(12px,.74vw);color:var(--text-helper);margin-top:.6vh">内核 0% 业务硬编码，纯 Profile DSL 驱动</div>
+          <div style="font-size:max(11px,.7vw);color:var(--text-helper);margin-top:.5vh">内核 0% 业务硬编码 · 纯 Profile DSL 驱动</div>
         </div>
-        <div style="background:var(--surface-elevated);border:1px solid var(--border-strong);border-top:3px solid var(--accent-bright);padding:1.8vh 1.4vw;border-radius:6px;box-shadow:0 8px 24px rgba(0,0,0,.4)">
-          <div class="t-meta" style="color:var(--accent-bright);margin-bottom:.6vh">MIDDLE · VERIPATROL KERNEL (通用核心)</div>
-          <div style="font-family:var(--mono);font-size:max(13px,.82vw);line-height:1.65;color:#fff">
-            Orchestrator · Sentry · Diagnoser · Executor · Auditor · AgentLoop
+        <div style="background:var(--surface-elevated);border:1px solid var(--border-strong);border-top:3px solid var(--accent-bright);padding:1.6vh 1.4vw;border-radius:6px;box-shadow:0 8px 24px rgba(0,0,0,.4)">
+          <div class="t-meta" style="color:var(--accent-bright);margin-bottom:.5vh">MIDDLE · VERIPATROL KERNEL</div>
+          <div style="font-family:var(--mono);font-size:max(12px,.78vw);line-height:1.6;color:#fff">
+            Orchestrator · Sentry · Diagnoser<br/>Executor · Auditor · AgentLoop
+          </div>
+          <div style="font-size:max(11px,.7vw);color:var(--text-helper);margin-top:.5vh">确定性状态机 · 职责硬隔离 · 反自验强制</div>
+        </div>
+        <div style="background:var(--surface-card);border:1px solid var(--border-subtle);border-top:3px solid var(--accent-bright);padding:1.6vh 1.4vw;border-radius:4px">
+          <div class="t-meta" style="color:var(--accent-bright);margin-bottom:.5vh">BOTTOM · ACTUATION &amp; TRUTH BUS</div>
+          <div style="font-size:max(13px,.82vw);line-height:1.5;color:var(--text-secondary)">
+            Digital Tool (MCP 12+3) · Physical Tool (Human SLA)<br/>Truth Oracle · Append-only Audit Stream
           </div>
         </div>
-        <div style="background:var(--surface-card);border:1px solid var(--border-subtle);border-top:3px solid var(--accent-bright);padding:1.8vh 1.4vw;border-radius:4px">
-          <div class="t-meta" style="color:var(--accent-bright);margin-bottom:.6vh">BOTTOM · ACTUATION &amp; TRUTH BUS</div>
-          <div style="font-size:max(14px,.86vw);line-height:1.5;color:var(--text-secondary)">
-            Digital Tool (MCP) · Physical Tool (Human-as-Tool SLA) · Truth Oracle (传感器客观真值) · Audit Stream (只增不改)
+        <div style="background:rgba(16,185,129,0.08);border:1px solid rgba(16,185,129,0.35);border-left:3px solid var(--success);padding:1.4vh 1.2vw;border-radius:4px;margin-top:auto">
+          <div class="t-meta" style="color:var(--success);margin-bottom:.3vh">AUDITOR · 核心红线</div>
+          <div style="font-size:max(12px,.78vw);line-height:1.45;color:var(--text-secondary)">
+            隔离上下文外部预言机 · 独立重查设备+资产双重真值<br/>
+            <b style="color:var(--success)">一票否决权</b> — 执行者绝无权自证成功
           </div>
         </div>
       </div>
-      <div style="display:flex;flex-direction:column;gap:1vh">
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1vh;flex:1">
-          <div style="background:var(--surface-card);border:1px solid var(--border-subtle);border-top:3px solid var(--accent-bright);padding:1.6vh 1vw;border-radius:4px">
-            <div class="t-meta" style="color:var(--accent-bright)">SCHEDULER</div>
-            <div style="font-size:max(16px,1vw);font-weight:500;margin:.5vh 0;color:var(--text-primary)">Orchestrator</div>
-            <div style="font-size:max(13px,.8vw);line-height:1.5;color:var(--text-secondary)">状态机调度·异步挂起·超时升级<br/><span style="color:var(--text-helper)">(无领域写权)</span></div>
-          </div>
-          <div style="background:var(--surface-card);border:1px solid var(--border-subtle);border-top:3px solid var(--accent-bright);padding:1.6vh 1vw;border-radius:4px">
-            <div class="t-meta" style="color:var(--accent-bright)">SENTRY</div>
-            <div style="font-size:max(16px,1vw);font-weight:500;margin:.5vh 0;color:var(--text-primary)">Sentry</div>
-            <div style="font-size:max(13px,.8vw);line-height:1.5;color:var(--text-secondary)">流式质控·Westgard±3SD<br/><span style="color:var(--text-helper)">(L0只读监测)</span></div>
-          </div>
-          <div style="background:rgba(56,189,248,0.08);border:1px solid rgba(56,189,248,0.35);border-top:3px solid var(--accent-bright);padding:1.6vh 1vw;border-radius:4px">
-            <div class="t-meta" style="color:var(--accent-bright)">REASONER</div>
-            <div style="font-size:max(16px,1vw);font-weight:500;margin:.5vh 0;color:#fff">Diagnoser</div>
-            <div style="font-size:max(13px,.8vw);line-height:1.5;color:var(--text-secondary)">退化动力学定损·Top-K推断<br/><span style="color:var(--text-helper)">(L0只读建议)</span></div>
-          </div>
-          <div style="background:var(--surface-card);border:1px solid var(--border-subtle);border-top:3px solid var(--accent-bright);padding:1.6vh 1vw;border-radius:4px">
-            <div class="t-meta" style="color:var(--accent-bright)">ACTUATOR</div>
-            <div style="font-size:max(16px,1vw);font-weight:500;margin:.5vh 0;color:var(--text-primary)">Executor</div>
-            <div style="font-size:max(13px,.8vw);line-height:1.5;color:var(--text-secondary)">L1熔断·L2 Human Tool·幂等管理<br/><b style="color:#fff">(绝无权自验自结)</b></div>
+      <!-- RIGHT: 两张真实架构图 -->
+      <div style="display:flex;flex-direction:column;gap:1.2vh;overflow:hidden">
+        <div style="flex:1.15;border-radius:8px;overflow:hidden;border:1px solid var(--border-subtle);position:relative">
+          <img src="agent-flow.png" alt="Agent 多 Agent 闭环架构动态流向" style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block"/>
+          <div style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(7,13,24,0.85));padding:.8vh 1vw">
+            <div class="t-meta" style="color:var(--accent-bright)">AGENT 多 Agent 闭环架构 · 动态流向</div>
           </div>
         </div>
-        <div style="background:rgba(16,185,129,0.08);border:1px solid rgba(16,185,129,0.35);border-top:3px solid var(--success);padding:1.6vh 1.4vw;border-radius:4px">
-          <div class="t-meta" style="color:var(--success)">05 · ORACLE · 带外独立预言机</div>
-          <div style="font-size:max(16px,1vw);font-weight:600;margin:.4vh 0;color:var(--text-primary)">Auditor — <span style="color:var(--success)">一票否决权</span></div>
-          <div style="font-size:max(13px,.8vw);line-height:1.5;color:var(--text-secondary)">隔离上下文独立重查设备状态+资产批次，决定 Verified Close / Reopen — 执行者绝无权自证成功</div>
+        <div style="flex:1;border-radius:8px;overflow:hidden;border:1px solid var(--border-subtle);position:relative">
+          <img src="agent-identity.png" alt="Agent Identity 角色清单" style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block"/>
+          <div style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(7,13,24,0.85));padding:.8vh 1vw">
+            <div class="t-meta" style="color:var(--accent-bright)">AGENT IDENTITY · 5 Workers 职责边界 + 决策权限矩阵</div>
+          </div>
         </div>
       </div>
     </div>
