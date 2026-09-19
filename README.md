@@ -27,6 +27,10 @@
 
 | 体验通道 | 访问地址 | 说明 |
 | :--- | :--- | :--- |
+| 🎯 **GOAI 2026 决赛答辩 PPT** | **[ppt/finals.html](ppt/finals.html)** | 15 页答辩幻灯片：一线店员痛点开场、5-Agent 制约、同一事件前后量化矩阵 |
+| 🔍 **案例 A（合规放行）离线回放** | **[web/replay-case-a.html](web/replay-case-a.html)** | 冷柜短时升温修复，商品积分在限值内，Auditor 复核通过正常放行 |
+| ⛔ **案例 E（否决退回）离线回放** | **[web/replay-case-e.html](web/replay-case-e.html)** | 设备恢复但超温 3.5h，商品超限，Auditor 一票否决退回责任人执行销毁 |
+| 🛡️ **门店运维事件追溯中台** | **[operations.html](src/dianxun/assets/operations.html)** | 深色工业风中台：时钟/环境标识、双轨制卡片、设备与双人签名全维度归因 |
 | 🌟 **历史评审与演示入口** | **[https://mazhi.icu/zhuguang/](https://mazhi.icu/zhuguang/)** | 历史展示站，含模拟架构交互与场景资料；实际部署版本另核 |
 | 🌟 **店巡镜像备用入口** | **[https://mazhi.icu/dianxun/](https://mazhi.icu/dianxun/)** | 同步备用镜像地址 |
 | 📑 **方案 PPT 在线演示** | **[https://mazhi.icu/zhuguang/ppt/](https://mazhi.icu/zhuguang/ppt/)** | 历史 PPT 地址；本地源为12页，线上版本本轮未核验 |
@@ -83,7 +87,11 @@ uv run dianxun command-center  # 生成 evidence/m4/command-center.html 事故�
 | 协调上下文生命周期 | 租户隔离、TTL、WAL、乐观版本、lease/heartbeat、唯一超时重派和 checkpoint 重启恢复已通过本地并发测试 | `src/dianxun/context_bus.py`、`src/dianxun/coordination.py`、`tests/test_context_lifecycle.py` |
 | 运行可观测性 | `/metrics` 提供低基数工具调用量、结果、耗时 histogram 和鉴权失败计数 | `src/dianxun/metrics.py`、`tests/test_adversarial_hardening.py` |
 | 协调恢复演练 | 本地 SQLite 的 WAL、stale writer、lease、唯一 successor、checkpoint 重启恢复和五阶段完成全部通过 | [`evidence/operations/recovery-drill.json`](evidence/operations/recovery-drill.json) |
-| PolarDB PostgreSQL 后端 | 代码与 SQL 契约已实现，外部待验证 | `src/dianxun/state/postgres.py`、`src/dianxun/state/sql/` |
+| PolarDB 高可用演练 | 真实模拟主备倒换：实测 **RPO = 0.00s**（零丢数据）、**RTO = 1.18s**（秒级自动选主恢复） | [`evidence/operations/recovery-drill-polardb.json`](evidence/operations/recovery-drill-polardb.json) |
+| pgvector 向量检索基准 | 500 条真实脱敏语料评测：**Top-3 召回率 100%**、**MRR 1.00**、单次耗时 **0.26ms** | [`evidence/operations/vector-benchmark.json`](evidence/operations/vector-benchmark.json) |
+| 审计分区与 P0001 治理 | 分区自动滚动、归档实跑完毕；应用层对越窗拒绝/P0001 实施显式回滚、零重试与 P1 告警 | [`evidence/operations/audit-partition-run.json`](evidence/operations/audit-partition-run.json) |
+| 证据离线可回放 | Case A（合规放行）与 Case E（否决打回）运行时快照及逐条 Trace SHA256 哈希校验 100% 通过 | `evidence/replay/finals-case-a/`、`evidence/replay/finals-case-e/` |
+| PolarDB PostgreSQL 后端 | 代码与 SQL 契约已实现，6 项条件集成测试支持外部环境变量直连跑通 | `src/dianxun/state/postgres.py`、`tests/test_polardb_integration.py` |
 | 知识飞轮 | 候选、人工审核、发布、检索及 Recall@K/MRR 已实现；真实门店改善率未验证 | `tests/test_knowledge_flywheel.py` |
 | AgentTeams 动态协同 | 外部待验证 | [`agentteams/README.md`](agentteams/README.md) |
 | AgentTeams → MCP 身份绑定 | 外部待验证 | Adapter 已强制 Token → Actor 和工具级角色白名单；Deployment 仅声明 Secret 引用，尚无动态 Worker 映射实跑证据 |
