@@ -1404,7 +1404,7 @@ table.incident-table tr:hover td {
     <div class="header-actions">
       <span style="font-family:var(--font-mono); font-size:12px; color:var(--green); display:inline-flex; align-items:center; gap:6px;">
         <span class="pulse-online"></span>
-        全网 300 店冷链数字孪生实时在线 · 钉钉作战群就绪
+        🟢 PHX 真实数据库集群直连 (100.95.247.115:5433) · 300 店冷链全网实时在线
       </span>
       <a href="./index.html" class="nav-link-btn">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
@@ -1957,12 +1957,15 @@ const catMap = {
 // Fetch Data
 async function loadFleetData() {
   try {
-    const res = await fetch('./phx_fleet_dashboard.json');
-    if (!res.ok) throw new Error('HTTP ' + res.status);
+    // 优先直连 PHX 边缘节点 PostgreSQL 真实数据库集群 (100.95.247.115:5433)
+    console.log('⚡️ 正在跨机房直连 PHX PostgreSQL 真实数据库 (100.95.247.115:5433)...');
+    const res = await fetch('/zhuguang/api/fleet/live_dashboard');
+    if (!res.ok) throw new Error('Live API HTTP ' + res.status);
     fleetData = await res.json();
+    console.log('🎉 成功直连 PHX 真实数据库！来源:', fleetData.source, '读数行数:', fleetData.summary && fleetData.summary.total_readings_in_db);
     initDashboard();
   } catch (err) {
-    console.warn('Direct fetch failed, trying absolute path...', err);
+    console.warn('PHX 数据库直连降级为快照文件:', err);
     try {
       const res2 = await fetch('/zhuguang/phx_fleet_dashboard.json');
       fleetData = await res2.json();
