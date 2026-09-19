@@ -663,562 +663,174 @@
     <main class="content-area">
 
       <!-- P01 -->
-      <article class="slide-card active-target" id="slide-1">
-        <div class="slide-card-header">
-          <div class="slide-meta">
-            <span class="slide-index-badge">SLIDE 01 / 14</span>
-            <div class="slide-title-group">
-              <h2>封面 · 开篇立论</h2>
-              <small>VERIFIABLE MULTI-AGENT RUNTIME</small>
-            </div>
-          </div>
-          <span class="slide-timing-badge">⏱️ 建议用时: 25 秒</span>
-        </div>
+            <!-- ═══════════════════════════════ SLIDE 1: 封面 ═══════ -->
+      <article class="slide-card active-target active-focus" id="slide-1">
+        <div class="slide-badge">SLIDE 01 / 10 · 封面</div>
         <div class="cue-box">
-          <span class="cue-text">🎯 核心抓手：开门见山抛出主张，亮出 300 家门店、1500 台设备实跑基准</span>
-          <span class="cue-tag">翻页提示：讲完金句直接切 P02</span>
+          <div class="cue-label">↓ 开场白（PPT 封面）</div>
         </div>
         <div class="script-body">
-          <p>各位评委老师、现场的同行朋友们，大家下午好！</p>
-          <p>我们是<strong class="hl-accent">逐光团队</strong>，今天我们带来的决赛作品是——<strong class="hl-accent">《店巡 Agent (VeriPatrol)》</strong>，一个专门面向物理实体流程的<strong>可验证多智能体运行时（Verifiable Multi-Agent Runtime）</strong>。</p>
-          <p>我们在零售连锁与 Agent Infra 赛道探索的核心命题非常纯粹，只有一句话：<br/>
-          👉 <strong class="hl-accent">“设备修好，不等于商品安全；独立验证每一次关键处置。”</strong></p>
-          <p>今天，我们将向各位展示一套已在全国 <strong class="hl-accent">300 家门店、1,500 台冷链设备、43.2 万条时序遥测</strong>上经过极限压力验证的工业级智能体系统。</p>
+          "各位评委老师好！我们是第 13 队'逐光'，今天汇报的作品是面向物理实体流程的可验证多智能体系统——<b>店巡</b>。<br><br>
+          当绝大多数团队还在纯代码虚拟空间中打转时，店巡深入到了'原子与比特交织'的最后一百米：<b>通过物理-数字三大不可逆公理、反自验执行机制与物理异步 Human Tool 协议，为企业实体业务提供真正敢于放行的确定性可信闭环！</b><br><br>
+          本次以全国连锁高敏冷链 1,500 台设备（300 家门店）作为极限压力基准集展开验证。"
+        </div>
+        <div class="cue-box" style="background:rgba(56,189,248,0.08);border-color:rgba(56,189,248,0.2);margin-top:12px;">
+          <div class="cue-label">👉 念完"可信闭环"按 [→] 翻页</div>
         </div>
       </article>
 
-      <!-- P02 -->
+      <!-- ═══════════════════════════════ SLIDE 2: 第一性原理 ═══════ -->
       <article class="slide-card" id="slide-2">
-        <div class="slide-card-header">
-          <div class="slide-meta">
-            <span class="slide-index-badge">SLIDE 02 / 14</span>
-            <div class="slide-title-group">
-              <h2>01 · 第一性原理</h2>
-              <small>3 PHYSICAL-DIGITAL AXIOMS</small>
-            </div>
-          </div>
-          <span class="slide-timing-badge">⏱️ 建议用时: 35 秒</span>
-        </div>
+        <div class="slide-badge">SLIDE 02 / 10 · 01·三大不可逆公理</div>
         <div class="cue-box">
-          <span class="cue-text">🎯 核心抓手：剖析物理世界三大公理，揭示纯软件 Agent 在实体世界的崩溃</span>
-          <span class="cue-tag">手势：伸出三根手指分别阐述</span>
+          <div class="cue-label">⏱ 00:10 – 00:30 (20秒)</div>
         </div>
         <div class="script-body">
-          <p>在实体连锁与工业场景中，现有的智能体系统往往面临一个共同缺陷：<strong>把纯软件的假设生搬硬套到物理世界</strong>。我们提炼出物理实体流程的<strong class="hl-accent">三大不可逆公理</strong>：</p>
-          <p><strong>第一，状态不对称——设备修好 ≠ 商品安全。</strong><br/>
-          冷柜压缩机故障失温，师傅上门换好了零件，温度降回了 4°C，系统工单提示“已修复”。但物理世界有热力学惯性！在失温的数小时里，柜内的巴氏鲜奶可能早已微生物超标变质。</p>
-          <p><strong>第二，执行不可逆——物理动作没有“代码假撤销”。</strong><br/>
-          软件报错可以一键 <code style="color:var(--accent-bright)">git rollback</code>，但物理世界的技工上门、零件更换、通断电、整批报损，都会产生真实责任与高昂成本。</p>
-          <p><strong>第三，反自验闭环——执行者绝无权自证成功！</strong><br/>
-          大模型执行者如果自己验收自己，必然陷入自证幻觉。<strong class="hl-danger">执行者绝不能既当运动员又当裁判员</strong>！必须引入强物理隔离的外部 Auditor 重查客观物理真值。</p>
+          "企业为什么不敢让 Agent 真正涉足实体业务？因为纯软件的默认假设在物理世界完全失效：<br><br>
+          <b>公理一：状态不对称</b>。硬件恢复不等于资产安全！冷柜降温至 4.8°C，但鲜奶超温暴露 42 分钟已彻底变质；<br>
+          <b>公理二：执行不可逆</b>。物理动作没有'代码假撤销'，上门拧螺丝、报损销毁具备单向不可逆成本，必须受控于刚性门禁；<br>
+          <b>公理三：反自验闭环</b>。执行者绝无权自证成功！由执行写操作的 Agent 自己宣布结案，系统立刻陷入自验自放灾难，必须由带外独立外部预言机重查客观物理真值。"
+        </div>
+        <div class="cue-box" style="background:rgba(56,189,248,0.08);border-color:rgba(56,189,248,0.2);margin-top:12px;">
+          <div class="cue-label">👉 念完"客观物理真值"按 [→] 翻页</div>
         </div>
       </article>
 
-      <!-- P03 -->
+      <!-- ═══════════════════════════════ SLIDE 3: 架构+Agent ═══════ -->
       <article class="slide-card" id="slide-3">
-        <div class="slide-card-header">
-          <div class="slide-meta">
-            <span class="slide-index-badge">SLIDE 03 / 14</span>
-            <div class="slide-title-group">
-              <h2>02 · 系统架构栈</h2>
-              <small>THREE-LAYER DECOUPLING</small>
-            </div>
-          </div>
-          <span class="slide-timing-badge">⏱️ 建议用时: 30 秒</span>
-        </div>
+        <div class="slide-badge">SLIDE 03 / 10 · 02·架构栈与 5 Agent 职责</div>
         <div class="cue-box">
-          <span class="cue-text">🎯 核心抓手：强调三层解耦与通用内核，0% 业务硬编码</span>
-          <span class="cue-tag">重点：突出 Profile DSL 插件化</span>
+          <div class="cue-label">⏱ 00:30 – 00:52 (22秒)</div>
         </div>
         <div class="script-body">
-          <p>针对上述挑战，我们构建了 <strong class="hl-accent">VeriPatrol 三层解耦架构栈</strong>：</p>
-          <p>• <strong>顶层：跨行业 Profile 插件</strong>。无论是零售冷链的 Arrhenius 动力学、医药温控的 GSP 规范，还是算力中心的结温功耗墙，均以 DSL 形式无侵入注入，<strong class="hl-success">通用核心代码 0% 业务硬编码</strong>；</p>
-          <p>• <strong>中层：VeriPatrol 通用核心引擎</strong>。由确定性状态机 Orchestrator 驱动，包含质控哨兵 Sentry、因果大脑 Diagnoser、受控执行 Executor、带外预言机 Auditor，以及驱动模型进化的 AgentLoop；</p>
-          <p>• <strong>底层：物理-数字交互总线</strong>。提供 500ms 数字拦截、Human-as-a-Tool 维修工单调度、外部客观物理传感器 Oracle，以及金融级只增审计流。</p>
+          "为此，我们设计了三层解耦的<b>店巡架构栈</b>：<br><br>
+          ① <b>顶层 Domain Profiles</b>：挂载冷链跑通零售保全；挂载医药跑通 GSP 疫苗验真；挂载 HPC 跑通 GPU 热失控迁移，内核 0% 业务硬编码；<br>
+          ② <b>中层店巡 Kernel</b>：五个通用 Agent 协同编排——Orchestrator 调度、Sentry 监测、Diagnoser 定损、Executor 执行、<b>Auditor 外部预言机一票否决</b>；<br>
+          ③ <b>底层 Actuation & Truth Bus</b>：数字 MCP 拦截、带 SLA 的 Human Tool 与外部传感器客观真值总线。"
+        </div>
+        <div class="cue-box" style="background:rgba(56,189,248,0.08);border-color:rgba(56,189,248,0.2);margin-top:12px;">
+          <div class="cue-label">👉 念完"真值总线"按 [→] 翻页</div>
         </div>
       </article>
 
-      <!-- P04 -->
+      <!-- ═══════════════════════════════ SLIDE 4: 五阶段闭环 ═══════ -->
       <article class="slide-card" id="slide-4">
-        <div class="slide-card-header">
-          <div class="slide-meta">
-            <span class="slide-index-badge">SLIDE 04 / 14</span>
-            <div class="slide-title-group">
-              <h2>03 · 五 Agent 职责</h2>
-              <small>5 KERNEL AGENTS</small>
-            </div>
-          </div>
-          <span class="slide-timing-badge">⏱️ 建议用时: 35 秒</span>
-        </div>
+        <div class="slide-badge">SLIDE 04 / 10 · 03·五阶段确定性生命周期</div>
         <div class="cue-box">
-          <span class="cue-text">🎯 核心抓手：点明 Executor 剥夺自验权、Auditor 手握一票否决权</span>
-          <span class="cue-tag">对比：消融实验证明单体自验必漏检</span>
+          <div class="cue-label">⏱ 00:52 – 01:10 (18秒)</div>
         </div>
         <div class="script-body">
-          <p>在我们的系统里，5 个智能体各司其职，拥有不可僭越的职责边界：</p>
-          <p>• <strong>Orchestrator（调度引擎）</strong>：维护确定性状态机，拆解阶段，负责异步等待与超时升级，<strong class="hl-warning">无任何领域写权限</strong>；<br/>
-          • <strong>Sentry（质控哨兵）</strong>：L0 只读监测，采用 Westgard ±3SD 走廊滤除瞬态毛刺与噪声；<br/>
-          • <strong>Diagnoser（推断大脑）</strong>：L0 只读建议，基于物理动力学模型做热应力定损，输出 Top-K 处方；<br/>
-          • <strong>Executor（执行机构）</strong>：拥有 L1 预授权数字熔断与 L2 物理调度权限，<strong class="hl-danger">但被彻底剥夺了自验权</strong>；<br/>
-          • <strong>Auditor（独立预言机）</strong>：拥有<strong class="hl-success">一票否决权</strong>！独立重查外部传感器真值，只有设备与商品双重过关，才允许 Verified Close。</p>
-          
-          <div class="cue-box" style="margin-top: 14px; background: rgba(168,85,247,0.06); border-left-color: var(--purple);">
-            <span class="cue-text">⚡ 配合闭环架构动态流向图（动图演练口播）：指引五角色职责、Policy 橙色门禁与 Auditor 红色一票否决闭环</span>
-            <span class="cue-tag" style="background: rgba(168,85,247,0.2); color: #d8b4fe;">动图高光口播</span>
-          </div>
-          <div style="border-left: 2px dashed rgba(168,85,247,0.4); padding-left: 14px; margin-top: 10px;">
-            <span class="stage-direction">👉 配合架构流向图（architecture-flow.svg）口播重点</span>
-            <p>“大家请看我们的多 Agent 闭环架构动态流向：<br/>
-            • 最左侧：门店 IoT 与巡检异常触发，首先流入处于中央调度中枢的 <strong class="hl-accent">Orchestrator（Team Leader）</strong>，负责将复杂处置事件拆解为结构化任务；<br/>
-            • 中间四位执行 Worker 并行展开：<strong>Sentry</strong> 负责流式去噪与失温检测；<strong>Diagnoser</strong> 负责多源假设因果排序与批次热暴露定损；<strong>Executor</strong> 负责受控执行下发物理维修工单，但请注意看它下方的这道<strong class="hl-warning">橙色 Policy 策略门禁</strong>，任何涉及资金和不可逆操作必须经由刚性策略与人工审批，死死卡住执行越权！各个 Worker 将处置事实写入右侧唯一的业务事实中心 <strong>IncidentService</strong>；<br/>
-            • <strong class="hl-danger">整个架构最精妙、最关键的设计，在右下角这条红色的反自验闭环线（Redline）</strong>：<strong>Auditor 独立稽核者</strong>完全隔离上下文，带外重查客观物理传感器。一旦设备修好了但商品超温，<strong class="hl-danger">Auditor 沿着这条红色闭环线，直接行使一票否决权，坚决阻断事件关闭，强制回开事件并打回处置</strong>！这就是我们讲的：执行者绝无权自证成功，必须由独立 Auditor 守住最后一道食安底线。”</p>
-          </div>
+          "通用交互协议定义了严密的五阶段确定性生命周期：<br><br>
+          第一阶段'数字熔断'，Sentry 发现异常后 <b>500 毫秒内切断对外流通</b>，掐死资产风险外溢；<br>
+          第二阶段'动力学定损'，积分计算物理应力并锁定根因；<br>
+          第三阶段'物理执行'，触发移动端 HITL 审批，将人工技工作为<b>异步 Human Tool 调度上门</b>并管理 SLA；<br>
+          第四阶段'反自验重验'，Auditor 独立核验硬件与资产双重客观真值，杜绝自验；<br>
+          第五阶段'演进'，Trace 全量回流至 AgentLoop 驱动持续评测与自迭代！"
+        </div>
+        <div class="cue-box" style="background:rgba(56,189,248,0.08);border-color:rgba(56,189,248,0.2);margin-top:12px;">
+          <div class="cue-label">👉 念完"持续演进闭环"按 [→] 翻页</div>
         </div>
       </article>
 
-      <!-- P05 -->
+      <!-- ═══════════════════════════════ SLIDE 5: 执行鲁棒性 ═══════ -->
       <article class="slide-card" id="slide-5">
-        <div class="slide-card-header">
-          <div class="slide-meta">
-            <span class="slide-index-badge">SLIDE 05 / 14</span>
-            <div class="slide-title-group">
-              <h2>04 · 五阶段闭环</h2>
-              <small>UNIVERSAL 5-STAGE PROTOCOL</small>
-            </div>
-          </div>
-          <span class="slide-timing-badge">⏱️ 建议用时: 35 秒</span>
-        </div>
+        <div class="slide-badge">SLIDE 05 / 10 · 04·六大执行鲁棒性不变式</div>
         <div class="cue-box">
-          <span class="cue-text">🎯 核心抓手：讲透 500ms 数字熔断到反自验独立重验的标准全生命周期</span>
-          <span class="cue-tag">关键：设备与商品两条独立确认路径</span>
+          <div class="cue-label">⏱ 01:10 – 01:28 (18秒)</div>
         </div>
         <div class="script-body">
-          <p>任何一次现场异常，系统均会严格执行标准五阶段协议：</p>
-          <p><strong>1. 数字熔断（Interlock）</strong>：Sentry 捕获持续偏离，<strong class="hl-accent">500ms 内向 POS 和外卖中台下发数字熔断锁</strong>，切断对外销售，遏制风险外溢；<br/>
-          <strong>2. 动力学定损（Kinetics）</strong>：Diagnoser 结合牛顿冷却定律与 Arrhenius 积分，精确推算各批次食品的超温暴露应力；<br/>
-          <strong>3. 调度 Human Tool</strong>：将维修师傅抽象为异步工具，通过移动端 HITL 审批流派修，纳入 SLA 超时容灾；<br/>
-          <strong>4. 反自验独立重验（Oracle Verify）</strong>：Auditor 独立重查客观真值。<strong class="hl-success">设备恢复与商品安全走两条独立确认路径</strong>，双双通过才算成功；<br/>
-          <strong>5. 运行时演进（AgentLoop）</strong>：风险归零后闭环，全链路不可篡改 Trace 回流，驱动 Skill 与策略持续进化。</p>
+          "在执行鲁棒性上，我们视<b>'失败为一等公民'</b>，设立 A-F 六大刚性不变式：<br><br>
+          不变式 A 硬件与资产双重达标方可 Verified Closed；不变式 B/C 识别传感器噪声与瞬态气流扰动后合规放行；<br>
+          而面对不变式 D 审批超时、<b>不变式 E 硬件恢复但资产受损（核心红线）</b>、不变式 F 接口 partial，系统坚决保持阻断并回开事件，<b>宁可升级人工，绝不盲目关闭！</b>"
+        </div>
+        <div class="cue-box" style="background:rgba(56,189,248,0.08);border-color:rgba(56,189,248,0.2);margin-top:12px;">
+          <div class="cue-label">👉 念完"绝不盲目关闭"按 [→] 翻页</div>
         </div>
       </article>
 
-      <!-- P06 -->
+      <!-- ═══════════════════════════════ SLIDE 6: Skill+原语 ═══════ -->
       <article class="slide-card" id="slide-6">
-        <div class="slide-card-header">
-          <div class="slide-meta">
-            <span class="slide-index-badge">SLIDE 06 / 14</span>
-            <div class="slide-title-group">
-              <h2>05 · 执行鲁棒性</h2>
-              <small>6 FORMAL INVARIANTS</small>
-            </div>
-          </div>
-          <span class="slide-timing-badge">⏱️ 建议用时: 35 秒</span>
-        </div>
+        <div class="slide-badge">SLIDE 06 / 10 · 05·Skill 工程 + 物理-数字原语</div>
         <div class="cue-box">
-          <span class="cue-text">🎯 核心抓手：剖析六大不变式，突出“保持遏制是正确安全结果”</span>
-          <span class="cue-tag">核心场景：重点点名场景 E (红线)</span>
+          <div class="cue-label">⏱ 01:28 – 01:46 (18秒)</div>
         </div>
         <div class="script-body">
-          <p>我们通过形式化方法定义了<strong class="hl-accent">六大执行不变式（A ~ F）</strong>，覆盖所有边界分支：</p>
-          <p>• <strong>场景 A</strong>：硬件修复且资产安全，双重验真成功放行；<br/>
-          • <strong>场景 B/C</strong>：传感器抖动或开门气流扰动，自动识别去噪与自愈；<br/>
-          • <strong>场景 D</strong>：人工审批超时，绝不擅自行动，自动升级区域负责人；<br/>
-          • <strong class="hl-danger">核心红线场景 E</strong>：<strong>硬件虽然修好了、温度降下来了，但巴氏奶超温暴露超标！Auditor 一票否决阻断放行，强制报废</strong>！<br/>
-          • <strong>场景 F</strong>：网络分区或接口部分异常，系统绝不轻信片面回执，阻断并回开事件。</p>
-          <p>在这里，我们确立了一个关键设计理念：<strong class="hl-accent">对于证据不足或商品仍存在风险的情况，系统保持停售，是设计中的正确安全结果，而不是流程失败！</strong></p>
+          "在 Infra 规范性上，我们封装治理了 6 个通用 P0 Skill，全部具备 SemVer 语义化版本、JSON Schema 强类型约束与负向反例，通过 Worker ZIP 实现热插拔热加载。<br><br>
+          在工具原语上，5 大 P0 事实重查工具强制遵循<b>'先重查事实，再决定动作'</b>，建立四道安全闸：Policy 拦截越权、写操作强加幂等键、底层剥夺审计修改权；<br>
+          不可逆破坏动作强制触发 HITL 阻断，<b>资金支付对 Agent 永久拉黑！</b>"
+        </div>
+        <div class="cue-box" style="background:rgba(56,189,248,0.08);border-color:rgba(56,189,248,0.2);margin-top:12px;">
+          <div class="cue-label">👉 念完"永久拉黑"按 [→] 翻页</div>
         </div>
       </article>
 
-      <!-- P07 -->
+      <!-- ═══════════════════════════════ SLIDE 7: 评测证据 ═══════ -->
       <article class="slide-card" id="slide-7">
-        <div class="slide-card-header">
-          <div class="slide-meta">
-            <span class="slide-index-badge">SLIDE 07 / 14</span>
-            <div class="slide-title-group">
-              <h2>06 · Skill 工程化</h2>
-              <small>6 P0 SKILL CONTRACTS</small>
-            </div>
-          </div>
-          <span class="slide-timing-badge">⏱️ 建议用时: 25 秒</span>
-        </div>
+        <div class="slide-badge">SLIDE 07 / 10 · 06·评测证据 + 消融实验</div>
         <div class="cue-box">
-          <span class="cue-text">🎯 核心抓手：JSON Schema 强类型契约与 Worker ZIP 确定性镜像分发</span>
-          <span class="cue-tag">亮点：SemVer 与 SHA-256 唯一绑定</span>
+          <div class="cue-label">⏱ 01:46 – 02:02 (16秒)</div>
         </div>
         <div class="script-body">
-          <p>在工具调用层，我们彻底告别不确定性的纯文本 Prompt：</p>
-          <p>• 六个通用 P0 Skill（质控、定损、归因、派修、验真、复盘）严格遵循九要素规范；<br/>
-          • 制定严格的 <strong class="hl-accent">JSON Schema 强类型约束</strong>与负向反例；<br/>
-          • 全面遵循 <strong class="hl-accent">SemVer 语义化版本规范</strong>（Name + Version + SHA-256 唯一指纹）；<br/>
-          • 编译打包进独立 Worker ZIP 镜像，支持热插拔分发与全生命周期防篡改 Trace。</p>
+          "用数据说话：在本地评测门禁中，6 大不变式场景 100% 确定性通过，产出 45 份哈希校验的 Evidence 证据包与 26 段完整 Trace，<b>违规放行率为零！</b><br><br>
+          消融实验更证实：<b>去掉 Auditor 独立稽核，将有 5 个失败场景被错误放行</b>，直接量化证明了多 Agent 职责隔离与反自验架构的不可替代性！<br><br>
+          案例 A：霜堵冰块已修，牛奶安全，Verified Closed；案例 E：硬件修复但鲜奶超温，Auditor 一票否决，Reopen 销毁。"
+        </div>
+        <div class="cue-box" style="background:rgba(56,189,248,0.08);border-color:rgba(56,189,248,0.2);margin-top:12px;">
+          <div class="cue-label">👉 念完"架构的必要性"按 [→] 翻页</div>
         </div>
       </article>
 
-      <!-- P08 -->
+      <!-- ═══════════════════════════════ SLIDE 8: 仿真数据设计 ═══════ -->
       <article class="slide-card" id="slide-8">
-        <div class="slide-card-header">
-          <div class="slide-meta">
-            <span class="slide-index-badge">SLIDE 08 / 14</span>
-            <div class="slide-title-group">
-              <h2>07 · 原语与动作安全</h2>
-              <small>ACTION TAXONOMY & GATES</small>
-            </div>
-          </div>
-          <span class="slide-timing-badge">⏱️ 建议用时: 30 秒</span>
-        </div>
+        <div class="slide-badge">SLIDE 08 / 10 · 07·仿真数据 — ODE × Arrhenius × ML</div>
         <div class="cue-box">
-          <span class="cue-text">🎯 核心抓手：动作三级分类与四道闸门禁，严禁 Agent 越权处置资金</span>
-          <span class="cue-tag">底线：绝不把物理撤销当代码回滚</span>
+          <div class="cue-label">⏱ 02:02 – 02:17 (15秒)</div>
         </div>
         <div class="script-body">
-          <p>在物理世界，必须遵循严格的动作分类分级：</p>
-          <p>• <strong>可逆数字动作</strong>（如停售）：秒级下发，失败可自动重试；<br/>
-          • <strong>跨系统物理动作</strong>（如派工换件）：产生真实劳务支出，通过取消改派与工单对账实施对冲补偿；<br/>
-          • <strong class="hl-danger">不可逆破坏动作</strong>（如整批报废）：<strong>必须经过移动端 HITL 人工刚性审批，严禁 Agent 越权擅自动用客户资金与资产</strong>！</p>
-          <p>所有动作必须依次穿透四道闸门：<strong class="hl-accent">角色权限、Policy 门禁、幂等 Token 与只增审计</strong>。</p>
+          "本系统的数据可信性来源于双引擎仿真体系：<br><br>
+          <b>Newton 冷却 ODE 引擎</b>精确建模压缩机 Stall、冷媒泄漏等六类机电故障，每条时序都是物理方程的真实解；<br>
+          <b>Arrhenius 生化降解积分</b>对鲜奶超温做分钟级 D(t) 累积，激活能 Ea=52.3 kJ/mol，精确到盒计算损失——传统方案损失 ¥2,960，店巡 ¥621，<b>节省 79%！</b><br>
+          最后由七特征 Isolation Forest 以 <b>98.4% 检测率</b>在黄金恢复窗口 15~30 分钟内发出早警报！"
+        </div>
+        <div class="cue-box" style="background:rgba(56,189,248,0.08);border-color:rgba(56,189,248,0.2);margin-top:12px;">
+          <div class="cue-label">👉 念完"早警报"按 [→] 翻页</div>
         </div>
       </article>
 
-      <!-- P09 -->
+      <!-- ═══════════════════════════════ SLIDE 9: 数据库架构 ═══════ -->
       <article class="slide-card" id="slide-9">
-        <div class="slide-card-header">
-          <div class="slide-meta">
-            <span class="slide-index-badge">SLIDE 09 / 14</span>
-            <div class="slide-title-group">
-              <h2>08 · 评测证据与反馈改造</h2>
-              <small>EVIDENCE & HARDENING</small>
-            </div>
-          </div>
-          <span class="slide-timing-badge">⏱️ 建议用时: 35 秒</span>
-        </div>
+        <div class="slide-badge">SLIDE 09 / 10 · 08·数据库架构 — pgvector × SHA-256</div>
         <div class="cue-box">
-          <span class="cue-text">🎯 核心抓手：亮出 161 项测试全绿、初赛三大专家反馈逐项闭环</span>
-          <span class="cue-tag">数据：6/6 不变式、45 证据、0 违规</span>
+          <div class="cue-label">⏱ 02:17 – 02:30 (13秒)</div>
         </div>
         <div class="script-body">
-          <p>在评测与工程质量上，我们用严谨的事实验证：</p>
-          <p>• <strong class="hl-success">161 项严苛工程门禁测试 100% 全部通过（161 pass / 0 fail）</strong>；<br/>
-          • <strong>6/6 不变式、45/45 证据链、26/26 全生命周期 Trace 完整闭环，0 安全违规</strong>；<br/>
-          • 逐项闭环初赛评委的宝贵反馈：<br/>
-          &nbsp;&nbsp;1. <strong>场景聚焦</strong>：深耕高敏冷链极限压力基准，彻底解耦硬件降温与商品安全；<br/>
-          &nbsp;&nbsp;2. <strong>证明多 Agent 增益</strong>：消融实验证明，若移除独立 Auditor，在硬件恢复但商品超温时将发生 <strong class="hl-danger">100% 的重大食安事故漏检</strong>！有力证伪了单体自验假设；<br/>
-          &nbsp;&nbsp;3. <strong>工程声明可复现</strong>：彻底剔除口头陈述，所有指标均有测试脚本与开源代码佐证。</p>
+          "数据库架构四大生产级支柱：<br><br>
+          <b>① 时序吞吐</b>：device_readings B-Tree 复合索引，300 店 1500 台写入经过基准压测验证；<br>
+          <b>② 原子 POS 熔断</b>：sales_holds PARTIAL UNIQUE INDEX 确保每品类 ACTIVE Hold 唯一，食安阻断不存在竞态条件；<br>
+          <b>③ HITL 物理证据链</b>：manual_evidence 含 SHA-256 哈希 + 签名时间戳，构成<b>法律级可举证证据</b>；<br>
+          <b>④ pgvector HNSW</b>：incidents 向量索引支撑故障语义检索！"
+        </div>
+        <div class="cue-box" style="background:rgba(56,189,248,0.08);border-color:rgba(56,189,248,0.2);margin-top:12px;">
+          <div class="cue-label">👉 念完"法律级证据"按 [→] 翻页</div>
         </div>
       </article>
 
-      <!-- P10 -->
-      <article class="slide-card active-target" id="slide-10" style="border: 2px solid var(--accent-bright);">
-        <div class="slide-card-header">
-          <div class="slide-meta">
-            <span class="slide-index-badge" style="background: var(--accent); color: #fff;">SLIDE 10 / 14 · 现场实操</span>
-            <div class="slide-title-group">
-              <h2>09 · 现场实操演示</h2>
-              <small>300-STORE FLEET & 5-AGENT DEMO</small>
-            </div>
-          </div>
-          <span class="slide-timing-badge" style="background: rgba(56,189,248,0.15); color: var(--accent-bright);">⏱️ 建议用时: 80 秒</span>
-        </div>
+      <!-- ═══════════════════════════════ SLIDE 10: 基准+交付 ═══════ -->
+      <article class="slide-card" id="slide-10">
+        <div class="slide-badge">SLIDE 10 / 10 · 09·基准矩阵 + 交付总结</div>
         <div class="cue-box">
-          <span class="cue-text">🎯 核心抓手：全场高潮！左手 300 门店大盘，右手创空间 5-Agent 实操，演示 Auditor 一票否决</span>
-          <span class="cue-tag">现场动作：放慢语速，手指大屏幕左右两翼</span>
-        </div>
-
-        <!-- Visual Showcase Inside Card -->
-        <div class="demo-showcase-panel">
-          <div class="demo-half">
-            <div class="demo-half-title">
-              <span>🏪 300 家门店 · 1,500 台设备大盘</span>
-              <span style="font-size: 11px; background: rgba(56,189,248,0.15); color: var(--accent-bright); padding: 2px 6px; border-radius: 4px;">PHX Fleet</span>
-            </div>
-            <div class="demo-data-grid">
-              <div class="demo-data-item">
-                <div class="demo-data-num">300/1500</div>
-                <div class="demo-data-label">门店/设备</div>
-              </div>
-              <div class="demo-data-item">
-                <div class="demo-data-num" style="color:var(--accent-bright)">43.2w</div>
-                <div class="demo-data-label">遥测采样</div>
-              </div>
-              <div class="demo-data-item">
-                <div class="demo-data-num" style="color:var(--success)">¥2.7M</div>
-                <div class="demo-data-label">在保资产</div>
-              </div>
-            </div>
-            <div style="font-size: 12px; color: var(--text-secondary); line-height: 1.5;">
-              • Arrhenius 动力学微积分非线性应力定损<br/>
-              • Isolation Forest 异常检出率 98.4%
-            </div>
-            <a href="phx-fleet.html" target="_blank" class="btn-link-pill" style="background: rgba(56,189,248,0.1); color: var(--accent-bright);">🔗 打开大盘 (sh.mazhi.icu)</a>
-          </div>
-
-          <div class="demo-half" style="border-top: 3px solid var(--success);">
-            <div class="demo-half-title">
-              <span>⚡ 店巡五智能体交互战室</span>
-              <span style="font-size: 11px; background: rgba(16,185,129,0.15); color: var(--success); padding: 2px 6px; border-radius: 4px;">魔搭创空间</span>
-            </div>
-            <div style="font-size: 12px; color: var(--text-secondary); line-height: 1.6; margin-top: 6px;">
-              ① <strong>Sentry</strong>: 500ms 数字熔断锁定收银<br/>
-              ② <strong>Diagnoser</strong>: 动力学积分 + 根因推断<br/>
-              ③ <strong>Executor</strong>: 调度工单 + 技工换件<br/>
-              ④ <strong style="color:var(--danger)">Auditor</strong>: 独立带外重查，<b style="color:var(--danger)">一票否决阻断放行</b><br/>
-              ⑤ <strong>Orchestrator</strong>: 状态机闭环沉淀知识
-            </div>
-            <a href="https://modelscope.cn/studios/walle1991/veripatrol" target="_blank" class="btn-link-pill" style="background: rgba(16,185,129,0.1); color: var(--success);">🚀 打开创空间 (walle1991/veripatrol)</a>
-          </div>
-        </div>
-
-        <div class="script-body">
-          <p>评委老师们，为了证明这绝不是停留在 PPT 里的纸上谈兵，请看大屏幕——<strong class="hl-accent">这是我们线上稳定运行的全国 300 家门店数智孪生大盘与魔搭创空间实操环境！</strong></p>
-          <span class="stage-direction">👉 手势引导看大屏幕左侧</span>
-          <p>大家看左侧：<strong class="hl-accent">PHX Fleet 数字孪生大盘</strong>。<br/>
-          • 我们实时纳管了全国 12 座核心城市的 <strong>300 家连锁门店、1,500 台智能冷柜</strong>；<br/>
-          • 24 小时累计吞吐 <strong class="hl-accent">43.2 万条高频遥测采样</strong>，实时守护着在库高达 <strong class="hl-success">¥2,719,610 元</strong>的高敏冷链资产；<br/>
-          • 大盘集成了牛顿冷却定律与日间客流开门热负荷仿真，并利用 <strong>Arrhenius 微积分</strong>实时计算巴氏奶的货损应力；<br/>
-          • 结合 <strong>Isolation Forest 无监督孤立森林</strong>，实现了 98.4% 的微小慢泄漏预警！</p>
-          <span class="stage-direction">👉 手势引导转向大屏幕右侧</span>
-          <p>大家再看右侧：<strong class="hl-success">店巡五智能体交互战室（魔搭创空间在线环境）</strong>。<br/>
-          • 当异常爆发瞬间：<strong>① Sentry 哨兵在 500ms 内触发数字熔断</strong>，锁死全渠道收银防误售；<br/>
-          • <strong>② Diagnoser 快速调用因果动力学 Skill</strong>，输出压缩机过载推断与受损商品批次；<br/>
-          • <strong>③ Executor 申请 HITL 审批</strong>并调度技工上门更换冷凝风扇；<br/>
-          • <strong class="hl-danger">最关键的一步是 ④ Auditor</strong>：技工修好后，柜温降至 4.5°C，工单完成；但 Auditor 独立带外重查客观传感器与微积分模型，发现商品曾超温暴露 180 分钟，<strong class="hl-danger">当即行使一票否决权，坚决拒绝解除停售，下发报废处置指令</strong>！<br/>
-          • 最终 <strong>⑤ Orchestrator 驱动状态机安全闭环</strong>并自动生成复盘知识。</p>
-          <p>评委老师在评审席上可以随时点击我们的<strong class="hl-accent">魔搭创空间链接</strong>或扫描屏幕二维码，亲自在线体验这场五智能体实操交互！</p>
-        </div>
-      </article>
-
-      <!-- P11 -->
-      <article class="slide-card" id="slide-11">
-        <div class="slide-card-header">
-          <div class="slide-meta">
-            <span class="slide-index-badge" style="background: var(--accent); color: #fff;">SLIDE 11 / 14 · 仿真引擎</span>
-            <div class="slide-title-group">
-              <h2>10 · 仿真数据系统设计</h2>
-              <small>PHYSICS SIMULATION & ML PREDICTIVE ENGINE</small>
-            </div>
-          </div>
-          <span class="slide-timing-badge" style="background: rgba(56,189,248,0.15); color: var(--accent-bright);">⏱️ 建议用时: 30 秒</span>
-        </div>
-        <div class="cue-box">
-          <span class="cue-text">🎯 核心抓手：有力回应评委关于“数据是否真实”的关切——第一性原理传热微分方程 + 6 大机电故障 + 阿伦尼乌斯微积分定量定损</span>
-          <span class="cue-tag">现场动作：指向动力学方程与微积分挽损对比</span>
-        </div>
-
-        <!-- Visual Showcase Inside Card -->
-        <div class="demo-showcase-panel">
-          <div class="demo-half">
-            <div class="demo-half-title">
-              <span>🌡️ 第一性原理热传导 + 6 机电故障</span>
-              <span style="font-size: 11px; background: rgba(56,189,248,0.15); color: var(--accent-bright); padding: 2px 6px; border-radius: 4px;">ODE 动力学</span>
-            </div>
-            <div style="font-family:var(--font-mono); font-size: 11px; color: var(--accent-bright); background: rgba(0,0,0,0.3); padding: 6px 8px; border-radius: 4px; margin-top: 6px;">
-              dT/dt = -k·(T-T_evap)·𝕀 + k_loss·(T_amb-T) + Q̇_door
-            </div>
-            <div style="font-size: 12px; color: var(--text-secondary); line-height: 1.5; margin-top: 6px;">
-              • 压缩机卡缸 (14.8A) · 冷媒慢漏 (+0.15°C/h)<br/>
-              • 柜门虚掩 · 探头零漂 (检验 Sentry 去噪)
-            </div>
-          </div>
-
-          <div class="demo-half" style="border-top: 3px solid var(--success);">
-            <div class="demo-half-title">
-              <span>🧬 Arrhenius 微积分定量定损</span>
-              <span style="font-size: 11px; background: rgba(16,185,129,0.15); color: var(--success); padding: 2px 6px; border-radius: 4px;">挽损率 79%</span>
-            </div>
-            <div style="font-family:var(--font-mono); font-size: 11px; color: var(--success); background: rgba(0,0,0,0.3); padding: 6px 8px; border-radius: 4px; margin-top: 6px;">
-              𝒟(t) = ∫ A · exp(-E_a / (R·T(τ))) dτ (E_a=52.3kJ)
-            </div>
-            <div style="font-size: 12px; color: var(--text-secondary); line-height: 1.5; margin-top: 6px;">
-              • 传统一刀切：整柜报废亏损 ¥2,960 (或瞒报罚 ¥6,216)<br/>
-              • 逐光动力学：仅报损受波及 42 盒 (¥621.6)，保全 ¥2,338
-            </div>
-          </div>
-        </div>
-
-        <div class="script-body">
-          <p>评委老师们可能会问：大盘里这 43.2 万条高频遥测是随便造的假数据吗？<strong class="hl-accent">绝对不是！我们构建了完整的第一性原理物理热工传热引擎与预测模型。</strong></p>
-          <span class="stage-direction">👉 手势引导看大屏幕左侧传热方程与故障注入</span>
-          <p>• <strong>物理传热动力学</strong>：遥测流严格遵循牛顿冷却微分方程，叠加热空气侵入对流项，并引入泊松随机过程模拟早中晚三波进店高峰；同时构建了昼夜正弦温差交变，完全还原物理世界的变负荷环境；<br/>
-          • <strong>6 大机电物理故障注入池</strong>：沉淀了压缩机卡缸、冷媒慢漏、柜门虚掩、探头零漂等 6 种典型机电故障；尤其探头零漂专门考验 Sentry 哨兵的去噪抗误报能力；</p>
-          <span class="stage-direction">👉 手势引导看大屏幕右侧阿伦尼乌斯定损</span>
-          <p>• <strong class="hl-success">阿伦尼乌斯劣变微积分</strong>：针对食品安全生命线，我们以 52.3 kJ/mol 活化能连续积分细菌超速繁殖。传统做法是报警后整柜 200 盒巴氏奶全部报废（损失 ¥2,960），或店员瞒报误售招致《食品安全法》十倍惩罚（¥6,216）；而逐光方案基于微积分精准定损，仅报废受影响的 42 盒鲜奶（¥621.60），安全保全未受波及的 158 盒商品（¥2,338.40，挽损率 79%）！<br/>
-          • 结合 7 维高阶物理特征的混合孤立森林，提前 15 到 30 分钟预警慢泄漏，动态计算黄金处置窗口，实现 98.4% 的高召回！</p>
-        </div>
-      </article>
-
-      <!-- P12 -->
-      <article class="slide-card" id="slide-12">
-        <div class="slide-card-header">
-          <div class="slide-meta">
-            <span class="slide-index-badge" style="background: var(--accent); color: #fff;">SLIDE 12 / 14 · 数据库架构</span>
-            <div class="slide-title-group">
-              <h2>11 · 数据库架构设计</h2>
-              <small>ENTERPRISE COLD-CHAIN DATABASE ARCHITECTURE</small>
-            </div>
-          </div>
-          <span class="slide-timing-badge" style="background: rgba(56,189,248,0.15); color: var(--accent-bright);">⏱️ 建议用时: 30 秒</span>
-        </div>
-        <div class="cue-box">
-          <span class="cue-text">🎯 核心抓手：展示企业级生产落地的硬核实力——PHX PostgreSQL 16 + pgvector 架构，43.4万行时序流、320ms 偏置索引硬熔断、SHA-256 线下存证</span>
-          <span class="cue-tag">重点：唯一偏置索引原子排他锁与月度分区只增审计账本</span>
-        </div>
-
-        <!-- Visual Showcase Inside Card -->
-        <div class="demo-showcase-panel">
-          <div class="demo-half">
-            <div class="demo-half-title">
-              <span>🏬 拓扑时序 + 320ms 硬熔断</span>
-              <span style="font-size: 11px; background: rgba(56,189,248,0.15); color: var(--accent-bright); padding: 2px 6px; border-radius: 4px;">PostgreSQL 16</span>
-            </div>
-            <div style="font-family:var(--font-mono); font-size: 11px; color: var(--accent-bright); background: rgba(0,0,0,0.3); padding: 6px 8px; border-radius: 4px; margin-top: 6px;">
-              CREATE UNIQUE INDEX ux_active_hold_incident_batch<br/>
-              ON sales_holds (incident_id, batch_id) WHERE status = 'active';
-            </div>
-            <div style="font-size: 12px; color: var(--text-secondary); line-height: 1.5; margin-top: 6px;">
-              • 300 门店 / 1,500 设备 / 43.4万行时序遥测<br/>
-              • 偏置索引原子行级锁，多智能体高并发强幂等
-            </div>
-          </div>
-
-          <div class="demo-half" style="border-top: 3px solid var(--success);">
-            <div class="demo-half-title">
-              <span>🛡️ 线下凭证 + pgvector 飞轮</span>
-              <span style="font-size: 11px; background: rgba(16,185,129,0.15); color: var(--success); padding: 2px 6px; border-radius: 4px;">反自验双门禁</span>
-            </div>
-            <div style="font-family:var(--font-mono); font-size: 11px; color: var(--success); background: rgba(0,0,0,0.3); padding: 6px 8px; border-radius: 4px; margin-top: 6px;">
-              manual_evidence (sha256) | audit_log PARTITION<br/>
-              incident_embeddings (vector(1536) HNSW cosine)
-            </div>
-            <div style="font-size: 12px; color: var(--text-secondary); line-height: 1.5; margin-top: 6px;">
-              • 钉钉指纹审批 + 技工拍照 SHA-256 物理确权<br/>
-              • 156 起案卷全链路向量存储，纳秒级相似复盘
-            </div>
-          </div>
-        </div>
-
-        <div class="script-body">
-          <p>那么多智能体协同与 43.4 万条遥测是如何在企业级生产系统落地的？<strong class="hl-accent">请看我们在 PHX 边缘集群实际部署运行的 PostgreSQL 16 + pgvector 架构！</strong></p>
-          <span class="stage-direction">👉 手势引导看大屏幕左侧拓扑时序与交易熔断</span>
-          <p>• <strong>实体拓扑与高频时序流</strong>：300 门店与 1,500 台设备资产清晰建构；43.4 万行时序遥测大表按设备与降序时间建立复合 B-Tree 索引，毫秒级支撑滑动窗口过滤与 Westgard 质控走廊；<br/>
-          • <strong>交易拦截与硬一致性锁止</strong>：5,100 个批次受准售标识保护；核心表 <code>sales_holds</code> 采用 PostgreSQL <strong>唯一偏置索引 <code>ux_active_hold_incident_batch</code></strong>，在数据库层形成分布式原子排他锁，提供 320ms POS 硬熔断与多智能体绝对幂等；</p>
-          <span class="stage-direction">👉 手势引导看大屏幕右侧线下确权与向量审计</span>
-          <p>• <strong>人机协同与不可篡改线下凭证</strong>：钉钉移动端店长指纹签署审批流，技工线下换件照片与手持探针校验单实施 <strong>SHA-256 哈希存证</strong>，杜绝工单虚假闭环；<br/>
-          • <strong class="hl-success">独立审计与 pgvector 语义记忆</strong>：异构独立双门禁核验表彻底终结模型自圆其说；基于月度范围分区的只增金融级账本确保审计链条坚不可摧；全量 156 起案卷 Trace 向量化存储至 pgvector，支持 HNSW 纳秒级余弦语义检索，驱动专家知识飞轮！</p>
-        </div>
-      </article>
-
-      <!-- P13 -->
-      <article class="slide-card" id="slide-13">
-        <div class="slide-card-header">
-          <div class="slide-meta">
-            <span class="slide-index-badge">SLIDE 13 / 14</span>
-            <div class="slide-title-group">
-              <h2>12 · 基准压力测试矩阵</h2>
-              <small>UNIVERSAL BENCHMARK MATRIX</small>
-            </div>
-          </div>
-          <span class="slide-timing-badge">⏱️ 建议用时: 35 秒</span>
-        </div>
-        <div class="cue-box">
-          <span class="cue-text">🎯 核心抓手：展示通用扩展性——医药温控、智算液冷，内核 0 修改</span>
-          <span class="cue-tag">重点：Profile DSL 即插即用</span>
+          <div class="cue-label">⏱ 02:30 – 02:40 (10秒)</div>
         </div>
         <div class="script-body">
-          <p>店巡不仅适用于便利店。凭借内核与业务逻辑的彻底解耦，我们构建了三大跨行业基准测试矩阵，<strong class="hl-success">通用内核代码 0 修改</strong>：</p>
-          <p>1. <strong>基准 01·零售高敏冷链（旗舰基准）</strong>：1,500 台设备实跑，Arrhenius 动力学与 POS 熔断；<br/>
-          2. <strong>基准 02·生物医药温控</strong>：切换为 2~8°C GSP 规范，守护狂犬疫苗与单抗血液制品，库温恢复但一旦破乳化一票否决出库；<br/>
-          3. <strong>基准 03·智算机房液冷</strong>：监控 40kW 高密算力柜热失控，在芯片结温触顶前毫秒级热迁移大模型权重，防止权重热损毁。</p>
-          <p>只需替换 Profile JSON 与物理动力学模型，通用 Agent Infra 底座即插即用！</p>
+          "店巡的核心价值在于跨行业通用性：<b>内核代码 0% 修改</b>，仅通过 Profile DSL 即可跨域复用！<br>
+          基准 02 生物医药 GSP 疫苗验真、基准 03 智算机房 40kW 液冷 GPU 热迁移均已验证闭环。<br><br>
+          最后重申立项信念：<b>'温度恢复不等于资产安全，Agent 的完成声明绝不等于业务事实！'</b><br>
+          店巡只做证据闭环。汇报完毕，感谢各位评委，请老师们批评指正！"
+        </div>
+        <div class="cue-box" style="background:rgba(16,185,129,0.1);border-color:rgba(16,185,129,0.3);margin-top:12px;">
+          <div class="cue-label">👉 致谢鞠躬，切到指挥中心大盘</div>
         </div>
       </article>
-
-      <!-- P14 -->
-      <article class="slide-card" id="slide-14">
-        <div class="slide-card-header">
-          <div class="slide-meta">
-            <span class="slide-index-badge">SLIDE 14 / 14</span>
-            <div class="slide-title-group">
-              <h2>13 · 交付与终结</h2>
-              <small>CLOSE WITH EVIDENCE</small>
-            </div>
-          </div>
-          <span class="slide-timing-badge">⏱️ 建议用时: 20 秒</span>
-        </div>
-        <div class="cue-box">
-          <span class="cue-text">🎯 核心抓手：总结升华金句，展示开源仓库与创空间交付，自信致谢</span>
-          <span class="cue-tag">口播：沉着有力，目光坚定</span>
-        </div>
-        <div class="script-body">
-          <p>最后，请允许我们用店巡系统的核心哲学作为总结：<br/>
-          <strong class="hl-accent">“温度恢复不等于商品安全；智能体的自评声明绝不等于业务客观事实。事件只有在证据闭环后才能关闭！”</strong></p>
-          <p>目前，逐光团队已向全球开源社区完整交付：<br/>
-          • <strong>GitHub 开源代码仓库</strong>；<br/>
-          • <strong>ModelScope 魔搭创空间在线交互 Demo</strong>；<br/>
-          • <strong>43.2 万条高频遥测公开数据集</strong>；<br/>
-          • 以及<strong>全国 300 家门店数智孪生大盘</strong>！</p>
-          <p>真诚感谢各位评委老师的聆听与指导，我们期待与大家共同探索物理实体智能体的未来！请评委老师批评指正！</p>
-        </div>
-      </article>
-
-      <!-- Q&A Section -->
-      <section id="qa-section" style="margin-top: 48px; border-top: 2px solid var(--border-subtle); padding-top: 32px;">
-        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px;">
-          <div>
-            <h2 style="font-size: 24px; color: #fff;">🛡️ 评委尖锐提问与一击必杀 Q&A 防御手册</h2>
-            <p style="color: var(--text-secondary); font-size: 13px; margin-top: 4px;">涵盖多Agent必要性、大模型边界、网络异常容灾、300店真实性、商业ROI</p>
-          </div>
-          <span class="slide-index-badge" style="background: rgba(168, 85, 247, 0.15); color: var(--purple); border-color: var(--purple);">内部防守秘籍</span>
-        </div>
-
-        <!-- QA 1 -->
-        <div class="qa-card">
-          <div class="qa-question">Q1：为什么非要用多 Agent？用一个强大的单 Agent（如 GPT-4 / Qwen-Max）配几个工具和状态机不行吗？</div>
-          <div class="qa-golden-quote">💡 答辩金句：“单 Agent 的硬伤不是推理能力不够，而是‘自我验证的幻觉’在物理世界具有不可承受的灾难性代价。”</div>
-          <ul class="qa-points">
-            <li><strong>根因分析</strong>：大模型存在不可避免的倾向自洽偏差。若让 Executor 既派单又验收，它极易把“技工说修好了”顺理成章地推论为“柜内商品没问题”。</li>
-            <li><strong>消融实验铁证</strong>：我们在 161 项门禁测试中专门做了消融实验。移除独立 Auditor 后，面对“硬件修好但商品变质”（场景 E），单 Agent 发生了 <strong>100% 的重大食品安全事故漏检</strong>！只有引入上下文强物理隔离、只查外部传感器真值的 Auditor，才能守住安全底线。</li>
-          </ul>
-        </div>
-
-        <!-- QA 2 -->
-        <div class="qa-card">
-          <div class="qa-question">Q2：这套系统里，大模型的作用究竟是什么？哪些是大模型做的，哪些是规则/算法做的？</div>
-          <div class="qa-golden-quote">💡 答辩金句：“大模型负责认知归因与非确定性决策，确定性状态机与规则算法负责刚性守门，两者的结合才是 Industrial Agent 的正确范式。”</div>
-          <ul class="qa-points">
-            <li><strong>大模型负责</strong>：Diagnoser 从设备异响描述、环境温湿度历史、维修文本等多模态异构信息中推断 Top-K 假设；向店长生成自然语言案情汇报与复盘报告；</li>
-            <li><strong>确定性算法负责</strong>：500ms 毫秒级 POS 熔断、Westgard 走廊、Arrhenius 微分定损积分、Policy 权限门禁。</li>
-            <li><strong>总结</strong>：涉及资金安全和公共卫生的红线，绝对不能依靠大模型的概率掷骰子，必须由确定性门禁做绝对防御！</li>
-          </ul>
-        </div>
-
-        <!-- QA 3 -->
-        <div class="qa-card">
-          <div class="qa-question">Q3：如果外部传感器故障、数据被破坏或者断网，Auditor 怎么防范？</div>
-          <div class="qa-golden-quote">💡 答辩金句：“在店巡的设计哲学里，‘证据不全’直接等价于‘绝对不安全’；保持停售是设计的正确结果，系统绝不盲目绿线通关！”</div>
-          <ul class="qa-points">
-            <li><strong>容灾机制</strong>：对应不变式场景 F。当数据断流或返回 Partial 时，Auditor 判定为 <code>BLOCKED</code> 并触发 <code>Reopen</code>，系统<strong>坚决保持销售熔断锁</strong>，并升级移动端人工介入。在实体世界，“宁可错停等待人工，绝不错放危害公共安全”。</li>
-          </ul>
-        </div>
-
-        <!-- QA 4 -->
-        <div class="qa-card">
-          <div class="qa-question">Q4：300 家门店大盘听起来很壮观，这是真实数据还是模拟？如何接入真实系统？</div>
-          <div class="qa-golden-quote">💡 答辩金句：“我们基于真实连锁拓扑与热力学方程建立了高保真数智孪生；真正接入真实企业，业务核心代码一行不改，只需替换两组适配器。”</div>
-          <ul class="qa-points">
-            <li><strong>数据真实性</strong>：43.2 万条时序数据已在 ModelScope 开源，符合牛顿冷却定律与真实客流开门热负荷分布；</li>
-            <li><strong>接入成本极低</strong>：由于架构采用三层解耦，落地时只需接入 MQTT/HTTP 物联网网关适配器，以及连锁 ERP 停售接口，具备向万店连锁平滑灰度推广的能力。</li>
-          </ul>
-        </div>
-
-        <!-- QA 5 -->
-        <div class="qa-card">
-          <div class="qa-question">Q5：如何量化商业价值与 ROI？</div>
-          <div class="qa-golden-quote">💡 答辩金句：“一降、一升、一保——降货损、升流转、保品牌生命线。”</div>
-          <ul class="qa-points">
-            <li><strong>降货损</strong>：传统失温往往“一刀切”全部扔掉；通过 Arrhenius 精准时序积分，区分边缘超温与核心受损，平均挽回 30%~40% 的非必要报损；</li>
-            <li><strong>升流转</strong>：500ms 毫秒感知 + 自动调度技工，将传统平均 45 分钟的“发现-上报-派单”人工耗时压缩至秒级；</li>
-            <li><strong>保生命线</strong>：杜绝因“设备修好就放行”导致的变质食品误售事件，保护企业数十亿级的品牌声誉免受公关危机与食安重罚。</li>
-          </ul>
-        </div>
 
       </section>
 
@@ -1228,7 +840,7 @@
   <!-- Focus Navigation Floating Bar -->
   <div class="focus-nav-bar">
     <button class="btn-action" onclick="prevSlide()">◀ 上一页 (←)</button>
-    <span id="focusIndicator" style="font-family: var(--font-mono); font-size: 13px; color: var(--accent-bright); font-weight: 700;">P01 / 14</span>
+    <span id="focusIndicator" style="font-family: var(--font-mono); font-size: 13px; color: var(--accent-bright); font-weight: 700;">P01 / 10</span>
     <button class="btn-action primary" onclick="nextSlide()">下一页 (→) ▶</button>
     <button class="btn-action" style="background: rgba(255,255,255,0.1);" onclick="toggleFocusMode()">退出单页</button>
   </div>
@@ -1236,7 +848,7 @@
   <script>
     // State
     let currentSlideIndex = 1;
-    const totalSlides = 14;
+    const totalSlides = 10;
     let isFocusMode = false;
     let currentFontSize = 19;
 
@@ -1311,7 +923,7 @@
     function selectSlide(index) {
       currentSlideIndex = index;
       document.querySelectorAll('.slide-nav-item').forEach((item, i) => {
-        if (i < 14) {
+        if (i < 10) {
           item.classList.toggle('active', i + 1 === index);
         }
       });
@@ -1319,7 +931,7 @@
         card.classList.toggle('active-target', i + 1 === index);
         card.classList.toggle('active-focus', i + 1 === index);
       });
-      document.getElementById('focusIndicator').textContent = `P${index.toString().padStart(2, '0')} / 14`;
+      document.getElementById('focusIndicator').textContent = `P${index.toString().padStart(2, '0')} / 10`;
       
       const target = document.getElementById(`slide-${index}`);
       if (target && !isFocusMode) {

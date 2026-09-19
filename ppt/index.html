@@ -1223,8 +1223,8 @@
 <section class="slide dark" data-animate="statement">
   <div class="canvas-card">
     <div class="chrome-min">
-      <div class="l">01 · 业务痛点与不可逆公理</div>
-      <div class="r">02 / 17 · CORE PROBLEM & AXIOMS</div>
+      <div class="l">01 · 不可逆公理</div>
+      <div class="r">02 / 10 · THREE IRREVERSIBILITY AXIOMS</div>
     </div>
     <div data-anim="kicker" class="t-meta" style="color:var(--accent-bright);letter-spacing:.2em">STORE OPERATOR DILEMMAS · 3 PHYSICAL AXIOMS · ANTI-SELF-VERIFICATION</div>
     <h2 data-anim="title" style="font-family:var(--sans),var(--sans-zh);font-weight:200;font-size:min(3.4vw,5.8vh);line-height:1.06;color:#fff">便利店员的凌晨三点困境：<span style="color:var(--accent-bright)">软件假设在物理世界必然崩溃</span></h2>
@@ -1277,85 +1277,63 @@
 <section class="slide" data-animate="grid-reveal">
   <div class="canvas-card">
     <div class="chrome-min">
-      <div class="l">02 · 系统架构</div>
-      <div class="r">03 / 17 · THE VERIPATROL STACK</div>
+      <div class="l">02 · 架构栈与 Agent 职责</div>
+      <div class="r">03 / 10 · THE VERIPATROL STACK &amp; 5 KERNEL AGENTS</div>
     </div>
-    <div data-anim="kicker" class="t-meta" style="color:var(--accent-bright);letter-spacing:.2em">THREE-LAYER DECOUPLING · GENERAL KERNEL · SCENARIO PLUGINS</div>
-    <h2 data-anim="title" style="font-family:var(--sans),var(--sans-zh);font-weight:200;font-size:min(3.5vw,6.2vh);line-height:1.05;color:var(--text-primary)">店巡 (VeriPatrol) 架构栈：内核与场景无侵入解耦</h2>
-    <div data-anim="grid" style="flex:1;display:grid;grid-template-columns:1.05fr 1.35fr 1.05fr;gap:2.2vw;align-items:center">
-      <div style="background:var(--surface-card);border:1px solid var(--border-subtle);border-top:3px solid var(--accent-bright);padding:2.2vh 1.4vw;border-radius:4px">
-        <div class="t-meta" style="color:var(--accent-bright);margin-bottom:1vh">TOP: DOMAIN PROFILES (无侵入插件)</div>
-        <div style="font-size:max(19px,1.25vw);font-weight:500;color:var(--text-primary);margin-bottom:.8vh">跨行业领域配置插件</div>
-        <div style="font-size:max(15px,.88vw);line-height:1.55;color:var(--text-secondary)">
-          • <b>Profile 01: 零售高敏冷链</b> (Arrhenius 动力学 / POS 结算熔断)<br/>
-          • <b>Profile 02: 医药疫苗温控</b> (GSP ±0.5℃ / 血液制品双盲验真)<br/>
-          • <b>Profile 03: 智算机房 HPC</b> (GPU 功耗墙 / 算力热迁移)
+    <div data-anim="kicker" class="t-meta" style="color:var(--accent-bright);letter-spacing:.2em">THREE-LAYER KERNEL · STRICT PRIVILEGE ISOLATION · ORACLE ANTI-SELF-VERIFICATION</div>
+    <div data-anim="grid" style="flex:1;display:grid;grid-template-columns:1fr 1fr;gap:3vw;align-items:stretch;margin-top:1.5vh">
+      <div style="display:flex;flex-direction:column;gap:1.4vh">
+        <div style="background:var(--surface-card);border:1px solid var(--border-subtle);border-top:3px solid var(--accent-bright);padding:1.8vh 1.4vw;border-radius:4px">
+          <div class="t-meta" style="color:var(--accent-bright);margin-bottom:.6vh">TOP · DOMAIN PROFILES (无侵入插件)</div>
+          <div style="font-size:max(14px,.86vw);line-height:1.5;color:var(--text-secondary)">
+            • <b>零售冷链</b>: Arrhenius动力学 / POS熔断<br/>
+            • <b>医药温控</b>: GSP ±0.5℃ / 血液制品验真<br/>
+            • <b>HPC机房</b>: GPU功耗墙 / 算力热迁移
+          </div>
+          <div style="font-size:max(12px,.74vw);color:var(--text-helper);margin-top:.6vh">内核 0% 业务硬编码，纯 Profile DSL 驱动</div>
         </div>
-        <div style="font-size:max(13px,.78vw);color:var(--text-helper);margin-top:1vh">内核 0% 业务硬编码，纯通过 Profile DSL 驱动</div>
-      </div>
-      <div style="background:var(--surface-elevated);border:1px solid var(--border-strong);border-top:3px solid var(--accent-bright);color:#fff;padding:2.5vh 1.8vw;min-height:36vh;display:flex;flex-direction:column;justify-content:center;border-radius:6px;box-shadow:0 12px 36px rgba(0,0,0,0.4)">
-        <div class="t-meta" style="color:var(--accent-bright);margin-bottom:1vh">MIDDLE: VERIPATROL KERNEL (通用核心引擎)</div>
-        <div style="font-family:var(--mono);font-size:max(16px,1.02vw);line-height:1.75;color:#ffffff">
-          • <b>Orchestrator</b>: 确定性非阻塞状态机编排<br/>
-          • <b>Sentry</b>: 流式时序去噪与 Westgard 质控哨兵<br/>
-          • <b>Diagnoser</b>: 因果 Top-K 退化动力学推断引擎<br/>
-          • <b>Executor</b>: 受控物理/数字执行与异步悬挂<br/>
-          • <b>Auditor</b>: 隔离上下文带外独立验真预言机<br/>
-          • <b>AgentLoop</b>: 全量 Trace 回流自演进评估流
+        <div style="background:var(--surface-elevated);border:1px solid var(--border-strong);border-top:3px solid var(--accent-bright);padding:1.8vh 1.4vw;border-radius:6px;box-shadow:0 8px 24px rgba(0,0,0,.4)">
+          <div class="t-meta" style="color:var(--accent-bright);margin-bottom:.6vh">MIDDLE · VERIPATROL KERNEL (通用核心)</div>
+          <div style="font-family:var(--mono);font-size:max(13px,.82vw);line-height:1.65;color:#fff">
+            Orchestrator · Sentry · Diagnoser · Executor · Auditor · AgentLoop
+          </div>
         </div>
-      </div>
-      <div style="background:var(--surface-card);border:1px solid var(--border-subtle);border-top:3px solid var(--accent-bright);padding:2.2vh 1.4vw;border-radius:4px">
-        <div class="t-meta" style="color:var(--accent-bright);margin-bottom:1vh">BOTTOM: ACTUATION & TRUTH BUS</div>
-        <div style="font-size:max(19px,1.25vw);font-weight:500;color:var(--text-primary);margin-bottom:.8vh">物理-数字交互总线</div>
-        <div style="font-size:max(15px,.88vw);line-height:1.55;color:var(--text-secondary)">
-          • <b>Digital Tool</b>: API/MCP 毫秒数字拦截<br/>
-          • <b>Physical Tool</b>: Human-as-a-Tool (SLA 悬挂)<br/>
-          • <b>Truth Oracle</b>: 外部时序物理传感器客观真值<br/>
-          • <b>Audit Stream</b>: Append-only 金融级不可篡改流
+        <div style="background:var(--surface-card);border:1px solid var(--border-subtle);border-top:3px solid var(--accent-bright);padding:1.8vh 1.4vw;border-radius:4px">
+          <div class="t-meta" style="color:var(--accent-bright);margin-bottom:.6vh">BOTTOM · ACTUATION &amp; TRUTH BUS</div>
+          <div style="font-size:max(14px,.86vw);line-height:1.5;color:var(--text-secondary)">
+            Digital Tool (MCP) · Physical Tool (Human-as-Tool SLA) · Truth Oracle (传感器客观真值) · Audit Stream (只增不改)
+          </div>
         </div>
       </div>
-    </div>
-  </div>
-</section>
-
-<section class="slide" data-animate="grid-reveal">
-  <div class="canvas-card">
-    <div class="chrome-min">
-      <div class="l">03 · 五 Agent 职责</div>
-      <div class="r">04 / 17 · 5 KERNEL AGENTS</div>
-    </div>
-    <div data-anim="kicker" class="t-meta" style="color:var(--accent-bright);letter-spacing:.2em">DISTRIBUTED ROLES · STRICT PRIVILEGE ISOLATION · ORACLE VERIFICATION</div>
-    <h2 data-anim="title" style="font-family:var(--sans),var(--sans-zh);font-weight:200;font-size:min(3.5vw,6vh);line-height:1.05;color:var(--text-primary)">通用 5-Agent 运行时角色：职责硬隔离与反自验</h2>
-    <div data-anim="grid" style="flex:1;display:grid;grid-template-columns:repeat(5,1fr);gap:1.5vw;align-items:stretch;margin-top:2vh">
-      <div style="background:var(--surface-card);border:1px solid var(--border-subtle);border-top:3px solid var(--accent-bright);padding:2vh 1.1vw;border-radius:4px">
-        <div class="t-meta" style="color:var(--accent-bright)">01 · SCHEDULER</div>
-        <div style="font-size:max(19px,1.2vw);font-weight:500;margin:.8vh 0;color:var(--text-primary)">Orchestrator</div>
-        <div style="font-size:max(15px,.86vw);line-height:1.55;color:var(--text-secondary)">状态机调度引擎<br/>非阻塞目标拆解<br/>异步等待与超时升级<br/>(无领域写权)</div>
+      <div style="display:flex;flex-direction:column;gap:1vh">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1vh;flex:1">
+          <div style="background:var(--surface-card);border:1px solid var(--border-subtle);border-top:3px solid var(--accent-bright);padding:1.6vh 1vw;border-radius:4px">
+            <div class="t-meta" style="color:var(--accent-bright)">SCHEDULER</div>
+            <div style="font-size:max(16px,1vw);font-weight:500;margin:.5vh 0;color:var(--text-primary)">Orchestrator</div>
+            <div style="font-size:max(13px,.8vw);line-height:1.5;color:var(--text-secondary)">状态机调度·异步挂起·超时升级<br/><span style="color:var(--text-helper)">(无领域写权)</span></div>
+          </div>
+          <div style="background:var(--surface-card);border:1px solid var(--border-subtle);border-top:3px solid var(--accent-bright);padding:1.6vh 1vw;border-radius:4px">
+            <div class="t-meta" style="color:var(--accent-bright)">SENTRY</div>
+            <div style="font-size:max(16px,1vw);font-weight:500;margin:.5vh 0;color:var(--text-primary)">Sentry</div>
+            <div style="font-size:max(13px,.8vw);line-height:1.5;color:var(--text-secondary)">流式质控·Westgard±3SD<br/><span style="color:var(--text-helper)">(L0只读监测)</span></div>
+          </div>
+          <div style="background:rgba(56,189,248,0.08);border:1px solid rgba(56,189,248,0.35);border-top:3px solid var(--accent-bright);padding:1.6vh 1vw;border-radius:4px">
+            <div class="t-meta" style="color:var(--accent-bright)">REASONER</div>
+            <div style="font-size:max(16px,1vw);font-weight:500;margin:.5vh 0;color:#fff">Diagnoser</div>
+            <div style="font-size:max(13px,.8vw);line-height:1.5;color:var(--text-secondary)">退化动力学定损·Top-K推断<br/><span style="color:var(--text-helper)">(L0只读建议)</span></div>
+          </div>
+          <div style="background:var(--surface-card);border:1px solid var(--border-subtle);border-top:3px solid var(--accent-bright);padding:1.6vh 1vw;border-radius:4px">
+            <div class="t-meta" style="color:var(--accent-bright)">ACTUATOR</div>
+            <div style="font-size:max(16px,1vw);font-weight:500;margin:.5vh 0;color:var(--text-primary)">Executor</div>
+            <div style="font-size:max(13px,.8vw);line-height:1.5;color:var(--text-secondary)">L1熔断·L2 Human Tool·幂等管理<br/><b style="color:#fff">(绝无权自验自结)</b></div>
+          </div>
+        </div>
+        <div style="background:rgba(16,185,129,0.08);border:1px solid rgba(16,185,129,0.35);border-top:3px solid var(--success);padding:1.6vh 1.4vw;border-radius:4px">
+          <div class="t-meta" style="color:var(--success)">05 · ORACLE · 带外独立预言机</div>
+          <div style="font-size:max(16px,1vw);font-weight:600;margin:.4vh 0;color:var(--text-primary)">Auditor — <span style="color:var(--success)">一票否决权</span></div>
+          <div style="font-size:max(13px,.8vw);line-height:1.5;color:var(--text-secondary)">隔离上下文独立重查设备状态+资产批次，决定 Verified Close / Reopen — 执行者绝无权自证成功</div>
+        </div>
       </div>
-      <div style="background:var(--surface-card);border:1px solid var(--border-subtle);border-top:3px solid var(--accent-bright);padding:2vh 1.1vw;border-radius:4px">
-        <div class="t-meta" style="color:var(--accent-bright)">02 · SENTRY</div>
-        <div style="font-size:max(19px,1.2vw);font-weight:500;margin:.8vh 0;color:var(--text-primary)">Sentry</div>
-        <div style="font-size:max(15px,.86vw);line-height:1.55;color:var(--text-secondary)">流式数据质控哨兵<br/>Westgard ±3SD 去噪<br/>瞬态漂移拦截过滤<br/>(L0 只读监测)</div>
-      </div>
-      <div style="background:rgba(56,189,248,0.08);border:1px solid rgba(56,189,248,0.35);border-top:3px solid var(--accent-bright);padding:2vh 1.1vw;border-radius:4px;box-shadow:0 8px 24px rgba(0,0,0,0.3)">
-        <div class="t-meta" style="color:var(--accent-bright)">03 · REASONER</div>
-        <div style="font-size:max(19px,1.2vw);font-weight:500;margin:.8vh 0;color:#fff">Diagnoser</div>
-        <div style="font-size:max(15px,.86vw);line-height:1.55;color:var(--text-secondary)">退化动力学因果分析<br/>资产受损积分定损<br/>Top-K 处方推断排序<br/>(L0 只读建议)</div>
-      </div>
-      <div style="background:var(--surface-card);border:1px solid var(--border-subtle);border-top:3px solid var(--accent-bright);padding:2vh 1.1vw;border-radius:4px">
-        <div class="t-meta" style="color:var(--accent-bright)">04 · ACTUATOR</div>
-        <div style="font-size:max(19px,1.2vw);font-weight:500;margin:.8vh 0;color:var(--text-primary)">Executor</div>
-        <div style="font-size:max(15px,.86vw);line-height:1.55;color:var(--text-secondary)">L1 预授权数字熔断<br/>L2 调度 Human Tool<br/>强幂等执行管理<br/><b style="color:#fff">(绝无权自验自结)</b></div>
-      </div>
-      <div style="background:rgba(16,185,129,0.06);border:1px solid rgba(16,185,129,0.3);border-top:3px solid var(--success);padding:2vh 1.1vw;border-radius:4px">
-        <div class="t-meta" style="color:var(--success)">05 · ORACLE</div>
-        <div style="font-size:max(19px,1.2vw);font-weight:500;margin:.8vh 0;color:var(--text-primary)">Auditor</div>
-        <div style="font-size:max(15px,.86vw);line-height:1.55;color:var(--text-secondary)">隔离上下文外部预言机<br/>双重重查客观物理真值<br/><b style="color:var(--success)">一票否决权</b><br/>决定 Verified Close</div>
-      </div>
-    </div>
-    <div style="display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--border-subtle);padding-top:1.4vh;margin-top:2vh">
-      <div class="t-meta" style="color:var(--accent-bright);font-weight:600">核心约束 · 执行角色不能确认自己的处置结果，独立 Auditor 必须重新查询设备状态、商品批次、维修工单与审批记录后独立判断</div>
-      <div class="t-meta" style="color:var(--text-helper)">五类 Agent 分管：遏制 · 诊断 · 处置 · 稽核 ｜ <a href="https://sh.mazhi.icu/zhuguang/architecture-flow.html" target="_blank" style="color:var(--accent-bright);text-decoration:none;">⚡ 架构动态流向动画 ↗</a></div>
     </div>
   </div>
 </section>
@@ -1363,8 +1341,8 @@
 <section class="slide" data-animate="timeline-walk">
   <div class="canvas-card">
     <div class="chrome-min">
-      <div class="l">04 · 五阶段闭环</div>
-      <div class="r">05 / 17 · GENERAL PROTOCOL</div>
+      <div class="l">03 · 五阶段闭环</div>
+      <div class="r">04 / 10 · 5-PHASE DETERMINISTIC LIFECYCLE</div>
     </div>
     <div data-anim="kicker" class="t-meta" style="color:var(--accent-bright);letter-spacing:.2em">UNIVERSAL 5-STAGE PHYSICAL-DIGITAL INTERACTION LIFECYCLE</div>
     <h2 data-anim="title" style="font-family:var(--sans),var(--sans-zh);font-weight:200;font-size:min(3.5vw,6vh);line-height:1.05;color:var(--text-primary)">通用物理-数字交互协议：五阶段确定性生命周期</h2>
@@ -1405,8 +1383,8 @@
 <section class="slide dark" data-animate="grid-reveal">
   <div class="canvas-card">
     <div class="chrome-min">
-      <div class="l">05 · 执行鲁棒性</div>
-      <div class="r">06 / 17 · FORMAL INVARIANTS</div>
+      <div class="l">04 · 执行鲁棒性</div>
+      <div class="r">05 / 10 · 6 ROBUSTNESS INVARIANTS A-F</div>
     </div>
     <div data-anim="kicker" class="t-meta" style="color:var(--accent-bright);letter-spacing:.2em">6 FORMAL EXECUTION INVARIANTS · PROVABLE BOUNDARY GATES</div>
     <h2 data-anim="title" style="font-family:var(--sans),var(--sans-zh);font-weight:200;font-size:min(3.5vw,6vh);line-height:1.05;color:#fff">物理-数字系统的六大执行鲁棒性不变式</h2>
@@ -1449,72 +1427,50 @@
   </div>
 </section>
 
-<section class="slide" data-animate="grid-reveal">
-  <div class="canvas-card">
-    <div class="chrome-min">
-      <div class="l">06 · Skill 工程</div>
-      <div class="r">07 / 17 · 6 P0 SKILL CONTRACTS</div>
-    </div>
-    <div data-anim="kicker" class="t-meta" style="color:var(--accent-bright);letter-spacing:.2em">CONTRACTS · SCHEMAS · STANDARDIZED PROTOCOLS</div>
-    <h2 data-anim="title" style="font-family:var(--sans),var(--sans-zh);font-weight:200;font-size:min(3.5vw,6vh);line-height:1.05;color:var(--text-primary)">六个通用 P0 Skill：语义化契约治理与热插拔分发</h2>
-    <div data-anim="grid" style="flex:1;display:grid;grid-template-columns:1.2fr 1fr;gap:4vw;align-items:center">
-      <div style="display:grid;grid-template-columns:1fr auto;row-gap:1.2vh;border-top:2px solid var(--accent-bright);padding-top:1.5vh;font-size:max(16px,1vw)">
-        <div style="font-family:var(--mono);color:#fff">anomaly-detect (时序流质控去噪)</div><div class="t-meta" style="color:var(--accent-bright)">Sentry · 1.0.0</div>
-        <div style="font-family:var(--mono);color:#fff">asset-risk-assess (动力学定损)</div><div class="t-meta" style="color:var(--accent-bright)">Diagnoser · 1.1.0</div>
-        <div style="font-family:var(--mono);color:#fff">rootcause-drilldown (因果推断)</div><div class="t-meta" style="color:var(--accent-bright)">Diagnoser · 1.2.0</div>
-        <div style="font-family:var(--mono);color:#fff">physical-tool-dispatch (物理调度)</div><div class="t-meta" style="color:var(--accent-bright)">Executor · 1.0.0</div>
-        <div style="font-family:var(--mono);color:#fff">outcome-verify (反自验独立重查)</div><div class="t-meta" style="color:var(--accent-bright)">Auditor · 1.1.0</div>
-        <div style="font-family:var(--mono);color:#fff">review-report (复盘报告沉淀)</div><div class="t-meta" style="color:var(--accent-bright)">Auditor · 1.1.0</div>
-      </div>
-      <div style="background:var(--surface-card);border:1px solid var(--border-subtle);border-left:3px solid var(--accent-bright);padding:2.5vh 2vw;border-radius:4px">
-        <div class="t-meta" style="color:var(--accent-bright);margin-bottom:1.2vh">REGISTRY + PACKAGE PROTOCOL</div>
-        <div style="font-size:max(15px,.88vw);line-height:1.55;color:var(--text-primary)">
-          • <b>九要素合规</b>：严格满足输入输出 JSON Schema 契约约束与负向反例<br/>
-          • <b>SemVer 版本化</b>：name + version + SHA-256 唯一摘要<br/>
-          • <b>确定性分发</b>：打包内置 Worker ZIP 镜像，支持热插拔热加载<br/>
-          • <b>Trace 锚定</b>：全生命周期执行记录不可篡改绑定版本与 Digest
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
 <section class="slide split" data-animate="grid-reveal">
   <div class="canvas-card" style="padding:4vh 4vw">
     <div class="split-half" style="gap:2vw">
-      <div class="half" style="background:var(--surface-card);border:1px solid var(--border-subtle);border-top:3px solid var(--accent-bright);border-radius:8px;padding:3.6vh 2.4vw;justify-content:flex-start">
-        <div class="chrome-min" style="color:var(--text-helper);margin-bottom:1.5vh"><div class="l">07 · 物理-数字原语</div><div class="r">08 / 17</div></div>
-        <div class="t-meta" style="color:var(--accent-bright);letter-spacing:.2em;margin-bottom:1.2vh">5 P0 TRUTH QUERIES</div>
-        <h2 style="font-family:var(--sans),var(--sans-zh);font-weight:200;font-size:min(3.2vw,5.4vh);line-height:1.06;color:#fff;margin-bottom:2vh">先重查客观事实<br/>再决定写动作</h2>
-        <div style="font-family:var(--mono);font-size:max(14px,.88vw);line-height:1.85;color:var(--text-secondary);background:rgba(0,0,0,.28);padding:1.6vh 1.2vw;border-radius:6px;border:1px solid rgba(255,255,255,0.06)">
+      <div class="half" style="background:var(--surface-card);border:1px solid var(--border-subtle);border-top:3px solid var(--accent-bright);border-radius:8px;padding:3vh 2vw;justify-content:flex-start">
+        <div class="chrome-min" style="color:var(--text-helper);margin-bottom:1.2vh"><div class="l">05 · Skill 工程</div><div class="r">06 / 10 · 6 P0 CONTRACTS</div></div>
+        <div class="t-meta" style="color:var(--accent-bright);letter-spacing:.2em;margin-bottom:1vh">SEMVER · JSON SCHEMA · HOT-PLUGGABLE</div>
+        <h2 style="font-family:var(--sans),var(--sans-zh);font-weight:200;font-size:min(2.8vw,4.8vh);line-height:1.06;color:#fff;margin-bottom:1.5vh">六 P0 Skill 语义化契约治理</h2>
+        <div style="display:grid;grid-template-columns:1fr auto;row-gap:1vh;border-top:2px solid var(--accent-bright);padding-top:1.2vh;font-size:max(14px,.88vw)">
+          <div style="font-family:var(--mono);color:#fff">anomaly-detect</div><div class="t-meta" style="color:var(--accent-bright)">Sentry 1.0</div>
+          <div style="font-family:var(--mono);color:#fff">asset-risk-assess</div><div class="t-meta" style="color:var(--accent-bright)">Diagnoser 1.1</div>
+          <div style="font-family:var(--mono);color:#fff">rootcause-drilldown</div><div class="t-meta" style="color:var(--accent-bright)">Diagnoser 1.2</div>
+          <div style="font-family:var(--mono);color:#fff">physical-tool-dispatch</div><div class="t-meta" style="color:var(--accent-bright)">Executor 1.0</div>
+          <div style="font-family:var(--mono);color:#fff">outcome-verify</div><div class="t-meta" style="color:var(--accent-bright)">Auditor 1.1</div>
+          <div style="font-family:var(--mono);color:#fff">review-report</div><div class="t-meta" style="color:var(--accent-bright)">Auditor 1.1</div>
+        </div>
+        <div style="background:var(--surface-elevated);border-left:3px solid var(--accent-bright);padding:1.2vh 1vw;border-radius:0 6px 6px 0;margin-top:1.4vh;font-size:max(13px,.8vw);line-height:1.5;color:var(--text-primary)">
+          九要素合规 · SemVer + SHA-256 · Worker ZIP 热插拔 · Trace 锚定不可篡改
+        </div>
+      </div>
+      <div class="half" style="background:var(--surface-card);border:1px solid var(--border-subtle);border-top:3px solid var(--accent-bright);border-radius:8px;padding:3vh 2vw;justify-content:flex-start">
+        <div class="chrome-min" style="color:var(--text-helper);margin-bottom:1.2vh"><div class="l">物理-数字原语</div><div class="r">5 QUERIES + 7 ACTIONS</div></div>
+        <div class="t-meta" style="color:var(--accent-bright);letter-spacing:.2em;margin-bottom:1vh">先重查客观事实，再决定写动作</div>
+        <div style="font-family:var(--mono);font-size:max(13px,.82vw);line-height:1.85;color:var(--text-secondary);background:rgba(0,0,0,.28);padding:1.4vh 1.2vw;border-radius:6px;border:1px solid rgba(255,255,255,0.06);margin-bottom:1.4vh">
           <span style="color:var(--accent-bright)">query_device_context</span> (物理真值重验)<br/>
           <span style="color:var(--accent-bright)">query_inventory_batches</span> (资产批次追溯)<br/>
           <span style="color:var(--accent-bright)">query_sales_holds</span> (数字熔断状态)<br/>
-          <span style="color:var(--accent-bright)">query_workorder</span> (Human Tool 状态)<br/>
-          <span style="color:var(--accent-bright)">query_approval</span> (HITL 审批证据)
+          <span style="color:var(--accent-bright)">query_workorder</span> (Human Tool状态)<br/>
+          <span style="color:var(--accent-bright)">query_approval</span> (HITL审批证据)
         </div>
-        <div class="t-meta" style="border-top:1px solid var(--border-subtle);margin-top:2vh;padding-top:1.4vh;color:var(--text-secondary)">四道闸 · 角色权限 / Policy 门禁 / 幂等 Token / 只增审计</div>
-        <div style="font-size:max(14px,.84vw);line-height:1.5;color:var(--text-secondary);margin-top:1vh">写后必须独立反查；动作回执绝不可替代写后实测客观事实。</div>
-      </div>
-      <div class="half" style="background:var(--surface-card);border:1px solid var(--border-subtle);border-top:3px solid var(--accent-bright);border-radius:8px;padding:3.6vh 2.4vw;justify-content:flex-start">
-        <div class="chrome-min" style="color:var(--text-helper);margin-bottom:1.5vh"><div class="l">ACTION TAXONOMY</div><div class="r">7 CONTROLLED ACTIONS</div></div>
-        <div class="t-meta" style="color:var(--accent-bright);letter-spacing:.2em;margin-bottom:1.2vh">REVERSIBLE ≠ COMPENSATABLE ≠ IRREVERSIBLE</div>
-        <h2 style="font-family:var(--sans),var(--sans-zh);font-weight:200;font-size:min(3vw,5vh);line-height:1.06;color:var(--text-primary);margin-bottom:2vh">物理-数字动作分级：拒绝把撤销当代码回滚</h2>
-        <div style="display:grid;grid-template-columns:1fr;gap:1.4vh">
-          <div style="border-left:3px solid var(--accent-bright);background:rgba(56,189,248,0.06);padding:1.4vh 1.2vw;border-radius:0 6px 6px 0;display:grid;grid-template-columns:.85fr 1.5fr;gap:1.2vw">
-            <div><div class="t-meta" style="color:var(--accent-bright);font-weight:600">可逆数字动作</div><div style="font-size:max(15px,.88vw);margin-top:.4vh;color:#fff;font-weight:500">解除停售 / 解除限流</div></div>
-            <div style="font-size:max(13px,.82vw);line-height:1.45;color:var(--text-secondary)">验真失败 → 事件 reopen → 自动恢复熔断；写入幂等键与补偿审计流水。</div>
+        <div style="display:grid;grid-template-columns:1fr;gap:.9vh">
+          <div style="border-left:3px solid var(--accent-bright);background:rgba(56,189,248,0.06);padding:1vh 1vw;border-radius:0 6px 6px 0;display:grid;grid-template-columns:auto 1fr;gap:1vw;align-items:center">
+            <div class="t-meta" style="color:var(--accent-bright);font-weight:600;white-space:nowrap">可逆数字</div>
+            <div style="font-size:max(12px,.78vw);color:var(--text-secondary)">解除停售/限流 — 验真失败自动恢复熔断</div>
           </div>
-          <div style="border-left:3px solid var(--warning);background:rgba(245,158,11,0.06);padding:1.4vh 1.2vw;border-radius:0 6px 6px 0;display:grid;grid-template-columns:.85fr 1.5fr;gap:1.2vw">
-            <div><div class="t-meta" style="color:var(--warning);font-weight:600">跨系统物理动作</div><div style="font-size:max(15px,.88vw);margin-top:.4vh;color:#fff;font-weight:500">技工派修 / 设备换件</div></div>
-            <div style="font-size:max(13px,.82vw);line-height:1.45;color:var(--text-secondary)">产生真实物理成本，不可代码 rollback；通过取消改派与工单对账实施对冲补偿。</div>
+          <div style="border-left:3px solid var(--warning);background:rgba(245,158,11,0.06);padding:1vh 1vw;border-radius:0 6px 6px 0;display:grid;grid-template-columns:auto 1fr;gap:1vw;align-items:center">
+            <div class="t-meta" style="color:var(--warning);font-weight:600;white-space:nowrap">跨系统物理</div>
+            <div style="font-size:max(12px,.78vw);color:var(--text-secondary)">技工派修/换件 — 产生真实物理成本，不可代码 rollback</div>
           </div>
-          <div style="border-left:3px solid var(--danger);background:rgba(244,63,94,0.06);padding:1.4vh 1.2vw;border-radius:0 6px 6px 0;display:grid;grid-template-columns:.85fr 1.5fr;gap:1.2vw">
-            <div><div class="t-meta" style="color:var(--danger);font-weight:600">不可逆破坏动作</div><div style="font-size:max(15px,.88vw);margin-top:.4vh;color:#fff;font-weight:500">整批报废 / 断电销毁</div></div>
-            <div style="font-size:max(13px,.82vw);line-height:1.45;color:var(--text-secondary)">物理世界绝无后悔药：执行前必须触发移动端 HITL 刚性审批阻断，执行后单向归档。</div>
+          <div style="border-left:3px solid var(--danger);background:rgba(244,63,94,0.06);padding:1vh 1vw;border-radius:0 6px 6px 0;display:grid;grid-template-columns:auto 1fr;gap:1vw;align-items:center">
+            <div class="t-meta" style="color:var(--danger);font-weight:600;white-space:nowrap">不可逆破坏</div>
+            <div style="font-size:max(12px,.78vw);color:var(--text-secondary)">整批报废/断电销毁 — HITL刚性审批强制阻断，执行后单向归档</div>
           </div>
         </div>
-        <div class="t-meta" style="margin-top:1.8vh;color:var(--text-helper)">decide_approval / record_manual_evidence 仅限 Human 授权；严禁 Agent 越权处置资金</div>
+        <div class="t-meta" style="margin-top:1.2vh;color:var(--text-helper)">资金支付 Agent 永久拉黑 · 四道安全闸：Policy / 幂等Token / 只增审计 / HITL门禁</div>
       </div>
     </div>
   </div>
@@ -1523,8 +1479,8 @@
 <section class="slide" data-animate="statement">
   <div class="canvas-card">
     <div class="chrome-min">
-      <div class="l">08 · 关键案例与量化对比</div>
-      <div class="r">09 / 17 · SAME-INCIDENT QUANTIFICATION (CASE A vs CASE E)</div>
+      <div class="l">06 · 评测证据</div>
+      <div class="r">07 / 10 · TEST EVIDENCE &amp; ABLATION</div>
     </div>
     <div data-anim="kicker" class="t-meta" style="color:var(--accent-bright);letter-spacing:.2em">SAME-STORE COLD CHAIN ANOMALY · BEFORE vs AFTER QUANTIFIED · CASE A vs CASE E</div>
     <h2 data-anim="title" style="font-family:var(--sans),var(--sans-zh);font-weight:200;font-size:min(3.2vw,5.4vh);line-height:1.05;color:var(--text-primary)">同一门店一次冷链异常前后量化对比：<span style="color:var(--accent-bright)">设备恢复 ≠ 商品安全</span></h2>
@@ -1604,137 +1560,11 @@
   </div>
 </section>
 
-<!-- ========== 现场实操：300 店大盘与五智能体处置 DEMO ========== -->
 <section class="slide" data-animate="grid-reveal">
   <div class="canvas-card">
     <div class="chrome-min">
-      <div class="l">09 · 现场实操演示</div>
-      <div class="r">10 / 17 · LIVE FLEET & MULTI-AGENT DEMO</div>
-    </div>
-    <div data-anim="kicker" class="t-meta" style="color:var(--accent-bright);letter-spacing:.2em">NATIONWIDE 300-STORE FLEET TELEMETRY & 5-AGENT RUNTIME DEMO</div>
-    <h2 data-anim="title" style="font-family:var(--sans),var(--sans-zh);font-weight:200;font-size:min(3.4vw,5.6vh);line-height:1.05;color:var(--text-primary)">全国 300 门店数智孪生大盘与五智能体处置实操</h2>
-    
-    <div data-anim="grid" style="flex:1;display:grid;grid-template-columns:1.05fr 1fr;gap:2.2vw;align-items:stretch;margin-top:2vh">
-      <!-- 左栏：300 店数字孪生大盘 (四宫格高光矩阵 · 呼吸感排版) -->
-      <div style="background:var(--surface-card);border:1px solid var(--border-strong);border-top:4px solid var(--accent-bright);border-radius:10px;padding:2.6vh 1.8vw;display:flex;flex-direction:column;justify-content:space-between">
-        <div>
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.8vh">
-            <span style="font-size:max(16px,1.05vw);font-weight:700;color:#fff;display:flex;align-items:center;gap:8px">
-              <span>🏪</span> 全国 300 店冷链数智孪生大盘 (PHX Fleet)
-            </span>
-            <span class="t-meta" style="background:rgba(56,189,248,0.15);color:var(--accent-bright);padding:3px 10px;border-radius:12px;font-weight:600">12 城全量纳管 · 100% 联网</span>
-          </div>
-
-          <!-- 2x2 呼吸感指标方阵 -->
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.2vw;margin-bottom:1.6vh">
-            <!-- 卡片 1: 规模 -->
-            <div style="background:rgba(0,0,0,0.32);border:1px solid var(--border-subtle);border-left:3px solid var(--accent-bright);padding:1.4vh 1.1vw;border-radius:0 8px 8px 0">
-              <div class="t-meta" style="color:var(--text-helper)">连锁门店 / 冷柜终端</div>
-              <div style="font-size:max(20px,1.35vw);font-weight:700;color:#fff;font-family:var(--font-mono);margin:.3vh 0">300 店 / 1,500 台</div>
-              <div style="font-size:max(12px,.76vw);color:var(--text-secondary)">覆盖广州、上海、北京等 12 核心城市</div>
-            </div>
-
-            <!-- 卡片 2: 采样 -->
-            <div style="background:rgba(0,0,0,0.32);border:1px solid var(--border-subtle);border-left:3px solid var(--accent-bright);padding:1.4vh 1.1vw;border-radius:0 8px 8px 0">
-              <div class="t-meta" style="color:var(--text-helper)">24H 连续遥测采样</div>
-              <div style="font-size:max(20px,1.35vw);font-weight:700;color:var(--accent-bright);font-family:var(--font-mono);margin:.3vh 0">43.2 万条 (5min)</div>
-              <div style="font-size:max(12px,.76vw);color:var(--text-secondary)">牛顿冷却动力学 + 客流开门热负荷</div>
-            </div>
-
-            <!-- 卡片 3: 定损 -->
-            <div style="background:rgba(0,0,0,0.32);border:1px solid var(--border-subtle);border-left:3px solid var(--success);padding:1.4vh 1.1vw;border-radius:0 8px 8px 0">
-              <div class="t-meta" style="color:var(--text-helper)">在保温敏资产货值</div>
-              <div style="font-size:max(20px,1.35vw);font-weight:700;color:var(--success);font-family:var(--font-mono);margin:.3vh 0">¥2,719,610</div>
-              <div style="font-size:max(12px,.76vw);color:var(--text-secondary)">Arrhenius 温度-时间微积分实时定损</div>
-            </div>
-
-            <!-- 卡片 4: 算法 -->
-            <div style="background:rgba(0,0,0,0.32);border:1px solid var(--border-subtle);border-left:3px solid var(--purple);padding:1.4vh 1.1vw;border-radius:0 8px 8px 0">
-              <div class="t-meta" style="color:var(--text-helper)">孤立森林异常检出</div>
-              <div style="font-size:max(20px,1.35vw);font-weight:700;color:#c084fc;font-family:var(--font-mono);margin:.3vh 0">98.4% 检出率</div>
-              <div style="font-size:max(12px,.76vw);color:var(--text-secondary)">156 起慢泄漏与漂移故障全闭环</div>
-            </div>
-          </div>
-        </div>
-
-        <div style="border-top:1px solid var(--border-subtle);padding-top:1.2vh;display:flex;justify-content:space-between;align-items:center">
-          <span class="t-meta" style="color:var(--accent-bright)">大盘在线体验: <a href="https://sh.mazhi.icu/zhuguang/phx-fleet.html" target="_blank" style="color:var(--accent-bright);font-family:var(--mono);text-decoration:underline">sh.mazhi.icu/zhuguang/phx-fleet.html</a></span>
-          <span class="t-meta" style="color:var(--text-helper)">LIVE FLEET TWIN</span>
-        </div>
-      </div>
-
-      <!-- 右栏：五智能体应急处置主门户 & 创空间 -->
-      <div style="background:var(--surface-card);border:1px solid var(--border-strong);border-top:4px solid var(--success);border-radius:10px;padding:2.6vh 1.8vw;display:flex;flex-direction:column;justify-content:space-between">
-        <div>
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.8vh">
-            <span style="font-size:max(16px,1.05vw);font-weight:700;color:#fff;display:flex;align-items:center;gap:8px">
-              <span>⚡</span> 店巡五智能体交互战室 & 创空间 Demo
-            </span>
-            <span class="t-meta" style="background:rgba(16,185,129,0.15);color:var(--success);padding:3px 10px;border-radius:12px;font-weight:600">确定性状态机闭环</span>
-          </div>
-
-          <div style="display:grid;grid-template-columns:1fr;gap:1.1vh">
-            <div style="background:rgba(0,0,0,0.28);border-left:3px solid var(--accent-bright);padding:1vh 1.1vw;border-radius:0 6px 6px 0;display:flex;align-items:center;justify-content:space-between">
-              <div>
-                <span style="font-size:max(14px,.88vw);font-weight:600;color:#fff">① Sentry 哨兵 ➔ 500ms 数字熔断</span>
-                <div style="font-size:max(12px,.76vw);color:var(--text-secondary);margin-top:.2vh">毫秒感知失温，瞬间锁死全渠道收银防误售</div>
-              </div>
-              <span class="t-meta" style="color:var(--accent-bright);flex-shrink:0">L0 哨兵</span>
-            </div>
-
-            <div style="background:rgba(0,0,0,0.28);border-left:3px solid #818cf8;padding:1vh 1.1vw;border-radius:0 6px 6px 0;display:flex;align-items:center;justify-content:space-between">
-              <div>
-                <span style="font-size:max(14px,.88vw);font-weight:600;color:#fff">② Diagnoser 诊断 ➔ 动力学双归因</span>
-                <div style="font-size:max(12px,.76vw);color:var(--text-secondary);margin-top:.2vh">融合因果推断与知识库，产出故障假设与暴露定损</div>
-              </div>
-              <span class="t-meta" style="color:#818cf8;flex-shrink:0">L0 推断</span>
-            </div>
-
-            <div style="background:rgba(0,0,0,0.28);border-left:3px solid var(--warning);padding:1vh 1.1vw;border-radius:0 6px 6px 0;display:flex;align-items:center;justify-content:space-between">
-              <div>
-                <span style="font-size:max(14px,.88vw);font-weight:600;color:#fff">③ Executor 执行 ➔ 双域受控派单</span>
-                <div style="font-size:max(12px,.76vw);color:var(--text-secondary);margin-top:.2vh">调度技工上门换件，经由 Policy/HITL 刚性门禁</div>
-              </div>
-              <span class="t-meta" style="color:var(--warning);flex-shrink:0">L1/L2 执行</span>
-            </div>
-
-            <div style="background:rgba(239,68,68,0.08);border-left:3px solid var(--danger);padding:1vh 1.1vw;border-radius:0 6px 6px 0;display:flex;align-items:center;justify-content:space-between">
-              <div>
-                <span style="font-size:max(14px,.88vw);font-weight:700;color:#fca5a5">④ Auditor 核验 ➔ 反自验一票否决</span>
-                <div style="font-size:max(12px,.76vw);color:#fecaca;margin-top:.2vh">独立重查真值：设备虽修好但商品超温，<b>坚决销毁</b></div>
-              </div>
-              <span class="t-meta" style="color:var(--danger);font-weight:700;flex-shrink:0">核心红线</span>
-            </div>
-
-            <div style="background:rgba(0,0,0,0.28);border-left:3px solid var(--success);padding:1vh 1.1vw;border-radius:0 6px 6px 0;display:flex;align-items:center;justify-content:space-between">
-              <div>
-                <span style="font-size:max(14px,.88vw);font-weight:600;color:#fff">⑤ Orchestrator 编排 ➔ 状态闭环终结</span>
-                <div style="font-size:max(12px,.76vw);color:var(--text-secondary);margin-top:.2vh">确定性有状态推进，全链路 Trace 回流演进知识</div>
-              </div>
-              <span class="t-meta" style="color:var(--success);flex-shrink:0">Verified Close</span>
-            </div>
-          </div>
-        </div>
-
-        <div style="border-top:1px solid var(--border-subtle);padding-top:1.2vh;display:flex;justify-content:space-between;align-items:center">
-          <span class="t-meta" style="color:var(--success)">魔搭创空间 Demo: <a href="https://modelscope.cn/studios/walle1991/veripatrol" target="_blank" style="color:var(--success);font-family:var(--mono);text-decoration:underline">modelscope.cn/studios/walle1991/veripatrol</a></span>
-          <span class="t-meta" style="color:var(--text-helper)">ONLINE INTERACTIVE</span>
-        </div>
-      </div>
-    </div>
-    <div style="display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--border-subtle);padding-top:1.2vh;margin-top:1.4vh">
-      <div class="t-meta" style="color:var(--accent-bright);font-weight:600">告别纸上谈兵：300 门店遥测流与多智能体实操 · 下一页详析：物理动力学仿真引擎 (P11) 与 PostgreSQL 43.4万时序库架构 (P12) ➔</div>
-      <div class="t-meta" style="color:var(--text-helper)">LIVE & REPRODUCIBLE DEMO</div>
-    </div>
-  </div>
-</section>
-
-<!-- ========== 仿真数据系统设计：物理动力学与机电故障注入 ========== -->
-<section class="slide" data-animate="grid-reveal">
-  <div class="canvas-card">
-    <div class="chrome-min">
-      <div class="l">10 · 仿真数据系统设计</div>
-      <div class="r">11 / 17 · PHYSICS SIMULATION & ML PREDICTIVE ENGINE</div>
+      <div class="l">07 · 仿真数据</div>
+      <div class="r">08 / 10 · PHYSICS SIMULATION &amp; ML PREDICTIVE ENGINE</div>
     </div>
     <div data-anim="kicker" class="t-meta" style="color:var(--accent-bright);letter-spacing:.2em">FIRST-PRINCIPLES THERMODYNAMICS · POISSON CONVECTION · 6 FAULT INJECTIONS · ARRHENIUS KINETICS</div>
     <h2 data-anim="title" style="font-family:var(--sans),var(--sans-zh);font-weight:200;font-size:min(3.3vw,5.5vh);line-height:1.05;color:var(--text-primary)">数字孪生物理仿真数据设计：热工动力学与机电故障注入</h2>
@@ -1883,12 +1713,11 @@
   </div>
 </section>
 
-<!-- ========== 企业级冷链时序数据库架构设计 ========== -->
 <section class="slide" data-animate="grid-reveal">
   <div class="canvas-card">
     <div class="chrome-min">
-      <div class="l">11 · 数据库架构设计</div>
-      <div class="r">12 / 17 · ENTERPRISE COLD-CHAIN DATABASE ARCHITECTURE</div>
+      <div class="l">08 · 数据库架构</div>
+      <div class="r">09 / 10 · ENTERPRISE COLD-CHAIN DATABASE ARCHITECTURE</div>
     </div>
     <div data-anim="kicker" class="t-meta" style="color:var(--accent-bright);letter-spacing:.2em">POSTGRESQL 16 + PGVECTOR · 434,370+ TELEMETRY STREAM · HARD CIRCUIT BREAKER</div>
     <h2 data-anim="title" style="font-family:var(--sans),var(--sans-zh);font-weight:200;font-size:min(3.3vw,5.5vh);line-height:1.05;color:var(--text-primary)">企业级冷链时序数据库架构：PHX PostgreSQL 16 + pgvector</h2>
@@ -2005,113 +1834,69 @@
   </div>
 </section>
 
-<!-- ========== 跨行业基准压力测试矩阵 ========== -->
-<!-- ========== 跨行业基准压力测试矩阵 ========== -->
-<section class="slide" data-animate="grid-reveal">
-  <div class="canvas-card">
-    <div class="chrome-min">
-      <div class="l">12 · 基准矩阵</div>
-      <div class="r">13 / 17 · UNIVERSAL BENCHMARK MATRIX</div>
-    </div>
-    <div data-anim="kicker" class="t-meta" style="color:var(--accent-bright);letter-spacing:.2em">ZERO CORE CODE MODIFICATION · PROFILE DSL PLUG-AND-PLAY</div>
-    <h2 data-anim="title" style="font-family:var(--sans),var(--sans-zh);font-weight:200;font-size:min(3.5vw,6vh);line-height:1.04;color:var(--text-primary)">三大行业基准压力测试矩阵 (Universal Benchmark Matrix)</h2>
-    <div data-anim="grid" style="flex:1;display:grid;grid-template-columns:1fr 1fr 1fr;gap:2vw;align-items:stretch;margin-top:2vh">
-      <div style="background:var(--surface-elevated);border:1px solid var(--border-strong);border-top:4px solid var(--accent-bright);border-radius:8px;padding:2.6vh 1.6vw;display:flex;flex-direction:column;justify-content:space-between">
-        <div>
-          <div class="t-meta" style="color:var(--accent-bright);margin-bottom:1vh">BENCHMARK 01 · 零售高敏冷链 (旗舰基准)</div>
-          <div style="font-size:max(18px,1.15vw);font-weight:600;margin-bottom:1.2vh;color:#fff">1,500 台设备连锁实跑基准 (300家门店)</div>
-          <div style="font-size:max(14px,.84vw);line-height:1.65;color:var(--text-secondary)">
-            • <b>遥测规模</b>：43.2 万条时序遥测 (魔搭社区公开开源)<br/>
-            • <b>承载资产</b>：巴氏鲜奶 / 鲜食便当 (5,100+ 批次库存)<br/>
-            • <b>数字熔断</b>：500ms 锁定 POS 与外卖全渠道渠道<br/>
-            • <b>退化模型</b>：Arrhenius 微生物增殖非线性应力积分<br/>
-            • <b>Human Tool</b>：商业冷修技工入场与物理工具挂起<br/>
-            • <b>反自验判定</b>：降温至4.8°C但鲜奶超温，<b style="color:var(--danger)">一票否决销毁</b>
-          </div>
-        </div>
-        <div class="t-meta" style="border-top:1px solid var(--border-subtle);padding-top:1vh;margin-top:1.5vh;color:var(--accent-bright)">已全量跑通 161 项严苛测试 & 六场景闭环</div>
-      </div>
-      <div style="background:var(--surface-card);border:1px solid var(--border-subtle);border-top:4px solid var(--success);border-radius:8px;padding:2.6vh 1.6vw;display:flex;flex-direction:column;justify-content:space-between">
-        <div>
-          <div class="t-meta" style="color:var(--success);margin-bottom:1vh">BENCHMARK 02 · 生物医药温控</div>
-          <div style="font-size:max(18px,1.15vw);font-weight:600;margin-bottom:1.2vh;color:var(--text-primary)">2~8°C GSP/GMP 医药基准</div>
-          <div style="font-size:max(14px,.84vw);line-height:1.65;color:var(--text-secondary)">
-            • <b>承载资产</b>：狂犬疫苗 / 单抗制品 / 胰岛素<br/>
-            • <b>数字熔断</b>：即刻锁定 WMS 发运出库门禁<br/>
-            • <b>退化模型</b>：生物活性失效应力积分<br/>
-            • <b>Human Tool</b>：洁净室认证维保工程师入场<br/>
-            • <b>反自验判定</b>：库温恢复但疫苗破乳化，<b style="color:var(--danger)">一票否决出库</b>
-          </div>
-        </div>
-        <div class="t-meta" style="border-top:1px solid var(--border-subtle);padding-top:1vh;margin-top:1.5vh;color:var(--text-helper)">Profile DSL 领域插件即插即用</div>
-      </div>
-      <div style="background:var(--surface-card);border:1px solid var(--border-subtle);border-top:4px solid #818cf8;border-radius:8px;padding:2.6vh 1.6vw;display:flex;flex-direction:column;justify-content:space-between">
-        <div>
-          <div class="t-meta" style="color:#818cf8;margin-bottom:1vh">BENCHMARK 03 · 智算机房 HPC</div>
-          <div style="font-size:max(18px,1.15vw);font-weight:600;margin-bottom:1.2vh;color:var(--text-primary)">40kW 高密液冷热失控基准</div>
-          <div style="font-size:max(14px,.84vw);line-height:1.65;color:var(--text-secondary)">
-            • <b>承载资产</b>：运行中大模型 Checkpoint 权重<br/>
-            • <b>数字熔断</b>：毫秒触发算力调度做无损任务迁移<br/>
-            • <b>退化模型</b>：晶体管结温功耗墙与热应力损伤<br/>
-            • <b>Human Tool</b>：驻场硬件工程师排查快换水阀<br/>
-            • <b>反自验判定</b>：水温达标但校验和错误，<b style="color:var(--danger)">强制回滚</b>
-          </div>
-        </div>
-        <div class="t-meta" style="border-top:1px solid var(--border-subtle);padding-top:1vh;margin-top:1.5vh;color:var(--text-helper)">Profile DSL 领域插件即插即用</div>
-      </div>
-    </div>
-    <div style="display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--border-subtle);padding-top:1.5vh;margin-top:1.5vh">
-      <div class="t-meta" style="color:var(--accent-bright);font-weight:600">店巡 (VeriPatrol) 通用内核：仅替换 Profile JSON 配置 + 领域动力学模型，100% 零核心代码修改</div>
-      <div class="t-meta" style="color:var(--text-helper)">100% ZERO CORE MODIFICATION</div>
-    </div>
-  </div>
-</section>
-
-<!-- ========== 交付与证据边界 ========== -->
-<section class="slide accent" data-animate="split-statement">
+<section class="slide accent" data-animate="grid-reveal">
   <div class="canvas-card">
     <canvas class="ascii-bg" aria-hidden="true"></canvas>
     <div class="chrome-min">
-      <div class="l">13 · 交付与边界</div>
-      <div class="r">14 / 17 · CLOSE WITH EVIDENCE</div>
+      <div class="l">09 · 基准矩阵与交付</div>
+      <div class="r">10 / 10 · UNIVERSAL BENCHMARK &amp; CLOSE WITH EVIDENCE</div>
     </div>
-    <div data-anim="kicker" class="t-meta" style="color:var(--accent-bright);letter-spacing:.2em">REPOSITORY PROOF ≠ PLATFORM PROOF</div>
-    <div data-anim="hero" style="flex:1;display:grid;grid-template-columns:1fr 1.2fr;gap:4.5vw;align-items:center">
-      <div>
-        <h2 style="font-family:var(--sans),var(--sans-zh);font-weight:200;font-size:min(4.8vw,8vh);line-height:1.02;color:#fff">事件只有在<br/>证据闭环后<br/><span style="color:var(--accent-bright)">才能关闭</span></h2>
-        <div style="font-family:var(--sans),var(--sans-zh);font-size:max(17px,1.15vw);line-height:1.5;color:var(--text-secondary);margin-top:2.4vh"><b style="color:#fff">设备修好不等于商品安全，独立验证每一次关键处置。</b><br/>温度恢复不等于商品安全；Agent 的自评声明绝不等于业务客观事实。</div>
+    <div data-anim="kicker" class="t-meta" style="color:var(--accent-bright);letter-spacing:.2em">ZERO CORE CODE MODIFICATION · EVIDENCE CLOSES EVERY EVENT</div>
+    <div data-anim="grid" style="flex:1;display:grid;grid-template-columns:1.5fr 1fr;gap:3vw;align-items:stretch;margin-top:1.5vh">
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:1.2vw">
+        <div style="background:var(--surface-elevated);border:1px solid var(--border-strong);border-top:4px solid var(--accent-bright);border-radius:8px;padding:2vh 1.2vw;display:flex;flex-direction:column;gap:.6vh">
+          <div class="t-meta" style="color:var(--accent-bright)">BENCHMARK 01</div>
+          <div style="font-size:max(15px,.92vw);font-weight:600;color:#fff">零售冷链<br/>1,500台·300店</div>
+          <div style="font-size:max(12px,.76vw);line-height:1.55;color:var(--text-secondary)">
+            43.2万条遥测·POS 500ms熔断·Arrhenius定损·HITL验真<br/>
+            <b style="color:var(--danger)">降温≠鲜奶安全→一票否决</b>
+          </div>
+          <div class="t-meta" style="color:var(--accent-bright);border-top:1px solid var(--border-subtle);padding-top:.8vh;margin-top:auto">161项测试全绿</div>
+        </div>
+        <div style="background:var(--surface-card);border:1px solid var(--border-subtle);border-top:4px solid var(--success);border-radius:8px;padding:2vh 1.2vw;display:flex;flex-direction:column;gap:.6vh">
+          <div class="t-meta" style="color:var(--success)">BENCHMARK 02</div>
+          <div style="font-size:max(15px,.92vw);font-weight:600;color:var(--text-primary)">医药温控<br/>GSP 2~8°C</div>
+          <div style="font-size:max(12px,.76vw);line-height:1.55;color:var(--text-secondary)">
+            疫苗/单抗/胰岛素·WMS出库熔断·生物活性失效积分<br/>
+            <b style="color:var(--danger)">库温恢复→疫苗破乳一票否决</b>
+          </div>
+          <div class="t-meta" style="color:var(--text-helper);border-top:1px solid var(--border-subtle);padding-top:.8vh;margin-top:auto">Profile DSL即插即用</div>
+        </div>
+        <div style="background:var(--surface-card);border:1px solid var(--border-subtle);border-top:4px solid var(--purple);border-radius:8px;padding:2vh 1.2vw;display:flex;flex-direction:column;gap:.6vh">
+          <div class="t-meta" style="color:var(--purple)">BENCHMARK 03</div>
+          <div style="font-size:max(15px,.92vw);font-weight:600;color:var(--text-primary)">HPC机房<br/>40kW 液冷GPU</div>
+          <div style="font-size:max(12px,.76vw);line-height:1.55;color:var(--text-secondary)">
+            热失控算力热迁移·DVFS调速·机架级熔断隔离<br/>
+            <b style="color:var(--danger)">温度稳定≠任务安全</b>
+          </div>
+          <div class="t-meta" style="color:var(--text-helper);border-top:1px solid var(--border-subtle);padding-top:.8vh;margin-top:auto">内核 0% 修改</div>
+        </div>
       </div>
-      <div style="display:flex;flex-direction:column;gap:1.6vh">
-        <div style="background:var(--surface-card);border:1px solid var(--border-subtle);border-left:3px solid var(--accent-bright);padding:1.8vh 1.4vw;border-radius:6px">
-          <div class="t-meta" style="color:var(--accent-bright)">MODELSCOPE & FLEET · OPEN SOURCE ECOSYSTEM</div>
-          <div style="font-size:max(15px,.92vw);line-height:1.55;color:var(--text-primary);margin-top:.6vh">
-            • <b>魔搭创空间 Demo</b>: <code style="color:var(--accent-bright);font-family:var(--mono)">walle1991/veripatrol</code> &amp; <code style="color:var(--accent-bright);font-family:var(--mono)">walle1991/dianxun</code><br/>
-            • <b>魔搭公开数据集</b>: <code style="color:var(--accent-bright);font-family:var(--mono)">veripatrol-retail-telemetry-432k</code> (43.2万条遥测·300店大盘)<br/>
-            • <b>全国 300 店实盘大盘</b>: <code style="color:var(--success);font-family:var(--mono)">https://sh.mazhi.icu/zhuguang/phx-fleet.html</code>
+      <div style="display:flex;flex-direction:column;gap:1.2vh;justify-content:center">
+        <h2 style="font-family:var(--sans),var(--sans-zh);font-weight:200;font-size:min(3.6vw,6vh);line-height:1.02;color:#fff;margin:0">事件只有在<br/>证据闭环后<br/><span style="color:var(--accent-bright)">才能关闭</span></h2>
+        <div style="font-size:max(14px,.88vw);line-height:1.5;color:var(--text-secondary)"><b style="color:#fff">设备修好 ≠ 商品安全。温度恢复 ≠ 资产安全。</b><br/>Agent自评声明绝不等于业务客观事实。</div>
+        <div style="background:var(--surface-card);border:1px solid var(--border-subtle);border-left:3px solid var(--accent-bright);padding:1.4vh 1.2vw;border-radius:6px">
+          <div class="t-meta" style="color:var(--accent-bright)">OPEN SOURCE ECOSYSTEM</div>
+          <div style="font-size:max(13px,.8vw);line-height:1.55;color:var(--text-primary);margin-top:.5vh">
+            • 魔搭: <code style="color:var(--accent-bright)">walle1991/veripatrol</code><br/>
+            • 数据集: <code style="color:var(--accent-bright)">veripatrol-retail-telemetry-432k</code><br/>
+            • 大盘: <code style="color:var(--success)">sh.mazhi.icu/zhuguang/phx-fleet.html</code>
           </div>
         </div>
-        <div style="background:var(--surface-card);border:1px solid var(--border-subtle);border-left:3px solid var(--success);padding:1.8vh 1.4vw;border-radius:6px">
-          <div class="t-meta" style="color:var(--success)">REPOSITORY · LOCALLY VERIFIED</div>
-          <div style="font-size:max(15px,.92vw);line-height:1.55;color:var(--text-primary);margin-top:.6vh">确定性有状态核心 · 161 项测试全绿 · 六场景 A-F 闭环 · 6 P0 Skill · 12 + 3 MCP · 300 家门店/1500 台设备大盘监控</div>
-        </div>
-        <div style="background:var(--surface-card);border:1px solid var(--border-subtle);border-left:3px solid var(--warning);padding:1.8vh 1.4vw;border-radius:6px">
-          <div class="t-meta" style="color:var(--warning)">FINAL ACCEPTANCE · PRODUCTION READY</div>
-          <div style="font-size:max(15px,.92vw);line-height:1.55;color:var(--text-primary);margin-top:.6vh">同一事故中的 Team Room 委派、Skill Trace、Worker → MCP Actor 正负向鉴权、真实 HITL 人工工单闭环。</div>
-        </div>
-        <div style="border-top:1px solid var(--border-subtle);padding-top:1.4vh;display:flex;justify-content:space-between;font-family:var(--mono);font-size:max(14px,.82vw);color:var(--text-helper)">
-          <span>团队 逐光｜夏志强（浙江吉利控股）、马荣（OPPO）</span><span>领域 零售连锁 / Agent Infra · 2026 GOAI 决赛</span>
+        <div style="background:var(--surface-card);border:1px solid var(--border-subtle);border-left:3px solid var(--success);padding:1.4vh 1.2vw;border-radius:6px">
+          <div class="t-meta" style="color:var(--success)">LOCALLY VERIFIED</div>
+          <div style="font-size:max(13px,.8vw);line-height:1.5;color:var(--text-primary);margin-top:.5vh">161项测试全绿 · 6场景A-F闭环 · 6 P0 Skill · 300店/1500台大盘</div>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ========== 附录 A: 36 典型门店冷链与设备异常场景矩阵 ========== -->
 <section class="slide" data-animate="grid-reveal">
   <div class="canvas-card">
     <div class="chrome-min">
       <div class="l">附录 A · 场景矩阵</div>
-      <div class="r">15 / 17 · 36 SCENARIO MATRIX</div>
+      <div class="r">A · 36 SCENARIO MATRIX</div>
     </div>
     <div data-anim="kicker" class="t-meta" style="color:var(--accent-bright);letter-spacing:.2em">APPENDIX A · 36 RETAIL COLD-CHAIN & EQUIPMENT ANOMALY SCENARIOS</div>
     <h2 data-anim="title" style="font-family:var(--sans),var(--sans-zh);font-weight:200;font-size:min(3.2vw,5.4vh);line-height:1.05;color:var(--text-primary)">附录 A：36 典型门店场景与多维度分类全景矩阵</h2>
@@ -2168,12 +1953,11 @@
   </div>
 </section>
 
-<!-- ========== 附录 B: 状态机确定性迁移与 P0001 回滚机制 ========== -->
 <section class="slide" data-animate="grid-reveal">
   <div class="canvas-card">
     <div class="chrome-min">
       <div class="l">附录 B · 状态机与错误码</div>
-      <div class="r">16 / 17 · STATE MACHINE & P0001 ROLLBACK</div>
+      <div class="r">B · STATE MACHINE & P0001 ROLLBACK</div>
     </div>
     <div data-anim="kicker" class="t-meta" style="color:var(--accent-bright);letter-spacing:.2em">APPENDIX B · DETERMINISTIC STATE MACHINE TRANSITIONS & P0001 ERROR HANDLING</div>
     <h2 data-anim="title" style="font-family:var(--sans),var(--sans-zh);font-weight:200;font-size:min(3.2vw,5.4vh);line-height:1.05;color:var(--text-primary)">附录 B：状态机确定性迁移与数据库 P0001 刚性约束回滚</h2>
@@ -2212,12 +1996,11 @@
   </div>
 </section>
 
-<!-- ========== 附录 C: 12 MCP 工具契约定义与权限闸门 ========== -->
 <section class="slide" data-animate="grid-reveal">
   <div class="canvas-card">
     <div class="chrome-min">
       <div class="l">附录 C · 12 MCP 契约定义</div>
-      <div class="r">17 / 17 · 12 MCP CONTRACTS & GATES</div>
+      <div class="r">C · 12 MCP CONTRACTS & GATES</div>
     </div>
     <div data-anim="kicker" class="t-meta" style="color:var(--accent-bright);letter-spacing:.2em">APPENDIX C · 12 MCP TOOL CONTRACTS & 4-TIER ACCESS GATES</div>
     <h2 data-anim="title" style="font-family:var(--sans),var(--sans-zh);font-weight:200;font-size:min(3.2vw,5.4vh);line-height:1.05;color:var(--text-primary)">附录 C：12 核心 MCP 工具契约定义与四道安全权限闸门</h2>
