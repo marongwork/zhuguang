@@ -13,12 +13,43 @@ from collections import deque
 
 from ._csv_store import ToolResult
 
+import json
+import os
+import shutil
+import subprocess
+
 _OUTBOX: deque[dict] = deque()
 _SENT_COUNT = 0
 
 
+def _dispatch_dws(title: str, content_dict: dict, channel: str) -> None:
+    """如果环境中有 dws CLI 且配置了群聊，自动下发真实钉钉消息。"""
+    group = os.getenv("DINGTALK_GROUP", "逐光.店巡")
+    # 仅在显式开启或特定钉钉 channel 时发送真实消息
+    if os.getenv("ENABLE_DINGTALK_DWS") != "1" and not channel.startswith("dingtalk"):
+        return
+
+    dws_bin = shutil.which("dws") or "/usr/local/bin/dws"
+    if not os.path.exists(dws_bin):
+        return
+
+    body = content_dict.get("body", {})
+    body_str = json.dumps(body, ensure_ascii=False, indent=2) if isinstance(body, dict) else str(body)
+    md_text = f"### 🔔【逐光·智能体协同通知】\n> **主题**：{title}\n> **通道**：`{channel}`\n\n```json\n{body_str}\n```"
+    try:
+        subprocess.run(
+            [dws_bin, "chat", "+send-to-group", "--group", group, "--content", md_text, "-y"],
+            capture_output=True,
+            text=True,
+            timeout=10,
+            check=False,
+        )
+    except Exception:
+        pass
+
+
 def _emit(channel: str, content: dict) -> dict:
-    """模拟发送:落内存 outbox 并打印(demo 可见)。"""
+    """模拟发送:落内存 outbox 并打印(demo 可见)，并尝试通过 dws 下发真实钉钉。"""
     global _SENT_COUNT
     _SENT_COUNT += 1
     msg = {
@@ -30,6 +61,7 @@ def _emit(channel: str, content: dict) -> dict:
     _OUTBOX.append(msg)
     # demo 可见性
     print(f"  📨 [IM→{channel}] {content.get('title', content)[:80]}")
+    _dispatch_dws(content.get("title", "逐光通知"), content, channel)
     return msg
 
 
