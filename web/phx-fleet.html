@@ -2035,6 +2035,19 @@ function handleSearch(val) {
   renderStoreGrid();
 }
 
+
+function syncFilterCounters() {
+  if (!fleetData || !fleetData.stores) return;
+  const total = fleetData.stores.length;
+  const crit = fleetData.stores.filter(s => s.status === 'CRITICAL').length;
+  const norm = total - crit;
+
+  const critBtn = document.querySelector('.status-pill.crit');
+  const normBtn = document.querySelector('.status-pill.norm');
+  if (critBtn) critBtn.textContent = `🚨 异常告警 (${crit})`;
+  if (normBtn) normBtn.textContent = `🟢 平稳正常 (${norm})`;
+}
+
 function renderStoreGrid() {
   const container = document.getElementById('store-grid-container');
   if (!fleetData) return;
@@ -3091,11 +3104,17 @@ function applyDrillClosureState() {
     }
   });
 
-  // Update status filter buttons
-  const critBtn = document.querySelector('.status-pill.crit');
-  const normBtn = document.querySelector('.status-pill.norm');
-  if (critBtn) critBtn.textContent = '🚨 异常告警 (0)';
-  if (normBtn) normBtn.textContent = '🟢 平稳正常 (300)';
+  // 真正将底层数据模型更新为闭环态，保证数据和UI严格一致
+  if (fleetData && fleetData.stores) {
+    fleetData.stores.forEach(s => {
+      s._orig_status = s._orig_status || s.status;
+      s._orig_fault = s._orig_fault || s.devices_fault;
+      s.status = 'NORMAL';
+      s.devices_fault = 0;
+    });
+  }
+  renderStoreGrid();
+  syncFilterCounters();
 
   // Update incident table status
   document.querySelectorAll('#incident-tbody tr').forEach(row => {
@@ -3132,12 +3151,14 @@ function restoreDrillActiveState() {
   const kpiSub = document.querySelector('#kpi-incidents + .kpi-sub');
   if (kpiSub) kpiSub.textContent = '156 张工单派发 · 自动防变质';
 
-  const critBtn = document.querySelector('.status-pill.crit');
-  const normBtn = document.querySelector('.status-pill.norm');
-  if (critBtn) critBtn.textContent = '🚨 异常告警 (127)';
-  if (normBtn) normBtn.textContent = '🟢 平稳正常 (173)';
-
+  if (fleetData && fleetData.stores) {
+    fleetData.stores.forEach(s => {
+      if (s._orig_status) s.status = s._orig_status;
+      if (s._orig_fault !== undefined) s.devices_fault = s._orig_fault;
+    });
+  }
   if (typeof renderStoreGrid === 'function') renderStoreGrid();
+  syncFilterCounters();
   if (typeof renderIncidents === 'function') renderIncidents();
   if (typeof selectStore === 'function') selectStore(selectedStoreId);
 }
