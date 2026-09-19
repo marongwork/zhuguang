@@ -1636,27 +1636,27 @@ table.incident-table tr:hover td {
     <!-- Step Bar -->
     <div class="fleet-drill-steps">
       <div class="fleet-step-tab active" id="fstep-0" onclick="jumpFleetDrill(0)">
-        <div class="fleet-step-tab-num"><span>STEP 0</span><span>09:00:00</span></div>
+        <div class="fleet-step-tab-num"><span>STEP 0</span><span>14:15:00</span></div>
         <div class="fleet-step-tab-name">阶段0: 全网并发感知</div>
       </div>
       <div class="fleet-step-tab" id="fstep-1" onclick="jumpFleetDrill(1)">
-        <div class="fleet-step-tab-num"><span>STEP 1</span><span>09:02:15</span></div>
+        <div class="fleet-step-tab-num"><span>STEP 1</span><span>14:30:00</span></div>
         <div class="fleet-step-tab-name">阶段1: 320ms POS 事实锁止</div>
       </div>
       <div class="fleet-step-tab" id="fstep-2" onclick="jumpFleetDrill(2)">
-        <div class="fleet-step-tab-num"><span>STEP 2</span><span>09:04:30</span></div>
+        <div class="fleet-step-tab-num"><span>STEP 2</span><span>14:45:00</span></div>
         <div class="fleet-step-tab-name">阶段2: 阿伦尼乌斯动力学定损</div>
       </div>
       <div class="fleet-step-tab" id="fstep-3" onclick="jumpFleetDrill(3)">
-        <div class="fleet-step-tab-num"><span>STEP 3</span><span>09:07:00</span></div>
+        <div class="fleet-step-tab-num"><span>STEP 3</span><span>15:00:00</span></div>
         <div class="fleet-step-tab-name">阶段3: 物理自愈与现场工单</div>
       </div>
       <div class="fleet-step-tab" id="fstep-4" onclick="jumpFleetDrill(4)">
-        <div class="fleet-step-tab-num"><span>STEP 4</span><span>09:10:00</span></div>
+        <div class="fleet-step-tab-num"><span>STEP 4</span><span>15:30:00</span></div>
         <div class="fleet-step-tab-name">阶段4: 12城并发矩阵推进</div>
       </div>
       <div class="fleet-step-tab" id="fstep-5" onclick="jumpFleetDrill(5)">
-        <div class="fleet-step-tab-num"><span>STEP 5</span><span>09:14:00</span></div>
+        <div class="fleet-step-tab-num"><span>STEP 5</span><span>16:00:00</span></div>
         <div class="fleet-step-tab-name">阶段5: 异构独立双门禁闭环</div>
       </div>
     </div>
@@ -1696,7 +1696,7 @@ table.incident-table tr:hover td {
           <span id="drill-agent-name" class="agent-name-tag">
             <span style="color:var(--cyan)">●</span> Sentry (全国巡检哨兵)
           </span>
-          <span id="drill-step-time" style="font-size:11px; font-family:var(--font-mono); color:var(--cyan);">09:00:00 (帧 0)</span>
+          <span id="drill-step-time" style="font-size:11px; font-family:var(--font-mono); color:var(--cyan);">14:15:00 (采样帧 #171)</span>
         </div>
 
         <div class="agent-action-box">
@@ -2273,31 +2273,76 @@ function selectStore(storeId, isManual = false) {
   let firstDevToChart = null;
   
   devices.forEach(d => {
-    const hasFault = d.health_state === 'fault';
-    if (!firstDevToChart || hasFault) firstDevToChart = d; // prioritize fault device for chart
+    const devId = d.device_id || d.id;
+    const isHealed = d._healed === true;
+    const isHealing = d._healing === true;
+    const hasFault = (d.health_state === 'fault' || d.status === 'CRITICAL') && !isHealed;
+    if (!firstDevToChart || (hasFault && !firstDevToChart._hasFault)) {
+      firstDevToChart = d;
+      firstDevToChart._hasFault = hasFault;
+    }
     
-    const catName = catMap[d.category] || d.model;
-    const tempApprox = hasFault ? 9.2 : 3.4; // approx temp
+    const catName = catMap[d.category] || d.category || d.model;
+    let tempDisplay = '3.2°C (正常)';
+    let tempBadgeClass = 'temp-ok';
+    let compDisplay = '🟢 运行中';
+    let actionText = '🟢 巡检周期正常 · 无异常工单';
+    let actionColor = '#94a3b8';
+    
+    if (hasFault) {
+      if (isHealing) {
+        tempDisplay = '5.4°C (抢修压降中)';
+        tempBadgeClass = 'temp-warn';
+        compDisplay = '⚡️ 65Hz 反转脉冲脱困';
+        actionText = '🛠️ 演练执行中: 驻店工程师接单 · 变频脱困中';
+        actionColor = '#fbbf24';
+      } else {
+        tempDisplay = '7.8°C (超标预警)';
+        tempBadgeClass = 'temp-warn';
+        compDisplay = '🔴 卡缸跳闸';
+        actionText = '⏳ 应急处置: 驻店工程师已派单 · 变频自愈中';
+        actionColor = '#fca5a5';
+      }
+    } else if (isHealed) {
+      tempDisplay = '2.8°C (自愈达标)';
+      tempBadgeClass = 'temp-ok';
+      compDisplay = '🟢 变频稳态运行';
+      actionText = '✅ 异构双门禁反自验通过 · 工单已安全闭环';
+      actionColor = '#34d399';
+    }
     
     devHtml += `
-      <div class="device-item ${hasFault ? 'has-alert' : ''}" onclick="showDeviceTelemetry('${d.device_id}')" style="cursor:pointer">
-        <div class="device-header">
-          <div class="device-name">
-            <span>${hasFault ? '🚨' : '❄️'}</span>
-            <span>${d.device_id}</span>
+      <div class="device-item ${hasFault ? 'has-alert' : (isHealed ? 'has-healed' : '')}" onclick="showDeviceTelemetry('${devId}')" style="cursor:pointer; margin-bottom:10px; padding:12px; border-radius:8px; border:1px solid ${hasFault ? 'rgba(239,68,68,0.35)' : (isHealed ? 'rgba(16,185,129,0.3)' : 'var(--border-subtle)')}; background:${hasFault ? 'rgba(239,68,68,0.04)' : (isHealed ? 'rgba(16,185,129,0.03)' : 'rgba(255,255,255,0.02)')};">
+        <div class="device-header" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+          <div class="device-name" style="font-weight:700; display:flex; align-items:center; gap:6px;">
+            <span>${hasFault ? '🚨' : (isHealed ? '✅' : '❄️')}</span>
+            <span style="font-family:var(--font-mono); color:#fff;">${devId}</span>
             <span style="font-size:11px; font-weight:normal; color:var(--text-muted);">(${catName})</span>
           </div>
           <div class="device-badges">
-            <span class="device-temp-badge ${hasFault ? 'temp-warn' : 'temp-ok'}">
-              ${hasFault ? '9.2°C (超标)' : '3.4°C (正常)'}
+            <span class="device-temp-badge ${tempBadgeClass}">
+              ${tempDisplay}
             </span>
           </div>
         </div>
-        <div class="device-props">
-          <div class="prop-item">压缩机: <span>${d.compressor_state === 'running' ? '🟢 运行中' : '🔴 卡缸/停机'}</span></div>
+        <div class="device-props" style="display:grid; grid-template-columns:repeat(2, 1fr); gap:6px; font-size:11.5px; color:var(--text-secondary);">
+          <div class="prop-item">压缩机: <span>${compDisplay}</span></div>
           <div class="prop-item">柜门状态: <span>${d.door_state === 'open' ? '⚠️ 微开' : '正常密闭'}</span></div>
           <div class="prop-item">供电电源: <span>${d.power_state === 'normal' ? '稳定' : '脱机'}</span></div>
-          <div class="prop-item">环境温度: <span>${d.ambient_temp_c}°C</span></div>
+          <div class="prop-item">环境温度: <span>${d.ambient_temp_c || 26.2}°C</span></div>
+        </div>
+        <!-- 检修状态与主动处置条 -->
+        <div class="device-action-strip" style="margin-top:10px; padding-top:8px; border-top:1px dashed rgba(255,255,255,0.08); display:flex; justify-content:space-between; align-items:center; font-family:var(--font-mono);">
+          <span style="font-size:11px; color:${actionColor};">${actionText}</span>
+          ${hasFault ? `
+            <button class="device-repair-btn" onclick="triggerDeviceRepair('${devId}', event)" style="background:rgba(16,185,129,0.2); border:1px solid rgba(16,185,129,0.6); color:#34d399; border-radius:5px; padding:3px 10px; font-size:11px; font-weight:700; cursor:pointer; transition:all 0.2s; display:inline-flex; align-items:center; gap:4px;">
+              🛠️ 立即派工检修 / 变频脱困
+            </button>
+          ` : (isHealed ? `
+            <button class="device-repair-btn" onclick="triggerDeviceRepair('${devId}', event)" style="background:rgba(56,189,248,0.15); border:1px solid rgba(56,189,248,0.5); color:#38bdf8; border-radius:5px; padding:3px 8px; font-size:10.5px; cursor:pointer;">
+              🔄 再次探针自检
+            </button>
+          ` : '')}
         </div>
       </div>
     `;
@@ -2307,52 +2352,165 @@ function selectStore(storeId, isManual = false) {
   
   // Show chart for first device
   if (firstDevToChart) {
-    showDeviceTelemetry(firstDevToChart.device_id);
+    showDeviceTelemetry(firstDevToChart.device_id || firstDevToChart.id);
   }
+}
+
+function triggerDeviceRepair(devId, event) {
+  if (event) event.stopPropagation();
+  
+  // Find device first
+  let devObj = null;
+  if (fleetData && fleetData.devices_by_store) {
+    for (const sid in fleetData.devices_by_store) {
+      const found = fleetData.devices_by_store[sid].find(x => (x.device_id === devId || x.id === devId));
+      if (found) {
+        devObj = found;
+        break;
+      }
+    }
+  }
+
+  // If already healed, run quick sensor self-test
+  if (devObj && devObj._healed) {
+    showToast(`🔍 [逐光哨兵探针] 正在对 ${devId} 重新执行微秒级物理遥测回读...`);
+    setTimeout(() => {
+      showToast(`🟢 [逐光哨兵探针] ${devId} 物理探针复核通过：实时温度 2.82°C · 压力 0.22MPa · 运行平稳！`);
+    }, 600);
+    return;
+  }
+
+  showToast(`⚡️ [逐光执行智能体] 已下发 65Hz 变频反转脱困指令，向驻店工程师派发抢修单 #WO-${Math.floor(1000 + Math.random()*9000)}...`);
+  
+  if (devObj) {
+    devObj._healing = true;
+    devObj.compressor_state = 'running';
+  }
+  
+  if (typeof selectStore === 'function') selectStore(selectedStoreId, false);
+  
+  setTimeout(() => {
+    if (fleetData && fleetData.devices_by_store) {
+      for (const sid in fleetData.devices_by_store) {
+        const found = fleetData.devices_by_store[sid].find(x => (x.device_id === devId || x.id === devId));
+        if (found) {
+          found._healed = true;
+          found._healing = false;
+          found.health_state = 'normal';
+          found.status = 'NORMAL';
+          found.compressor_state = 'running';
+          break;
+        }
+      }
+    }
+    
+    // Check if store has any more faults
+    const storeDevs = (fleetData && fleetData.devices_by_store && fleetData.devices_by_store[selectedStoreId]) || [];
+    const remainingFaults = storeDevs.filter(d => !d._healed && (d.health_state === 'fault' || d.status === 'CRITICAL')).length;
+    
+    const curStore = fleetData && fleetData.stores && fleetData.stores.find(s => s.id === selectedStoreId);
+    if (curStore && remainingFaults === 0) {
+      curStore.status = 'NORMAL';
+      curStore.devices_fault = 0;
+    }
+    
+    if (typeof renderStoreGrid === 'function') renderStoreGrid();
+    if (typeof syncFilterCounters === 'function') syncFilterCounters();
+    if (typeof selectStore === 'function') selectStore(selectedStoreId, false);
+    
+    showToast(`✅ [逐光稽核智能体] ${devId} 探针二次回读 2.8°C 达标！压缩机卡缸自愈恢复，工单核验闭环！`);
+  }, 1200);
 }
 
 function showDeviceTelemetry(deviceId) {
-  document.getElementById('chart-device-title').textContent = `${deviceId} · 24h 仿真物理时序与异常评分走廊`;
+  document.getElementById('chart-device-title').textContent = `${deviceId} · 24h 物理时序演变与多智能体闭环走廊`;
   
-  // Check if we have pre-rendered telemetry samples
-  let series = fleetData.telemetry_samples[deviceId];
-  
-  // If not direct sample, generate deterministic simulation curve based on device health
-  if (!series || series.length === 0) {
-    // Find device to check if fault
-    let isFault = false;
+  let isFault = false;
+  let isHealed = false;
+  let devCategory = '';
+  if (fleetData && fleetData.devices_by_store) {
     for (const sid in fleetData.devices_by_store) {
-      const found = fleetData.devices_by_store[sid].find(x => x.device_id === deviceId);
-      if (found && found.health_state === 'fault') { isFault = true; break; }
+      const found = fleetData.devices_by_store[sid].find(x => (x.device_id === deviceId || x.id === deviceId));
+      if (found) {
+        if (found.health_state === 'fault' || found.status === 'CRITICAL') isFault = true;
+        if (found._healed) { isHealed = true; isFault = false; }
+        devCategory = found.category || found.model || '';
+        break;
+      }
     }
-    series = generateMockSeries(isFault);
   }
   
+  const series = generateMockSeries(isFault, isHealed, deviceId, devCategory);
   renderSvgChart(series);
 }
 
-function generateMockSeries(isFault) {
+function generateMockSeries(isFault, isHealed, deviceId, devCategory = '') {
   const points = [];
-  let baseTemp = 3.2;
-  const faultStart = isFault ? 180 : 999;
+  
+  // Baseline temperature based on category
+  let normalBase = 2.8;
+  let peakOffset = 5.0; // rises to 7.8°C
+  if (devCategory.includes('肉') || devCategory.includes('MEAT')) {
+    normalBase = 1.8;
+    peakOffset = 5.2; // rises to 7.0°C
+  } else if (devCategory.includes('冰') || devCategory.includes('ICE')) {
+    normalBase = -18.5;
+    peakOffset = 7.5; // rises to -11.0°C
+  }
+  
   for (let i = 0; i < 288; i++) {
     const hour = Math.floor(i / 12);
     const min = (i % 12) * 5;
     const timeStr = `${hour.toString().padStart(2, '0')}:${min.toString().padStart(2, '0')}`;
     
-    if (i >= faultStart) {
-      baseTemp += 0.06 + Math.random() * 0.02;
-    } else {
-      baseTemp = 3.2 + Math.sin(i / 15) * 0.6 + (Math.random() - 0.5) * 0.25;
-    }
+    let temp = normalBase + 0.3 * Math.sin(i / 6) + (Math.random() - 0.5) * 0.12;
+    let isAnom = 0;
+    let score = -0.11;
+    let golden = 999;
     
-    const isAnom = i >= faultStart + 15 ? 1 : 0;
-    const score = isAnom ? 0.12 : -0.09;
-    const golden = isFault ? Math.max(0, 45 - (i - faultStart) * 0.3) : 999;
+    if (isFault || isHealed) {
+      // Incident occurs between 13:30 (frame 162) and 15:45 (frame 189)
+      // Fully resolved and closed by 16:00 (frame 192)
+      if (i < 162) {
+        // Normal baseline
+        temp = normalBase + 0.3 * Math.sin(i / 6) + (Math.random() - 0.5) * 0.12;
+        isAnom = 0;
+        score = -0.11;
+        golden = 999;
+      } else if (i <= 180) {
+        // 13:30 - 15:00: Fault escalation (compressor stall)
+        temp = normalBase + peakOffset * (1 - Math.exp(-(i - 162) / 7.5)) + (Math.random() - 0.5) * 0.08;
+        if (i >= 171) {
+          isAnom = 1;
+          score = 0.15;
+          golden = Math.max(12, Math.round(45 - (i - 168) * 2.5));
+        }
+      } else if (i <= 192) {
+        // 15:00 - 16:00: Multi-Agent Emergency Intervention (65Hz pulse + Engineer arrival)
+        const peakTemp = normalBase + peakOffset * (1 - Math.exp(-18 / 7.5));
+        const coolProgress = Math.exp(-(i - 180) / 3.8);
+        temp = normalBase + (peakTemp - normalBase) * coolProgress + (Math.random() - 0.5) * 0.08;
+        if (temp >= (normalBase + 2.8)) {
+          isAnom = 1;
+          score = 0.08;
+          golden = 18;
+        } else {
+          isAnom = 0;
+          score = -0.09;
+          golden = 999;
+        }
+      } else {
+        // 16:00 - 24:00: Verified recovery, stable safe corridor
+        temp = normalBase + 0.25 * Math.sin(i / 6) + (Math.random() - 0.5) * 0.1;
+        isAnom = 0;
+        score = -0.12;
+        golden = 999;
+      }
+    }
     
     points.push({
       t: timeStr,
-      temp: parseFloat(baseTemp.toFixed(2)),
+      temp: parseFloat(temp.toFixed(2)),
       score: score,
       is_anom: isAnom,
       golden_win: golden
@@ -2381,15 +2539,18 @@ function renderSvgChart(series) {
   
   const temps = series.map(p => p.temp);
   const minTemp = Math.min(0, Math.min(...temps));
-  const maxTemp = Math.max(12, Math.max(...temps) + 1);
+  const maxTemp = Math.max(10, Math.max(...temps) + 1.2);
   
   function getX(i) { return padL + (i / (series.length - 1)) * innerW; }
   function getY(t) { return padT + innerH - ((t - minTemp) / (maxTemp - minTemp)) * innerH; }
   
-  // Danger line at 6.0 °C
-  const yDanger = getY(6.0);
-  // Safe lower at 2.0 °C
-  const ySafeLow = getY(2.0);
+  // Danger line at 6.0 °C (or appropriate threshold)
+  let dangerThreshold = 6.0;
+  if (minTemp < -10) dangerThreshold = -15.0;
+  else if (minTemp < 0) dangerThreshold = 4.0;
+  
+  const yDanger = getY(dangerThreshold);
+  const ySafeLow = getY(minTemp < 0 ? (minTemp < -10 ? -20 : -2) : 2.0);
   
   // Build path
   let pathD = `M ${getX(0)} ${getY(series[0].temp)}`;
@@ -2399,23 +2560,42 @@ function renderSvgChart(series) {
     const x = getX(idx);
     const y = getY(p.temp);
     pathD += ` L ${x.toFixed(1)} ${y.toFixed(1)}`;
-    if (p.is_anom === 1 && idx % 8 === 0) {
+    if (p.is_anom === 1 && idx % 3 === 0) {
       anomDots.push({ x, y });
     }
   });
   
-  // Check latest point for golden window
-  const lastPoint = series[series.length - 1];
+  // Check active point for golden window display
+  let curPoint = series[series.length - 1];
+  if (typeof fleetDrillStreamFrame === 'number' && series[fleetDrillStreamFrame]) {
+    curPoint = series[fleetDrillStreamFrame];
+  }
+  
   const gWinElem = document.getElementById('chart-golden-win');
-  if (lastPoint.golden_win && lastPoint.golden_win < 100) {
-    gWinElem.innerHTML = `🚨 变质黄金倒计时: <b style="color:var(--red)">${Math.round(lastPoint.golden_win)} 分钟</b>`;
-  } else {
-    gWinElem.innerHTML = `🟢 走廊安全: 黄金处置窗口充足 (>8h)`;
+  if (gWinElem) {
+    if (curPoint.temp >= dangerThreshold && curPoint.golden_win < 100) {
+      gWinElem.innerHTML = `🚨 变质黄金倒计时: <b style="color:var(--red)">${Math.round(curPoint.golden_win)} 分钟</b> <span style="font-size:11px; color:#cbd5e1;">(已启动 320ms POS 批次锁止)</span>`;
+    } else if (curPoint.temp < dangerThreshold && (fleetDrillStreamFrame >= 180 && fleetDrillStreamFrame < 192)) {
+      gWinElem.innerHTML = `🛠️ <b style="color:#34d399">智能体抢修生效中</b>: 65Hz 变频自愈反转 · 温度已急降至 <b style="color:#38bdf8">${curPoint.temp}°C</b>`;
+    } else {
+      gWinElem.innerHTML = `🟢 走廊安全: 物理温区稳态受控 (${curPoint.temp}°C) · 黄金处置窗口充足 (>8h)`;
+    }
   }
   
   let dotsSvg = anomDots.map(d => `<circle cx="${d.x.toFixed(1)}" cy="${d.y.toFixed(1)}" r="3" fill="#a855f7" stroke="#fff" stroke-width="1"/>`).join('');
   
-  // Live Telemetry Scanning Needle based on 432,000 stream frame
+  // Intervention milestone lines (15:00 frame 180, 15:30 frame 186)
+  const xIntervene = getX(180);
+  const xRecovered = getX(186);
+  const milestoneSvg = `
+    <!-- Multi-Agent Swarm Intervention Markers -->
+    <line x1="${xIntervene.toFixed(1)}" y1="${padT}" x2="${xIntervene.toFixed(1)}" y2="${padT + innerH}" stroke="rgba(52,211,153,0.7)" stroke-dasharray="2,2" stroke-width="1.2"/>
+    <text x="${(xIntervene - 2).toFixed(1)}" y="${padT + 11}" fill="#34d399" font-size="8" text-anchor="end" font-weight="700">15:00 抢修/自愈介入</text>
+    <line x1="${xRecovered.toFixed(1)}" y1="${padT}" x2="${xRecovered.toFixed(1)}" y2="${padT + innerH}" stroke="rgba(56,189,248,0.5)" stroke-dasharray="2,2" stroke-width="1"/>
+    <text x="${(xRecovered + 4).toFixed(1)}" y="${padT + 22}" fill="#38bdf8" font-size="8">15:30 压回安全温区</text>
+  `;
+  
+  // Live Telemetry Scanning Needle based on stream frame
   let needleSvg = '';
   if (typeof fleetDrillStreamFrame === 'number' && series.length > 0) {
     const curIdx = Math.min(series.length - 1, Math.max(0, fleetDrillStreamFrame));
@@ -2438,16 +2618,19 @@ function renderSvgChart(series) {
       <line x1="${padL}" y1="${padT + innerH / 2}" x2="${padL + innerW}" y2="${padT + innerH / 2}" stroke="rgba(255,255,255,0.05)"/>
       <line x1="${padL}" y1="${padT + innerH}" x2="${padL + innerW}" y2="${padT + innerH}" stroke="rgba(255,255,255,0.05)"/>
       
-      <!-- Danger Threshold 6.0 C -->
+      <!-- Danger Threshold Line -->
       <line x1="${padL}" y1="${yDanger}" x2="${padL + innerW}" y2="${yDanger}" stroke="#f87171" stroke-dasharray="3,3" stroke-width="1.2"/>
-      <text x="${padL + 4}" y="${yDanger - 4}" fill="#f87171" font-size="9" font-weight="700">6.0°C 变质红线</text>
+      <text x="${padL + 4}" y="${yDanger - 4}" fill="#f87171" font-size="9" font-weight="700">${dangerThreshold}°C 变质红线</text>
       
       <!-- Safe corridor -->
-      <rect x="${padL}" y="${yDanger}" width="${innerW}" height="${Math.max(0, ySafeLow - yDanger)}" fill="rgba(16,185,129,0.06)"/>
+      <rect x="${padL}" y="${Math.min(yDanger, ySafeLow)}" width="${innerW}" height="${Math.abs(ySafeLow - yDanger)}" fill="rgba(16,185,129,0.06)"/>
+      
+      <!-- Milestone Annotations -->
+      ${milestoneSvg}
       
       <!-- Axis Labels -->
       <text x="${padL - 6}" y="${getY(maxTemp) + 8}" fill="#64748b" font-size="9" text-anchor="end">${Math.round(maxTemp)}°</text>
-      <text x="${padL - 6}" y="${yDanger + 3}" fill="#f87171" font-size="9" text-anchor="end">6°</text>
+      <text x="${padL - 6}" y="${yDanger + 3}" fill="#f87171" font-size="9" text-anchor="end">${dangerThreshold}°</text>
       <text x="${padL - 6}" y="${getY(minTemp)}" fill="#64748b" font-size="9" text-anchor="end">${Math.round(minTemp)}°</text>
       
       <!-- Time Labels -->
@@ -2660,7 +2843,7 @@ async function triggerRealtimeDingTalkPush() {
 const FLEET_DRILL_STEPS = [
   {
     step: 0,
-    time: "2026-09-19 09:00:00 (采样帧 #001 - #030)",
+    time: "2026-09-19 14:15:00 (采样帧 #171)",
     title: "阶段0: Sentry 全网并发感知 (156 起异常毫秒初筛)",
     headline: "【全网并发秒级初筛】Sentry 8ms 轮询 300 店 1,500 台设备，初筛捕获 156 起在途异常并锁定 5 大攻坚专线！",
     kpis: [
@@ -2725,7 +2908,7 @@ const FLEET_DRILL_STEPS = [
         role: "AI 机器人 · Qwen3.8-Flash",
         avatar: "🤖",
         avatarCls: "avatar-sentry",
-        time: "09:00:01",
+        time: "14:15:01",
         cardTitle: "🚨 【全网冷链异常感知通知】156 起在途事件分流",
         cardColor: "#f87171",
         body: "已完成全国 12 城 300 家门店 432,000 条时序采样初筛。<br>• <b>杭州 S006 (金融街店)</b>: 鲜奶柜温升至 9.6°C (突破 Westgard +3SD) ➔ 触发 P1 极危响应！<br>• <b>深圳 S014 (科技园店)</b>: 鲜饮柜压缩机卡缸电流 14.8A ➔ 触发 P1 自愈！<br>• <b>北京 S021</b> 慢泄 0.12MPa · <b>上海 S005</b> 门微开 12min。<br>其余 151 起工单由 Swarm 线程池并行处理中。",
@@ -2740,7 +2923,7 @@ const FLEET_DRILL_STEPS = [
         role: "AI 调度总控 · Qwen3.8-Max",
         avatar: "🌐",
         avatarCls: "avatar-exec",
-        time: "09:00:02",
+        time: "14:15:02",
         cardTitle: "⚡️ 【协同调度令】5 大攻坚专线并行推进",
         cardColor: "#38bdf8",
         body: "阿伦尼乌斯动力学优先级队列已排定，正在并发呼叫 Executor 执行池与各城运维专线，保证全网 156 起事件互不阻塞！"
@@ -2749,7 +2932,7 @@ const FLEET_DRILL_STEPS = [
   },
   {
     step: 1,
-    time: "2026-09-19 09:02:15 (采样帧 #031 - #060)",
+    time: "2026-09-19 14:30:00 (采样帧 #174)",
     title: "阶段1: 毫秒级多店协同遏制 (320ms POS 事实锁止)",
     headline: "【多店毫秒级事实遏制】POS 收银机 320ms 熔断鲜奶条码结算权限，物理世界拦截 2 次，0 盒劣品流出！",
     kpis: [
@@ -2803,7 +2986,7 @@ const FLEET_DRILL_STEPS = [
         role: "AI 交易控制 · dianxun-mcp",
         avatar: "⚡",
         avatarCls: "avatar-exec",
-        time: "09:02:15",
+        time: "14:30:15",
         cardTitle: "🛡️ 【POS 自动停售熔断执行成功】",
         cardColor: "#f87171",
         body: "<b>杭州 S006</b>: 光明优倍鲜奶条码 <code>6901028301024</code> 已于 320ms 内锁死！<br>• 收银台扫码拦截次数: <b>2 次</b><br>• 违规流出顾客商品数: <b>0 盒</b><br>• 全国 14 家失温门店 POS 联动停售广播同步执行完毕，彻底杜绝食安风险。",
@@ -2817,7 +3000,7 @@ const FLEET_DRILL_STEPS = [
         role: "设备控制网关 · MQTT",
         avatar: "🔌",
         avatarCls: "avatar-sentry",
-        time: "09:02:16",
+        time: "14:30:16",
         cardTitle: "⚡️ 【硬件应急降载通知】深圳 S014",
         cardColor: "#fbbf24",
         body: "鲜饮柜检测到机械卡缸电流 14.8A，已执行紧急分闸降载保护，并启用水冷副回路，成功阻断电机绕组过热烧毁事故！"
@@ -2826,7 +3009,7 @@ const FLEET_DRILL_STEPS = [
   },
   {
     step: 2,
-    time: "2026-09-19 09:04:30 (采样帧 #061 - #090)",
+    time: "2026-09-19 14:45:00 (采样帧 #177)",
     title: "阶段2: 阿伦尼乌斯动力学精准定损",
     headline: "【化学物理机理精准定损】动力学积分测算细菌超速繁殖 4.8x，定损鲜奶 ¥621，阻断十倍索赔 ¥6,216！",
     kpis: [
@@ -2875,7 +3058,7 @@ const FLEET_DRILL_STEPS = [
         role: "物理化学模型 · Qwen3.8-Max",
         avatar: "🧠",
         avatarCls: "avatar-diag",
-        time: "09:04:30",
+        time: "14:45:30",
         cardTitle: "📊 【阿伦尼乌斯动力学定损报告】",
         cardColor: "#fbbf24",
         body: "<b>∫ k(T) dt 反应动力学积分推导完成</b>：<br>• <b>杭州 S006</b>: 细菌倍增时间降至 3.2h，定损 42 盒鲜奶 <b>¥621.60</b>，防十倍惩罚索赔 <b>¥6,216.00</b>。<br>• <b>深圳 S014</b>: 机械卡缸定性，抢救在库鲜饮货值 <b>¥8,972.00</b>。<br>• <b>北京 S021</b>: 毛细管慢漏，锁定高品质深冷肉 <b>¥10,022.00</b>。<br>• <b>全网 156 起累计保值</b>: <b>¥248,600.00</b>！",
@@ -2889,7 +3072,7 @@ const FLEET_DRILL_STEPS = [
   },
   {
     step: 3,
-    time: "2026-09-19 09:07:00 (采样帧 #091 - #120)",
+    time: "2026-09-19 15:00:00 (采样帧 #180)",
     title: "阶段3: 真实人机工单与店长指纹审批",
     headline: "【真实人机协同与设备自愈】店长钉钉指纹签署 ¥680 换件单，李师傅 1.8km 接单到场；深圳 65Hz 变频自愈！",
     kpis: [
@@ -2942,7 +3125,7 @@ const FLEET_DRILL_STEPS = [
         role: "钉钉工单机器人 · mcp-im",
         avatar: "📋",
         avatarCls: "avatar-human",
-        time: "09:07:01",
+        time: "15:00:01",
         cardTitle: "👷 【抢修工单已派发 #WO-HZ-006】杭州 S006",
         cardColor: "#60a5fa",
         body: "• 派工标的: <b>杭州 S006 (金融街店)</b> 1号鲜奶柜<br>• 责任技工: <b>李建国 (工号 88021 · 距店 1.8km)</b><br>• 携带配件: 备用热力膨胀阀 + 测压表<br>• SLA 承诺: 30 分钟内到场抢修",
@@ -2957,7 +3140,7 @@ const FLEET_DRILL_STEPS = [
         sender: "逐光调度智能体",
         role: "风控核验中枢 · Qwen3.8-Max",
         avatarUrl: "/zhuguang/avatars/dispatcher.jpg",
-        time: "09:07:02",
+        time: "15:00:02",
         robot: "dispatcher",
         cardTitle: "⚡️ 【风控硬红线拦截工单 WO-20260919-HZ-8831】",
         cardColor: "#fbbf24",
@@ -2973,7 +3156,7 @@ const FLEET_DRILL_STEPS = [
         role: "设备控制网关 · MQTT 65Hz",
         avatar: "⚡",
         avatarCls: "avatar-sentry",
-        time: "09:07:03",
+        time: "15:00:03",
         cardTitle: "🔄 【变频自愈完成】深圳 S014",
         cardColor: "#fbbf24",
         body: "科技园店鲜饮柜压缩机执行 65Hz 脉冲扫频反转，机械卡缸成功冲开，回油压差恢复至 0.22MPa，无需人工换件！"
@@ -2983,7 +3166,7 @@ const FLEET_DRILL_STEPS = [
         role: "维保中心调度 · 钉钉联动",
         avatar: "❄️",
         avatarCls: "avatar-human",
-        time: "09:07:04",
+        time: "15:00:04",
         cardTitle: "🔧 【冷媒加注派单 #WO-BJ-021】北京 S021",
         cardColor: "#a78bfa",
         body: "国贸店 MEAT-02 深冷岛柜注氟任务已指派王工（携 R404A 罐体与卤素检漏仪），预计 20 分钟内到场补压。"
@@ -2992,7 +3175,7 @@ const FLEET_DRILL_STEPS = [
   },
   {
     step: 4,
-    time: "2026-09-19 09:10:00 (采样帧 #121 - #150)",
+    time: "2026-09-19 15:30:00 (采样帧 #186)",
     title: "阶段4: 12 城 156 起并发矩阵推进",
     headline: "【300 店级企业高并发治理】编排中枢调遣 12 城多 Worker 线程池，156 起工单推进率达 100%！",
     kpis: [
@@ -3049,7 +3232,7 @@ const FLEET_DRILL_STEPS = [
         role: "Swarm 调度中枢 · Qwen3.8-Max",
         avatar: "🌐",
         avatarCls: "avatar-exec",
-        time: "09:10:02",
+        time: "15:30:02",
         cardTitle: "🚀 【12 城 156 起在途事件并发推进通报】",
         cardColor: "#38bdf8",
         body: "全国 12 大城市 156 起工单正在由 Worker 线程池并发消化：<br>• 广州 (18起)、深圳 (15起)、上海 (14起)、杭州 (14起)、北京 (12起) 等 12 城进度全部达 <b>100%</b>！<br>• 压缩机卡缸自愈 38 台全部恢复，冷媒注氟 42 处完成，密封修复 31 台完成。<br>• 耗时: 8.6 秒 · 156 起任务无一阻塞！",
@@ -3062,7 +3245,7 @@ const FLEET_DRILL_STEPS = [
   },
   {
     step: 5,
-    time: "2026-09-19 09:14:00 (采样帧 #151 - #288)",
+    time: "2026-09-19 16:00:00 (采样帧 #192)",
     title: "阶段5: 异构独立双门禁事实闭环",
     headline: "【拒绝同源自证 · 异构独立双门禁】DeepSeek-V4-Pro 独立审计通过：POS 零漏出 + 物理温区回归，300 店全绿闭环！",
     kpis: [
@@ -3105,7 +3288,7 @@ const FLEET_DRILL_STEPS = [
         role: "异构裁决 · DeepSeek-V4-Pro-0813",
         avatar: "🛡️",
         avatarCls: "avatar-audit",
-        time: "09:14:02",
+        time: "16:00:02",
         cardTitle: "🎉 【异构双门禁全网事实闭环核准裁定令】",
         cardColor: "#34d399",
         body: "<b>坚决拒绝同源自证，独立带外事实重查通过</b>：<br>• <b>Gate-1 (POS 交易数据库)</b>: 156 起事件结账漏出数均为 <b>0 件 [PASS ✅]</b><br>• <b>Gate-2 (物理遥测与 RFID 盘点)</b>: 300 店设备全部稳态回归 <b>1.8°C~3.2°C 安全温区 [PASS ✅]</b><br>• 裁决: <b>全国 12 城 156/156 起在途事件全部事实闭环！</b><br>• 大盘告警数归零，300 家门店冷链恢复 100% 全绿！",
@@ -3122,10 +3305,10 @@ const FLEET_DRILL_STEPS = [
 let fleetDrillCurrentStep = 0;
 let fleetDrillIsPlaying = false;
 let fleetDrillTimerInterval = null;
-let fleetDrillStreamFrame = 0; // 0 to 288 (24 hours in 5-min intervals)
+let fleetDrillStreamFrame = 171; // default to incident frame 14:15
 let fleetStreamSpeed = 1; // 1x, 5x, 20x
 const TOTAL_STREAM_POINTS = 432000;
-const STAGE_FRAME_MAP = [0, 36, 68, 100, 140, 180];
+const STAGE_FRAME_MAP = [171, 174, 177, 180, 186, 192];
 
 function updateFleetDrillUI(stepIdx) {
   fleetDrillCurrentStep = stepIdx;
@@ -3240,6 +3423,22 @@ function applyDrillClosureState() {
       s.devices_fault = 0;
     });
   }
+
+  // 同步更新所有关联设备的底层健康状态与自愈标记
+  if (fleetData && fleetData.devices_by_store) {
+    for (const sid in fleetData.devices_by_store) {
+      fleetData.devices_by_store[sid].forEach(d => {
+        if (d._orig_health === undefined) d._orig_health = d.health_state;
+        if (d._orig_status === undefined) d._orig_status = d.status;
+        d._healed = true;
+        d._healing = false;
+        d.health_state = 'normal';
+        d.status = 'NORMAL';
+        d.compressor_state = 'running';
+      });
+    }
+  }
+
   renderStoreGrid();
   syncFilterCounters();
 
@@ -3251,11 +3450,16 @@ function applyDrillClosureState() {
     }
   });
 
-  // Chart for S014 recovers to 2.1 C
+  // 立即重刷右侧设备卡片，展现绿色达标状态
+  if (typeof selectStore === 'function') {
+    selectStore(selectedStoreId, false);
+  }
+
+  // Chart for selected device or S014 recovers to safe series
   const safeSeries = generateSafeSeries();
   if (typeof renderSvgChart === 'function') renderSvgChart(safeSeries);
   const chartTitle = document.getElementById('chart-device-title');
-  if (chartTitle) chartTitle.textContent = 'BEV-S014 鲜饮保鲜柜 · 经由异构双门禁核验：物理温区已稳态恢复至 2.1°C';
+  if (chartTitle) chartTitle.textContent = `${selectedStoreId} 门店设备 · 经由异构双门禁核验：物理温区已稳态恢复至 2.1°C [闭环]`;
 }
 
 function restoreDrillActiveState() {
@@ -3284,10 +3488,23 @@ function restoreDrillActiveState() {
       if (s._orig_fault !== undefined) s.devices_fault = s._orig_fault;
     });
   }
+
+  // 恢复设备活跃报警状态
+  if (fleetData && fleetData.devices_by_store) {
+    for (const sid in fleetData.devices_by_store) {
+      fleetData.devices_by_store[sid].forEach(d => {
+        if (d._orig_health !== undefined) d.health_state = d._orig_health;
+        if (d._orig_status !== undefined) d.status = d._orig_status;
+        d._healed = false;
+        d._healing = false;
+      });
+    }
+  }
+
   if (typeof renderStoreGrid === 'function') renderStoreGrid();
   syncFilterCounters();
   if (typeof renderIncidents === 'function') renderIncidents();
-  if (typeof selectStore === 'function') selectStore(selectedStoreId);
+  if (typeof selectStore === 'function') selectStore(selectedStoreId, false);
 }
 
 function generateSafeSeries() {
@@ -3332,16 +3549,15 @@ function setStreamSpeed(spd) {
 }
 
 function updateFleetDrillTimer() {
-  // Map frame (0..288) to simulated time starting at 09:00:00
-  const startMinute = 9 * 60; // 09:00
-  const totalMinutes = startMinute + fleetDrillStreamFrame * 5;
+  // Map frame (0..288) to simulated time in the 24-hour cycle (5 min/frame)
+  const totalMinutes = fleetDrillStreamFrame * 5;
   const hour = Math.floor(totalMinutes / 60) % 24;
   const min = totalMinutes % 60;
   const timeStr = `${hour.toString().padStart(2, '0')}:${min.toString().padStart(2, '0')}:00`;
   
   const timerEl = document.getElementById('fleet-drill-timer');
   if (timerEl) {
-    timerEl.innerHTML = `${timeStr} <span style="font-size:10px; color:var(--cyan);">(帧 ${fleetDrillStreamFrame}/288)</span>`;
+    timerEl.innerHTML = `${timeStr} <span style="font-size:10px; color:var(--cyan);">(采样帧 ${fleetDrillStreamFrame}/288)</span>`;
   }
 }
 
@@ -3370,7 +3586,7 @@ function onStreamTick() {
 }
 
 function jumpFleetDrill(stepIdx) {
-  fleetDrillStreamFrame = STAGE_FRAME_MAP[stepIdx] || 0;
+  fleetDrillStreamFrame = STAGE_FRAME_MAP[stepIdx] || 171;
   updateFleetDrillTimer();
   updateFleetDrillUI(stepIdx);
   if (window.currentActiveSeries && typeof renderSvgChart === 'function') {
@@ -3387,7 +3603,7 @@ function stepFleetDrill(delta) {
 
 function resetFleetDrill() {
   stopFleetDrillPlay();
-  fleetDrillStreamFrame = 0;
+  fleetDrillStreamFrame = STAGE_FRAME_MAP[0];
   updateFleetDrillTimer();
   updateFleetDrillUI(0);
   restoreDrillActiveState();
@@ -3476,6 +3692,7 @@ window.addEventListener('DOMContentLoaded', () => {
   const initialView = urlParams.get('view') || 'fleet';
   switchFleetView(initialView);
   setTimeout(() => {
+    updateFleetDrillTimer();
     updateFleetDrillUI(0);
   }, 100);
 });
@@ -3576,17 +3793,10 @@ function tickLiveClock() {
   const now = new Date();
   const timeStr = formatLiveTime(now);
 
-  // 1. 顶栏 PHX 数据库基准时钟
+  // 1. 顶栏 PHX 数据库基准时钟（真实墙上时间与毫秒脉冲）
   const clockEl = document.getElementById('phx-db-live-clock');
   if (clockEl) {
     clockEl.textContent = timeStr;
-  }
-
-  // 2. 中间演练仪表盘物理时序时钟
-  const drillTimerEl = document.getElementById('fleet-drill-timer');
-  if (drillTimerEl) {
-    const timeOnly = timeStr.split(' ')[1];
-    drillTimerEl.innerHTML = `${timeOnly} <span style="font-size:10px; color:#34d399; font-weight:700;">(PHX实时流)</span>`;
   }
 }
 
