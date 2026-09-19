@@ -33,6 +33,7 @@ from .skills.coldchain_risk_assess import coldchain_risk_assess
 from .skills.outcome_verify import outcome_verify
 from .skills.review_report import review_incident
 from .skills.rootcause_drilldown import diagnose_coldchain_hypotheses
+from .state.protocols import StorePolicyError
 
 # Two containment steps and two release checks implement the five domain phases.
 STAGES = {
@@ -114,23 +115,37 @@ class RuntimeService:
             with self.store.read_snapshot():
                 return method(principal=principal, **arguments)
         # Business changes, receipts and checkpoints share one transaction.
-        with self.store.transaction():
-            self.recovery.lock_scope(principal)
-            if (
-                self.scheduler is not None
-                and not self.scheduler.healthy()
-                and name
-                in {
-                    "runtime_assign",
-                    "runtime_reassign",
-                    "runtime_tool",
-                    "runtime_emergency",
-                    "runtime_complete",
-                    "runtime_resume",
-                }
-            ):
-                raise ValueError("Recovery scheduler unavailable; writes suspended")
-            return method(principal=principal, **arguments)
+        try:
+            with self.store.transaction():
+                self.recovery.lock_scope(principal)
+                if (
+                    self.scheduler is not None
+                    and not self.scheduler.healthy()
+                    and name
+                    in {
+                        "runtime_assign",
+                        "runtime_reassign",
+                        "runtime_tool",
+                        "runtime_emergency",
+                        "runtime_complete",
+                        "runtime_resume",
+                    }
+                ):
+                    raise ValueError("Recovery scheduler unavailable; writes suspended")
+                return method(principal=principal, **arguments)
+        except StorePolicyError as exc:
+            # Application-layer P0001 handling: fail-fast on hard database policy rejections,
+            # transaction rolled back, non-retryable, prevent blind retry loops.
+            return {
+                "ok": False,
+                "isError": True,
+                "error": {
+                    "code": exc.code,
+                    "sqlstate": exc.sqlstate,
+                    "retryable": exc.retryable,
+                    "message": f"Database policy rejected operation: {exc.code}",
+                },
+            }
 
     def _context(self, principal, incident_id):
         case = self.incidents.get(incident_id)
@@ -353,6 +368,13 @@ class RuntimeService:
             service=self.mcp,
         )
         if result.get("isError"):
+            err = result.get("error", {})
+            if err.get("sqlstate") == "P0001" or not err.get("retryable", True):
+                # Application layer explicit P0001 branch:
+                # Non-retryable database policy rejection (e.g. partition guard).
+                # Record failure on recovery phase and trigger unretryable alert immediately.
+                self.recovery.fail(context, assignment, "database_policy_rejected")
+                bus.commit(context, now=self.clock())
             return result
         # Deadline check after synchronous adapter work fences late effects too: local
         # adapters share this transaction, so rejection rolls back their writes.

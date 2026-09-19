@@ -17,7 +17,7 @@ from .runtime_context import RuntimeContextBus
 
 ACTIVE = {"assigned", "running"}
 RETRYABLE = {"transient", "rate_limited", "heartbeat_timeout", "hard_timeout", "progress_timeout"}
-FAILURES = RETRYABLE | {"invalid_input", "forbidden", "stale_evidence", "unknown_outcome"}
+FAILURES = RETRYABLE | {"invalid_input", "forbidden", "stale_evidence", "unknown_outcome", "database_policy_rejected"}
 POLICY = {
     "version": 1,
     "lease_seconds": 60,

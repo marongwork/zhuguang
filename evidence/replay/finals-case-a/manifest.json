@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "source_kind": "synthetic_local_run",
+  "incident_id": "INC-COLD-A",
+  "trace_id": "tr_coldchain_compressor_failure",
+  "scenario_id": "coldchain-compressor-failure",
+  "provenance": {
+    "git_commit": "05c668182e7b372092838d38d72ade595bb5769f",
+    "dirty_worktree": true
+  },
+  "claim_boundary": "Local synthetic SQLite run; no AgentTeams, PolarDB, OSS or real-store evidence. Hashes detect accidental changes, not source authenticity.",
+  "files": {
+    "audit.jsonl": "3e25342002ef9b989e22fe8605a393af4c40818bb42153776efb9c9eacd08d39",
+    "policy.json": "f0fb8eb893655398340fb277c8697ecc5841bde58d988a75b6996b4d920ddd73",
+    "result.json": "b7c3859f7b2d84ec1c785be9153f0af3ea61011fd67ec24522efd3af97074be3",
+    "scenario.json": "ddc54a6d57b7f1cd1fa7e39e2db364c498baec2ba697ff37a94920e39be744b8",
+    "state.sqlite": "8a95d277ccbfd1632e60ac660e75e1494ce6cafd6b8e462d34e5b086ee71cb08",
+    "trace.jsonl": "497cb144b4d70c440b962762dbabe1563121c02c8a922852f055edb6667440e3",
+    "trace.sqlite": "44525fbb2e293fd09898387590fb8faa4ef2c2db879334956e549f0285256987"
+  }
+}

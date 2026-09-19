@@ -3,25 +3,22 @@
 契约:send_notice(channel, template_id, payload) / send_approval_request(...)
 权限:仅发消息,无读会话权限
 限流:每分钟 60 条,超限排队(demo 不实际限流,仅记录)
-数据源:内存(打印到 stdout 模拟)
 
 发送路径（按优先级）：
-  1. HTTP Webhook（DINGTALK_*_WEBHOOK 环境变量，无需 dws CLI）
-  2. dws CLI fallback（ENABLE_DINGTALK_DWS=1 时启用）
-  3. 仅本地 outbox / stdout（无真实发送）
+  1. 企业内部机器人 OpenAPI（AppKey+AppSecret，零外部依赖，生产推荐）
+     环境变量: DINGTALK_DISPATCHER_APPKEY / DINGTALK_DISPATCHER_APPSECRET 等
+  2. HTTP Webhook（DINGTALK_*_WEBHOOK，适合自定义机器人）
+  3. dws CLI fallback（ENABLE_DINGTALK_DWS=1 时）
 
 环境变量约定：
-  DINGTALK_WEBHOOK_URL          通用 Webhook（send_notice 默认）
-  DINGTALK_DISPATCHER_WEBHOOK   调度智能体专属 Webhook（审批工单用）
-  DINGTALK_SENTINEL_WEBHOOK     哨兵智能体
-  DINGTALK_DIAGNOSER_WEBHOOK    诊断智能体
-  DINGTALK_EXECUTOR_WEBHOOK     执行智能体
-  DINGTALK_AUDITOR_WEBHOOK      稽核智能体
-  DINGTALK_AT_USER_IDS          @ 用户 ID，逗号分隔（如 014550163451-931601056）
-  DINGTALK_APPROVE_PAGE_URL     审批落地页基础 URL
-  APPROVAL_REDLINE              人工审批金额红线（默认 5000）
-  DINGTALK_GROUP                群名（dws fallback 使用）
-  ENABLE_DINGTALK_DWS           "1" 时启用 dws CLI fallback
+  DINGTALK_{ROLE}_APPKEY      企业内部机器人 AppKey（=robot_code）
+  DINGTALK_{ROLE}_APPSECRET   企业内部机器人 AppSecret
+  DINGTALK_GROUP_ID           目标群 openConversationId
+  DINGTALK_AT_USER_IDS        @ 的 userId 列表，逗号分隔
+  DINGTALK_APPROVE_PAGE_URL   审批落地页基础 URL
+  APPROVAL_REDLINE            人工审批金额红线（默认 5000）
+  DINGTALK_{ROLE}_WEBHOOK     HTTP Webhook（Fallback，自定义机器人）
+  ENABLE_DINGTALK_DWS         "1" 时启用 dws CLI 最终 fallback
 """
 
 from __future__ import annotations
@@ -40,157 +37,214 @@ from ._csv_store import ToolResult
 _OUTBOX: deque[dict] = deque()
 _SENT_COUNT = 0
 
-_APPROVE_PAGE_URL = os.getenv(
-    "DINGTALK_APPROVE_PAGE_URL",
-    "https://sh.mazhi.icu/zhuguang/approve.html",
-)
+_GROUP_ID       = os.getenv("DINGTALK_GROUP_ID", "")
+_APPROVE_URL    = os.getenv("DINGTALK_APPROVE_PAGE_URL", "https://sh.mazhi.icu/zhuguang/approve.html")
 _APPROVAL_REDLINE = int(os.getenv("APPROVAL_REDLINE", "5000"))
 
-# channel 关键词 → 专属 Webhook 环境变量名映射
-_AGENT_WEBHOOK_ENV: dict[str, str] = {
-    "dispatch": "DINGTALK_DISPATCHER_WEBHOOK",
-    "dispatcher": "DINGTALK_DISPATCHER_WEBHOOK",
-    "sentinel": "DINGTALK_SENTINEL_WEBHOOK",
-    "sentry": "DINGTALK_SENTINEL_WEBHOOK",
-    "diagnos": "DINGTALK_DIAGNOSER_WEBHOOK",
-    "diagnoser": "DINGTALK_DIAGNOSER_WEBHOOK",
-    "executor": "DINGTALK_EXECUTOR_WEBHOOK",
-    "execute": "DINGTALK_EXECUTOR_WEBHOOK",
-    "audit": "DINGTALK_AUDITOR_WEBHOOK",
-    "auditor": "DINGTALK_AUDITOR_WEBHOOK",
+# channel 关键词 → 环境变量前缀映射
+_ROLE_ENV: dict[str, str] = {
+    "sentinel":   "SENTINEL",
+    "sentry":     "SENTINEL",
+    "diagnos":    "DIAGNOSER",
+    "diagnoser":  "DIAGNOSER",
+    "dispatch":   "DISPATCHER",
+    "dispatcher": "DISPATCHER",
+    "executor":   "EXECUTOR",
+    "execute":    "EXECUTOR",
+    "audit":      "AUDITOR",
+    "auditor":    "AUDITOR",
 }
 
+# 简单 in-process token 缓存（避免频繁换 token）
+_TOKEN_CACHE: dict[str, tuple[str, float]] = {}
+
 
 # ──────────────────────────────────────────────
-# 内部工具函数
+# 工具函数
 # ──────────────────────────────────────────────
 
-def _pick_webhook(channel: str) -> str | None:
-    """根据 channel 名称选择最匹配的 Webhook URL。"""
+def _pick_role(channel: str) -> str | None:
     ch = channel.lower()
-    for key, env_var in _AGENT_WEBHOOK_ENV.items():
+    for key, role in _ROLE_ENV.items():
         if key in ch:
-            url = os.getenv(env_var)
-            if url:
-                return url
-    return os.getenv("DINGTALK_WEBHOOK_URL") or None
+            return role
+    return None
 
 
-def _build_approval_markdown(
-    title: str,
-    body: str,
-    approve_url: str,
-    wo_id: str = "",
-) -> str:
-    """生成带🟢🔴审批按钮的 Markdown 卡片。"""
+def _get_access_token(app_key: str, app_secret: str) -> str | None:
+    """用 AppKey+AppSecret 换取企业内部机器人 access_token（带 2h 缓存）。"""
+    now = time.time()
+    cached = _TOKEN_CACHE.get(app_key)
+    if cached and now < cached[1]:
+        return cached[0]
+
+    payload = json.dumps({"appKey": app_key, "appSecret": app_secret}).encode()
+    req = urllib.request.Request(
+        "https://api.dingtalk.com/v1.0/oauth2/accessToken",
+        data=payload,
+        headers={"Content-Type": "application/json"},
+        method="POST",
+    )
+    try:
+        with urllib.request.urlopen(req, timeout=10) as r:
+            d = json.loads(r.read())
+        token = d.get("accessToken", "")
+        expire = d.get("expireIn", 7200)
+        if token:
+            _TOKEN_CACHE[app_key] = (token, now + expire - 60)
+            return token
+    except Exception as exc:
+        print(f"  ❌ [DingTalk token 获取失败] {exc}")
+    return None
+
+
+def _send_robot_group_msg(
+    app_key: str,
+    app_secret: str,
+    group_id: str,
+    markdown_text: str,
+    title: str = "逐光智能体通知",
+    at_user_ids: list[str] | None = None,
+) -> bool:
+    """调用企业内部机器人 OpenAPI 发送群 Markdown 消息。"""
+    token = _get_access_token(app_key, app_secret)
+    if not token:
+        return False
+
+    msg_param = json.dumps({"title": title[:40], "text": markdown_text}, ensure_ascii=False)
+    payload: dict = {
+        "robotCode": app_key,
+        "openConversationId": group_id,
+        "msgKey": "sampleMarkdown",
+        "msgParam": msg_param,
+    }
+    if at_user_ids:
+        payload["atUserIds"] = at_user_ids
+
+    data = json.dumps(payload, ensure_ascii=False).encode()
+    req = urllib.request.Request(
+        "https://api.dingtalk.com/v1.0/robot/groupMessages/send",
+        data=data,
+        headers={
+            "Content-Type": "application/json",
+            "x-acs-dingtalk-access-token": token,
+        },
+        method="POST",
+    )
+    try:
+        with urllib.request.urlopen(req, timeout=10) as r:
+            result = json.loads(r.read())
+        ok = "processQueryKey" in result
+        if ok:
+            print(f"  ✅ [钉钉群消息已送达] {title[:40]}")
+        else:
+            print(f"  ⚠️ [钉钉群消息异常] {result}")
+        return ok
+    except urllib.error.HTTPError as e:
+        err = e.read().decode()
+        print(f"  ❌ [钉钉 OpenAPI 失败] {e.code} {err[:200]}")
+        return False
+    except Exception as exc:
+        print(f"  ❌ [钉钉发送异常] {exc}")
+        return False
+
+
+def _post_webhook(webhook_url: str, markdown_text: str, title: str, at_user_ids: list[str] | None = None) -> bool:
+    """Fallback: HTTP Webhook 发送（自定义机器人）。"""
+    env_at = os.getenv("DINGTALK_AT_USER_IDS", "")
+    at_list = at_user_ids or [u.strip() for u in env_at.split(",") if u.strip()]
+    payload = {
+        "msgtype": "markdown",
+        "markdown": {"title": title[:40], "text": markdown_text},
+        "at": {"atUserIds": at_list, "isAtAll": False},
+    }
+    data = json.dumps(payload, ensure_ascii=False).encode()
+    req = urllib.request.Request(
+        webhook_url, data=data,
+        headers={"Content-Type": "application/json; charset=utf-8"},
+        method="POST",
+    )
+    try:
+        with urllib.request.urlopen(req, timeout=10) as r:
+            result = json.loads(r.read())
+        ok = result.get("errcode", -1) == 0
+        if ok:
+            print(f"  ✅ [Webhook 已送达] {title[:40]}")
+        else:
+            print(f"  ⚠️ [Webhook 错误] {result.get('errmsg')}")
+        return ok
+    except Exception as exc:
+        print(f"  ❌ [Webhook 异常] {exc}")
+        return False
+
+
+def _build_approval_md(title: str, body: str, approve_url: str, wo_id: str = "") -> str:
     wo_tag = f"`{wo_id}` · " if wo_id else ""
-    # 生成 reject URL
-    if "action=approve" in approve_url:
-        reject_url = approve_url.replace("action=approve", "action=reject")
-    elif "?" in approve_url:
-        reject_url = approve_url + "&action=reject"
-    else:
-        reject_url = approve_url + "?action=reject"
-    # 面板 URL（去掉 action 参数）
+    reject_url = (
+        approve_url.replace("action=approve", "action=reject")
+        if "action=approve" in approve_url
+        else approve_url + ("&" if "?" in approve_url else "?") + "action=reject"
+    )
     panel_url = approve_url.split("?")[0] if "?" in approve_url else approve_url
-
     return (
         f"### ⚡️【调度智能体】{title}\n"
         f"---\n"
         f"{wo_tag}**风控硬红线 ¥{_APPROVAL_REDLINE}** · 工单已挂起，等待人工核准放行\n\n"
         f"{body}\n\n"
         f"---\n"
-        f"[🟢 点击直接签署：核准放行 (Approve)]({approve_url})\n"
-        f"[🔴 点击驳回工单：拒绝并重新计算方案 (Reject)]({reject_url})\n"
-        f"[📋 打开完整审批单据面板]({panel_url})"
+        f"[🟢 核准放行 (Approve)]({approve_url})\n"
+        f"[🔴 驳回重算 (Reject)]({reject_url})\n"
+        f"[📋 完整审批面板]({panel_url})"
     )
 
 
-def _post_webhook(
-    webhook_url: str,
-    markdown_text: str,
-    title: str,
-    at_user_ids: list[str] | None = None,
-) -> bool:
-    """向钉钉自定义机器人 Webhook 发送 Markdown 消息（纯 HTTP POST，零外部依赖）。"""
-    env_at = os.getenv("DINGTALK_AT_USER_IDS", "")
-    at_list = at_user_ids or [u.strip() for u in env_at.split(",") if u.strip()]
-    payload: dict = {
-        "msgtype": "markdown",
-        "markdown": {
-            "title": title[:40],
-            "text": markdown_text,
-        },
-        "at": {
-            "atUserIds": at_list,
-            "isAtAll": False,
-        },
-    }
-    data = json.dumps(payload, ensure_ascii=False).encode("utf-8")
-    req = urllib.request.Request(
-        webhook_url,
-        data=data,
-        headers={"Content-Type": "application/json; charset=utf-8"},
-        method="POST",
-    )
-    try:
-        with urllib.request.urlopen(req, timeout=10) as resp:
-            result = json.loads(resp.read().decode("utf-8"))
-            ok = result.get("errcode", -1) == 0
-            if ok:
-                print(f"  ✅ [钉钉 Webhook 已送达] {title[:40]}")
-            else:
-                print(
-                    f"  ⚠️ [钉钉 Webhook 错误] "
-                    f"errcode={result.get('errcode')} errmsg={result.get('errmsg')}"
-                )
-            return ok
-    except Exception as exc:
-        print(f"  ❌ [钉钉 Webhook 请求失败] {exc}")
-        return False
-
-
-def _dispatch_dws_fallback(title: str, markdown_text: str, channel: str) -> None:
-    """Fallback: dws CLI（仅当 ENABLE_DINGTALK_DWS=1 且 dws 存在时使用）。"""
-    if os.getenv("ENABLE_DINGTALK_DWS") != "1" and not channel.startswith("dingtalk"):
-        return
-    dws_bin = shutil.which("dws") or "/usr/local/bin/dws"
-    if not os.path.exists(dws_bin):
-        return
-    group = os.getenv("DINGTALK_GROUP", "逐光.店巡")
-    try:
-        subprocess.run(
-            [dws_bin, "chat", "+send-to-group", "--group", group, "--content", markdown_text, "-y"],
-            capture_output=True,
-            text=True,
-            timeout=10,
-            check=False,
-        )
-    except Exception:
-        pass
-
-
-def _dispatch_dingtalk(
-    title: str,
-    markdown_text: str,
+def _dispatch(
     channel: str,
+    title: str,
+    markdown_text: str,
     at_user_ids: list[str] | None = None,
 ) -> bool:
-    """主分发：优先 HTTP Webhook，降级 dws CLI。"""
-    webhook_url = _pick_webhook(channel)
-    if webhook_url:
-        return _post_webhook(webhook_url, markdown_text, title, at_user_ids)
-    # dws CLI fallback
-    _dispatch_dws_fallback(title, markdown_text, channel)
+    """主分发：企业机器人 → Webhook → dws CLI。"""
+    group_id = _GROUP_ID
+    role = _pick_role(channel)
+
+    # 路径 1：企业内部机器人 OpenAPI
+    if role and group_id:
+        app_key    = os.getenv(f"DINGTALK_{role}_APPKEY", "")
+        app_secret = os.getenv(f"DINGTALK_{role}_APPSECRET", "")
+        if app_key and app_secret:
+            env_at = os.getenv("DINGTALK_AT_USER_IDS", "")
+            effective_at = at_user_ids or [u.strip() for u in env_at.split(",") if u.strip()]
+            return _send_robot_group_msg(app_key, app_secret, group_id, markdown_text, title, effective_at)
+
+    # 路径 2：HTTP Webhook
+    webhook = os.getenv(f"DINGTALK_{role}_WEBHOOK", "") if role else ""
+    webhook = webhook or os.getenv("DINGTALK_WEBHOOK_URL", "")
+    if webhook:
+        return _post_webhook(webhook, markdown_text, title, at_user_ids)
+
+    # 路径 3：dws CLI fallback
+    if os.getenv("ENABLE_DINGTALK_DWS") == "1":
+        dws_bin = shutil.which("dws") or "/usr/local/bin/dws"
+        if os.path.exists(dws_bin):
+            group = os.getenv("DINGTALK_GROUP", "逐光.店巡")
+            try:
+                subprocess.run(
+                    [dws_bin, "chat", "+send-to-group", "--group", group,
+                     "--content", markdown_text, "-y"],
+                    capture_output=True, text=True, timeout=10, check=False,
+                )
+            except Exception:
+                pass
+
     return False
 
 
 # ──────────────────────────────────────────────
-# 内部 outbox emit
+# 内部 emit
 # ──────────────────────────────────────────────
 
 def _emit(channel: str, content: dict) -> dict:
-    """落内存 outbox、打印日志，并向钉钉真实推送。"""
     global _SENT_COUNT
     _SENT_COUNT += 1
     msg = {
@@ -206,31 +260,15 @@ def _emit(channel: str, content: dict) -> dict:
     msg_type = content.get("type", "notice")
 
     if msg_type == "approval":
-        # 审批请求：构建带🟢🔴按钮的 Markdown 卡片
-        approve_url = content.get("approve_url", _APPROVE_PAGE_URL)
+        approve_url = content.get("approve_url", _APPROVE_URL)
         wo_id = content.get("wo_id", "")
-        md_text = _build_approval_markdown(
-            title,
-            str(content.get("body", "")),
-            approve_url,
-            wo_id,
-        )
-        at_ids = content.get("at_user_ids") or None
-        _dispatch_dingtalk(title, md_text, channel, at_ids)
+        md = _build_approval_md(title, str(content.get("body", "")), approve_url, wo_id)
+        _dispatch(channel, title, md, content.get("at_user_ids"))
     else:
-        # 普通通知
         body = content.get("body", {})
-        body_str = (
-            json.dumps(body, ensure_ascii=False, indent=2)
-            if isinstance(body, dict)
-            else str(body)
-        )
-        md_text = (
-            f"### 🔔【逐光·{title}】\n"
-            f"> **通道**: `{channel}`\n\n"
-            f"{body_str[:800]}"
-        )
-        _dispatch_dingtalk(title, md_text, channel)
+        body_str = json.dumps(body, ensure_ascii=False, indent=2) if isinstance(body, dict) else str(body)
+        md = f"### 🔔【逐光·{title}】\n> **通道**: `{channel}`\n\n{body_str[:800]}"
+        _dispatch(channel, title, md)
 
     return msg
 
@@ -240,7 +278,7 @@ def _emit(channel: str, content: dict) -> dict:
 # ──────────────────────────────────────────────
 
 def send_notice(channel: str, template_id: str, payload: dict) -> ToolResult:
-    """发送通知消息。channel 如 dingtalk_ops / dingtalk_sentinel / feishu_alert。"""
+    """发送通知。channel 如 dingtalk_sentinel / dingtalk_dispatcher 等。"""
     content = {
         "template_id": template_id,
         "title": payload.get("title", "店巡通知"),
@@ -258,28 +296,25 @@ def send_approval_request(
     wo_id: str = "",
     at_user_ids: list[str] | None = None,
 ) -> ToolResult:
-    """发送人工审批请求。
-    
-    自动生成带🟢核准/🔴驳回按钮的 Markdown 卡片，推送到对应 Agent 机器人频道。
-    approve_url: 审批落地页 URL（如 https://sh.mazhi.icu/zhuguang/approve.html?action=approve&wo=WO-xxx）
-    wo_id: 工单流水号（可选，显示在卡片标题旁）
+    """发送人工审批请求。自动生成带🟢核准/🔴驳回按钮的 Markdown 卡片。
+
+    channel: 如 dingtalk_dispatcher（用调度智能体的机器人身份发）
+    approve_url: 审批落地页（如 https://sh.mazhi.icu/zhuguang/approve.html?action=approve&wo=WO-xxx）
+    wo_id: 工单流水号
     at_user_ids: 要 @ 的审批人 userId 列表（如 ["014550163451-931601056"]）
     """
     return ToolResult(
-        _emit(
-            channel,
-            {
-                "title": title,
-                "body": content,
-                "approve_url": approve_url,
-                "wo_id": wo_id,
-                "at_user_ids": at_user_ids,
-                "type": "approval",
-            },
-        )
+        _emit(channel, {
+            "title": title,
+            "body": content,
+            "approve_url": approve_url,
+            "wo_id": wo_id,
+            "at_user_ids": at_user_ids,
+            "type": "approval",
+        })
     )
 
 
 def outbox() -> list[dict]:
-    """已发送消息列表（审计/复盘用）。"""
+    """已发送消息列表（审计用）。"""
     return list(_OUTBOX)

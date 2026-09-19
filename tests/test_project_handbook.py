@@ -14,13 +14,20 @@ from pathlib import Path
 from unittest.mock import patch
 from urllib.parse import quote
 
-import reportlab
-from pypdf import PdfReader
-
-from scripts import build_project_handbook as handbook
+try:
+    import reportlab
+    from pypdf import PdfReader
+    from scripts import build_project_handbook as handbook
+    FONTS = Path(reportlab.__file__).parent / "fonts"
+    HAS_PDF = True
+except ImportError:
+    reportlab = None
+    PdfReader = None
+    handbook = None
+    FONTS = None
+    HAS_PDF = False
 
 ROOT = Path(__file__).resolve().parents[1]
-FONTS = Path(reportlab.__file__).parent / "fonts"
 
 
 class Links(HTMLParser):
@@ -36,6 +43,8 @@ class Links(HTMLParser):
 
 class ProjectHandbookTests(unittest.TestCase):
     def setUp(self):
+        if not HAS_PDF:
+            self.skipTest("reportlab or pypdf not installed")
         directory = tempfile.TemporaryDirectory()
         self.addCleanup(directory.cleanup)
         self.root = Path(directory.name)

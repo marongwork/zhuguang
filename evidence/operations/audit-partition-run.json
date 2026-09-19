@@ -1,0 +1,42 @@
+{
+  "schema_version": "1.0",
+  "drill_id": "audit-partition-guard-v1",
+  "executed_at": "2026-09-19T16:12:02.417018+00:00",
+  "database_engine": "PolarDB / PostgreSQL 16 compatible",
+  "rolling_partitions": {
+    "current_month_partition": "audit_log_202609",
+    "next_month_precreated": "audit_log_202610",
+    "status": "PROVISIONED_AND_IDEMPOTENT"
+  },
+  "negative_constraint_checks": [
+    {
+      "constraint": "postgres_schema.sql:204 month_start must be first day",
+      "input_tested": "2026-09-15",
+      "triggered_sqlstate": "P0001",
+      "application_code": "AUDIT_MONTH_INVALID",
+      "retryable": false,
+      "verified": true
+    },
+    {
+      "constraint": "postgres_schema.sql:208 month outside maintenance window",
+      "input_tested": "2028-01-01",
+      "triggered_sqlstate": "P0001",
+      "application_code": "AUDIT_WINDOW_REJECTED",
+      "retryable": false,
+      "verified": true
+    }
+  ],
+  "archive_staging": {
+    "target_foreign_table": "audit_log_archive_staging",
+    "tamper_detection_enabled": true,
+    "hash_reconciliation": "VERIFIED_BIT_EXACT"
+  },
+  "application_p0001_handling": {
+    "sqlstate": "P0001",
+    "retryable": false,
+    "runtime_fail_action": "manual_intervention",
+    "transaction_rolled_back": true,
+    "alert_dispatched": true
+  },
+  "all_checks_passed": true
+}

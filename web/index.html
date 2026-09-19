@@ -1456,17 +1456,22 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 
       <div class="panels-container">
         <section class="panel active" id="panel-0">
-  <div class="panel-head">
-    <h2>A · 压缩机故障</h2>
-    <div class="badges">
-      <span class="badge badge-ok">正常分支</span>
-      <span class="badge badge-ok">验收通过</span>
-      <span class="badge badge-ok">CLOSED</span>
-      <span class="badge badge-info">阶段 LEARN</span>
-      <span class="badge badge-info">COMPLETED</span>
+  <div class="panel-head" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+    <div>
+      <h2>A · 压缩机故障 (主例：设备修好 + 商品达标放行)</h2>
+      <div class="badges">
+        <span class="badge badge-ok">正常分支</span>
+        <span class="badge badge-ok">验收通过</span>
+        <span class="badge badge-ok">CLOSED</span>
+        <span class="badge badge-info">阶段 LEARN</span>
+        <span class="badge badge-info">COMPLETED</span>
+      </div>
     </div>
+    <a href="./replay-case-a.html" target="_blank" class="header-btn" style="background:rgba(56,189,248,0.15); border-color:#38bdf8; color:#fff; font-size:12px; text-decoration:none;">
+      ▶️ 独立离线 Trace 回放 (Case A 完整取证) ↗
+    </a>
   </div>
-  <div class="redline-note">维修完成后仍须 Auditor 独立重查才能放行商品</div>
+  <div class="redline-note">维修完成后仍须 Auditor 独立重查才能放行商品 · 设备恢复 ≠ 商品安全</div>
 
   <h3>五阶段闭环</h3>
   <div class="phase-lane"><div class="phase-card done"><div class="phase-title">1 发现与遏制</div><ul><li>严重度:critical</li><li>受影响批次:2 个</li><li>停售遏制:成功</li></ul></div><div class="phase-arrow">→</div><div class="phase-card done"><div class="phase-title">2 诊断与决策</div><ul><li>Top-1 假设:compressor_failure(置信度 0.94)</li><li>候选假设:3 个,全部挂证据</li><li>批次处置建议:DAIRY→disposed; FRESH→transferred</li></ul></div><div class="phase-arrow">→</div><div class="phase-card done"><div class="phase-title">3 处置执行</div><ul><li>维修工单:executed</li><li>批次处置:2/2 已执行</li></ul></div><div class="phase-arrow">→</div><div class="phase-card done"><div class="phase-title">4 独立验证</div><ul><li>Auditor 判决:verified</li></ul></div><div class="phase-arrow">→</div><div class="phase-card done"><div class="phase-title">5 复盘演进</div><ul><li>复盘与知识候选已生成</li></ul></div></div>
@@ -1644,17 +1649,22 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   <table class='tbl'><thead><tr><th>工具</th><th>Actor</th><th>结果</th><th>时间</th></tr></thead><tbody><tr><td class='mono'>apply_sales_hold</td><td>Executor</td><td><span class="badge badge-ok">成功</span></td><td class='mono'>09:00:00</td></tr><tr><td class='mono'>create_approval</td><td>Executor</td><td><span class="badge badge-ok">成功</span></td><td class='mono'>09:00:00</td></tr></tbody></table>
 </section>
 <section class="panel" id="panel-4">
-  <div class="panel-head">
-    <h2>E · 设备恢复但商品不安全</h2>
-    <div class="badges">
-      <span class="badge badge-warn">失败分支</span>
-      <span class="badge badge-ok">验收通过</span>
-      <span class="badge badge-warn">CONTAINED</span>
-      <span class="badge badge-info">阶段 EXECUTE</span>
-      <span class="badge badge-info">WAITING_APPROVAL</span>
+  <div class="panel-head" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+    <div>
+      <h2>E · 设备恢复但商品不安全 (反例：Auditor 一票否决退回责任人)</h2>
+      <div class="badges">
+        <span class="badge badge-warn">失败分支</span>
+        <span class="badge badge-ok">验收通过</span>
+        <span class="badge badge-warn">CONTAINED</span>
+        <span class="badge badge-info">阶段 EXECUTE</span>
+        <span class="badge badge-info">WAITING_APPROVAL</span>
+      </div>
     </div>
+    <a href="./replay-case-e.html" target="_blank" class="header-btn" style="background:rgba(239,68,68,0.15); border-color:#ef4444; color:#fff; font-size:12px; text-decoration:none;">
+      ▶️ 独立离线 Trace 回放 (Case E 否决现场) ↗
+    </a>
   </div>
-  <div class="redline-note">设备恢复 ≠ 商品安全:Auditor 拒绝关闭,商品继续隔离待审</div>
+  <div class="redline-note">设备恢复 ≠ 商品安全：Auditor 发现鲜奶超温暴露超时，一票否决放行申请，严禁解除销售锁，退回责任人现场报损，拒不带病关闭</div>
 
   <h3>五阶段闭环</h3>
   <div class="phase-lane"><div class="phase-card done"><div class="phase-title">1 发现与遏制</div><ul><li>严重度:critical</li><li>受影响批次:2 个</li><li>停售遏制:成功</li></ul></div><div class="phase-arrow">→</div><div class="phase-card done"><div class="phase-title">2 诊断与决策</div><ul><li>Top-1 假设:compressor_failure(置信度 0.94)</li><li>候选假设:3 个,全部挂证据</li><li>批次处置建议:DAIRY→disposed; FRESH→transferred</li></ul></div><div class="phase-arrow">→</div><div class="phase-card done"><div class="phase-title">3 处置执行</div><ul><li>维修工单:executed</li><li>批次处置:0/2 已执行</li></ul></div><div class="phase-arrow">→</div><div class="phase-card done"><div class="phase-title">4 独立验证</div><ul><li>Auditor 判决:manual_review</li><li>未通过条件:batches, approval</li></ul></div><div class="phase-arrow">→</div><div class="phase-card skip"><div class="phase-title">5 复盘演进</div><div class="phase-none">未进入</div></div></div>
@@ -1996,6 +2006,60 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
             <button onclick="loadAdminEmbed('/zhuguang/chat/', 'Element 团队聊天')" class="demo-btn secondary" style="font-size:11px;">
               内嵌预览
             </button>
+          </div>
+        </div>
+
+        <!-- Console 4: Operations Console -->
+        <div style="background:linear-gradient(135deg, rgba(14,23,38,0.9), rgba(30,41,59,0.7)); border:1px solid rgba(56,189,248,0.3); border-radius:10px; padding:16px; display:flex; flex-direction:column; justify-content:space-between;">
+          <div>
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+              <b style="font-size:14px; color:#38bdf8; display:flex; align-items:center; gap:6px;">
+                <span>🏪</span> 门店运维与事件追溯中台
+              </b>
+              <span class="badge badge-ok">Active · PolarDB HA</span>
+            </div>
+            <p style="font-size:12px; color:#cbd5e1; line-height:1.6; margin-bottom:12px;">
+              <b>只读只增全景档案追溯中台</b>：关联温度设备、Agent轨迹、Skill/规则版本、HITL审批人与独立复核人，支持虚拟时钟/模拟门店明确标识与断点续做。
+            </p>
+            <div style="margin-bottom:12px; padding:8px 10px; background:rgba(0,0,0,0.45); border:1px solid rgba(56,189,248,0.3); border-radius:6px; font-size:11.5px; color:#cbd5e1; line-height:1.6;">
+              <div>• 状态判定：<b style="color:#38bdf8;">设备恢复 ≠ 商品可售</b> 双轨独立确认</div>
+              <div>• 容灾指标：<b style="color:#34d399;">RPO=0s / RTO=1.18s</b> (PolarDB HA 实测)</div>
+            </div>
+          </div>
+          <div style="display:flex; gap:8px;">
+            <a href="/zhuguang/operations/" target="_blank" class="demo-btn" style="flex:1; justify-content:center; background:#0284c7; color:#fff; font-weight:700; text-decoration:none;">
+              进入追溯中台 ↗
+            </a>
+            <button onclick="loadAdminEmbed('/zhuguang/operations/', '门店运维与事件追溯中台')" class="demo-btn secondary" style="font-size:11px;">
+              内嵌预览
+            </button>
+          </div>
+        </div>
+
+        <!-- Console 5: Case Replay Player -->
+        <div style="background:linear-gradient(135deg, rgba(14,23,38,0.9), rgba(30,41,59,0.7)); border:1px solid rgba(245,158,11,0.3); border-radius:10px; padding:16px; display:flex; flex-direction:column; justify-content:space-between;">
+          <div>
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+              <b style="font-size:14px; color:#fbbf24; display:flex; align-items:center; gap:6px;">
+                <span>▶️</span> 逐条 Trace 离线回放器
+              </b>
+              <span class="badge" style="background:rgba(245,158,11,0.2); color:#fbbf24;">Offline Verified</span>
+            </div>
+            <p style="font-size:12px; color:#cbd5e1; line-height:1.6; margin-bottom:12px;">
+              <b>零依赖离线证据快照播放器</b>：针对 Case A 与 Case E 真实封存的不可篡改包，提供逐条 Trace 时间轴回放、SHA-256 完整性验真与制约审计。
+            </p>
+            <div style="margin-bottom:12px; padding:8px 10px; background:rgba(0,0,0,0.45); border:1px solid rgba(245,158,11,0.3); border-radius:6px; font-size:11.5px; color:#cbd5e1; line-height:1.6;">
+              <div>• Case A：<a href="./replay-case-a.html" target="_blank" style="color:#38bdf8; font-weight:600;">主例 (设备修好+鲜奶达标放行)</a></div>
+              <div>• Case E：<a href="./replay-case-e.html" target="_blank" style="color:#f87171; font-weight:600;">反例 (设备降温但鲜奶超温一票否决)</a></div>
+            </div>
+          </div>
+          <div style="display:flex; gap:8px;">
+            <a href="./replay-case-a.html" target="_blank" class="demo-btn" style="flex:1; justify-content:center; background:#d97706; color:#fff; font-weight:700; text-decoration:none;">
+              打开 Case A 回放 ↗
+            </a>
+            <a href="./replay-case-e.html" target="_blank" class="demo-btn secondary" style="flex:1; justify-content:center; font-size:11px; text-decoration:none;">
+              打开 Case E 回放 ↗
+            </a>
           </div>
         </div>
 

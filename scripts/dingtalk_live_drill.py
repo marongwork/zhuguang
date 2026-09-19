@@ -1,11 +1,13 @@
 #!/usr/bin/env python3
-"""逐光 · 5大独立智能体机器人【真实钉钉官方 OA 审批工单】全网实盘演练脚本.
+"""逐光 · 5大独立智能体机器人【方案A：智能体直接派发交互审批工单】全网实盘演练脚本.
 
 演练场景：S03 杭州总仓冷链断电与跨仓智能协同调度
-真实工单流转：
-  - 人工审批红线：¥5,000 元（涉案 ¥48,600 > ¥5,000，超额 872%，刚性阻断）
-  - 真实下发 OA 审批工单：调度智能体通过钉钉官方 OA 审批流生成审批实例
-  - 钉钉官方单号: 202609192256000384835 (InstanceId: ZjoRaLF0TXKENhXQ8wzk3g00601789829798)
+核心业务机制：
+  - 发起方：100% 调度智能体（带专属头像与机器人身份，非人工代发）
+  - 审批人：13+逐光+马荣（店长 / 区域总监）
+  - 刚性红线：¥5,000 元（涉案 ¥48,600 > ¥5,000，超额 872%，刚性阻断）
+  - 交互动作：卡片直带【🟢 签署核准放行】与【🔴 驳回重算】
+  - 执行闭环：核准通过后，执行智能体获取真实授权凭据起运
 """
 
 from __future__ import annotations
@@ -21,10 +23,9 @@ from pathlib import Path
 DEFAULT_GROUP_ID = os.getenv("DINGTALK_GROUP_ID", "cidQ/jo5PdSay6XcxMXR5oOOg==")
 DEFAULT_GROUP_NAME = os.getenv("DINGTALK_GROUP_NAME", "逐光.店巡")
 DASHBOARD_URL = "https://sh.mazhi.icu/zhuguang/phx-fleet.html"
-
-OA_BUSINESS_ID = "202609192256000384835"
-OA_INSTANCE_ID = "ZjoRaLF0TXKENhXQ8wzk3g00601789829798"
-OA_DIRECT_URL = f"https://aflow.dingtalk.com/dingtalk/mobile/homepage.html?procInstId={OA_INSTANCE_ID}"
+APPROVE_PAGE_URL = "https://sh.mazhi.icu/zhuguang/approve.html?wo=WO-20260919-HZ-8831"
+APPROVE_ACTION_URL = "https://sh.mazhi.icu/zhuguang/approve.html?action=approve&wo=WO-20260919-HZ-8831"
+REJECT_ACTION_URL = "https://sh.mazhi.icu/zhuguang/approve.html?action=reject&wo=WO-20260919-HZ-8831"
 
 APPROVAL_REDLINE = 5000
 
@@ -58,7 +59,7 @@ ROBOTS = {
 }
 
 
-def send_robot_card(robot_key: str, group_id: str, title: str, card_content: str) -> bool:
+def send_robot_card(robot_key: str, group_id: str, title: str, card_content: str, at_users: list[str] | None = None) -> bool:
     """使用指定 Agent 机器人的独立身份向群聊发送高质感卡片消息。"""
     robot_meta = ROBOTS.get(robot_key)
     if not robot_meta:
@@ -89,10 +90,13 @@ def send_robot_card(robot_key: str, group_id: str, title: str, card_content: str
         card_content,
         "-y",
     ]
+    if at_users:
+        cmd.extend(["--at-user-ids", ",".join(at_users)])
+
     try:
         res = subprocess.run(cmd, capture_output=True, text=True, check=False)
         if res.returncode == 0:
-            print(f"  🤖 [{robot_name} · 交互卡片已送达] (code={robot_code})")
+            print(f"  🤖 [{robot_name} · 交互工单卡片已送达] (code={robot_code})")
             return True
         else:
             print(f"  ❌ [{robot_name} 发送失败] code={res.returncode}, stderr={res.stderr.strip()}")
@@ -104,9 +108,11 @@ def send_robot_card(robot_key: str, group_id: str, title: str, card_content: str
 
 def run_card_drill(group_id: str = DEFAULT_GROUP_ID, interval: float = 3.0):
     print("\n=======================================================")
-    print(f"🚀 【逐光·零售应急中枢】真实钉钉官方 OA 审批工单实盘演练")
+    print(f"🚀 【逐光·零售应急中枢】方案A：智能体直接派发交互审批工单")
     print(f"🎯 目标群聊: {DEFAULT_GROUP_NAME} (ID: {group_id})")
-    print(f"📋 真实 OA 审批单号: {OA_BUSINESS_ID} (实例ID: {OA_INSTANCE_ID})")
+    print(f"⚖️ 审批硬红线: ¥{APPROVAL_REDLINE} 元 (超额刚性阻断)")
+    print(f"🤖 派单发起方: 调度智能体 (带专属头像与机器人身份)")
+    print(f"👤 审批责任人: 13+逐光+马荣")
     print(f"⏱️ 阶段间隔: {interval} 秒")
     print("=======================================================\n")
 
@@ -127,7 +133,8 @@ def run_card_drill(group_id: str = DEFAULT_GROUP_ID, interval: float = 3.0):
 
 > ⚡️ **协同动作**：已触发毫秒级事件广播，指令唤醒【诊断智能体】启动阿伦尼乌斯动力学推演！
 ---
-[🖥️ 点击直达：进入全网实时数字孪生大屏]({DASHBOARD_URL})"""
+[🖥️ 点击直达：进入全网实时数字孪生大屏]({DASHBOARD_URL})""",
+            None
         ),
         (
             "diagnostician",
@@ -143,47 +150,53 @@ def run_card_drill(group_id: str = DEFAULT_GROUP_ID, interval: float = 3.0):
 | **根因归因** | 1号辅电回路断路脱扣，压缩机失锁 |
 | **处置决策** | 本地抢修耗时 5h（超窗），**判定启动跨仓应急调拨** |
 
-> 🎯 **协同动作**：已生成应急调拨诉求（涉案金额 ¥48,600），移交【调度智能体】下发真实 OA 审批工单！
+> 🎯 **协同动作**：已生成应急调拨诉求（涉案金额 ¥48,600），移交【调度智能体】下发审批工单！
 ---
-[📊 点击查看：Arrhenius 动力学温控衰减曲线]({DASHBOARD_URL})"""
+[📊 点击查看：Arrhenius 动力学温控衰减曲线]({DASHBOARD_URL})""",
+            None
         ),
         (
             "dispatcher",
-            "⚡️ 调度智能体 · 下发真实钉钉 OA 审批工单卡片",
-            f"""### ⚡️【调度智能体】已下发钉钉官方 OA 审批工单 (Stage 3/5)
+            "⚡️ 调度智能体 · 派发 P0 级跨仓应急审批工单",
+            f"""### ⚡️【调度智能体】派发跨仓应急调拨审批工单 (Stage 3/5)
 ---
-| 调度审批项 | 智能运筹与风控校验 |
+| 审批单字段 | 智能运筹与风控审查详情 |
 | :--- | :--- |
-| **智能体身份** | **🟡 调度智能体 · Dispatcher (工单发起方)** |
-| **钉钉 OA 审批单号** | **`{OA_BUSINESS_ID}`** |
-| **审批实例 ID** | `{OA_INSTANCE_ID}` |
-| **调出仓库** | **S07 宁波保税备用仓**（距杭州 138km） |
-| **调入仓库** | **S03 杭州保税总仓** |
-| **调拨标的** | 鲜奶 120 箱（同规格批次 MILK-20260919-N） |
-| **涉案金额** | **¥48,600**（触发 ¥{APPROVAL_REDLINE} 刚性红线，超额 **+872%**） |
-| **审批状态** | **🟡 RUNNING · 审批中 (已下发至钉钉 OA 审批中心)** |
+| **工单流水号** | `WO-20260919-HZ-8831` |
+| **工单发起方** | **🤖 调度智能体 · Dispatcher (AI 运筹中枢)** |
+| **审批责任人** | **👤 13+逐光+马荣 (店长 / 区域总监)** |
+| **调出备用仓** | **S07 宁波保税备用仓**（距杭州 138km） |
+| **调入目标仓** | **S03 杭州保税总仓** |
+| **调拨物资** | 鲜奶 120 箱（同规格批次 MILK-20260919-N） |
+| **涉案总金额** | **¥48,600**（超额 **+872%**） |
+| **风控硬红线** | **¥{APPROVAL_REDLINE}**（触发刚性风控，禁止自主放行） |
+| **工单状态** | **🛑 流程挂起 · 等待人类责任人核准放行** |
 
-> 📋 **真实工单已下发**：已调用钉钉官方 OA 审批系统创建正式工单！请在钉钉「工作台」-「OA审批」中核准：
+> 📢 **请店长马荣核准**：本工单金额超出智能体自主授权范围，执行智能体已被刚性挂起，请点击下方按钮完成审批：
 ---
-[👉 点击直达：打开钉钉官方 OA 审批单进行核准]({OA_DIRECT_URL})"""
+[🟢 点击直接签署：核准放行 (Approve)]({APPROVE_ACTION_URL})
+[🔴 点击驳回工单：拒绝并重新计算方案 (Reject)]({REJECT_ACTION_URL})
+[📋 打开完整审批单据面板]({APPROVE_PAGE_URL})""",
+            ["014550163451-931601056"]  # 显式 @ 马荣
         ),
         (
             "executor",
             "🚚 执行智能体 · 人工核准受控放行卡片",
-            f"""### 🚚【执行智能体】人工授权完成 · 受控起运 (Stage 4/5)
+            f"""### 🚚【执行智能体】收到人类授权 · 受控起运 (Stage 4/5)
 ---
 | 执行动作 | 闭环执行状态 |
 | :--- | :--- |
 | **智能体身份** | **🟢 执行智能体 · Executor (受控执行与终端锁)** |
-| **授权凭据** | **钉钉 OA 审批单 `{OA_BUSINESS_ID}` 已获授权** |
-| **冷链车队** | 浙B·88921（特温-18℃制冷机组启动，已解除待命起运） |
+| **授权凭据** | **店长马荣已签署核准** (`AUTH-APPROVED-20260919-HZ8831`) |
+| **冷链车队** | 浙B·88921（特温-18℃制冷机组启动，已解除待命发车） |
 | **预计在途** | **1小时42分**（远优于 3.8h 安全窗口） |
 | **终端联锁** | 杭州 S03 POS 柜面**售卖锁闭已生效**（防消费者误购） |
 | **货架保障** | 预计 14:30 完成无缝切仓上架，缺货率维持 0.0% |
 
 > 🚛 **协同动作**：严格依照人类审批授权推进执行，车载 GPS 轨迹已实时同步，交由【稽核智能体】复盘！
 ---
-[🚛 点击追踪：冷链干线车实时在途轨迹]({DASHBOARD_URL})"""
+[🚛 点击追踪：冷链干线车实时在途轨迹]({DASHBOARD_URL})""",
+            None
         ),
         (
             "auditor",
@@ -193,25 +206,26 @@ def run_card_drill(group_id: str = DEFAULT_GROUP_ID, interval: float = 3.0):
 | 稽核维度 | 审计与沉淀结论 |
 | :--- | :--- |
 | **智能体身份** | **🟣 稽核智能体 · Auditor (DeepSeek 双签复盘)** |
-| **工单审计** | **钉钉 OA 审批单 `{OA_BUSINESS_ID}` 真实链条验证通过** |
+| **工单审计** | **人类决策者马荣电子凭据 `AUTH-APPROVED` 真实合规** |
 | **合规审计** | **DeepSeek-R1 双重校验放行**（规则库 + 履约链路 100% 合规） |
 | **损耗挽回** | **挽回货值 ¥48,600**，客诉发生率 0 起 |
 | **用时评测** | 全链路耗时 **4.2 秒**（对比人工处置 45 分钟，提效 99%） |
 | **飞轮沉淀** | 已生成案例 SOP `CASE-COLD-20260919`，回流知识库 |
 
-> 🎉 **演练结案**：真实钉钉 OA 审批工单人机协同演练圆满完成！
+> 🎉 **演练结案**：方案A（智能体派单 + 人类移动端核准）实盘演练圆满闭环！
 ---
-[🛡️ 点击验证：查看 DeepSeek 双签合规结案证书]({DASHBOARD_URL})"""
+[🛡️ 点击验证：查看 DeepSeek 双签合规结案证书]({DASHBOARD_URL})""",
+            None
         ),
     ]
 
-    for idx, (robot_key, title, card_content) in enumerate(stages, 1):
+    for idx, (robot_key, title, card_content, at_users) in enumerate(stages, 1):
         print(f"[{idx}/5] 正在推送卡片: {title} ...")
-        send_robot_card(robot_key, group_id, title, card_content)
+        send_robot_card(robot_key, group_id, title, card_content, at_users=at_users)
         if idx < len(stages):
             time.sleep(interval)
 
-    print("\n✅ 5大独立智能体【真实钉钉官方 OA 审批工单卡片】实盘演练圆满完成！\n")
+    print("\n✅ 5大独立智能体【方案A：智能体直接派发交互审批工单】实盘演练圆满完成！\n")
 
 
 if __name__ == "__main__":

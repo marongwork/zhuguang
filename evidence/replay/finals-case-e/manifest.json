@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "source_kind": "synthetic_local_run",
+  "incident_id": "INC-COLD-E",
+  "trace_id": "tr_coldchain_device_recovered_goods_unsafe",
+  "scenario_id": "coldchain-device-recovered-goods-unsafe",
+  "provenance": {
+    "git_commit": "05c668182e7b372092838d38d72ade595bb5769f",
+    "dirty_worktree": true
+  },
+  "claim_boundary": "Local synthetic SQLite run; no AgentTeams, PolarDB, OSS or real-store evidence. Hashes detect accidental changes, not source authenticity.",
+  "files": {
+    "audit.jsonl": "2adb902ba8500535d26b20c22bf0b8a4242c9a9505105586f28f64177a4cd97a",
+    "policy.json": "f0fb8eb893655398340fb277c8697ecc5841bde58d988a75b6996b4d920ddd73",
+    "result.json": "65fb92b34a774a54565b4688a72e524df6a2fb83f9fb016cc7f0b290699931a8",
+    "scenario.json": "f4340cdb2981192e6c180e17a6ae93f4931fdf0e72b3c54d124d5c446e0d1c04",
+    "state.sqlite": "fb0b258b701f4d6a6bb9a606640ea8f17a440055980fb8bc6a8e96c2a5568488",
+    "trace.jsonl": "fe627911899885a69be09ab8c81c6c3bf6ed0485f95fd17f015e58ec7a8f4a9b",
+    "trace.sqlite": "bee3d171b1f480d3fa7c8b8b002a497a4ed2633f5b9437e81e4e77890eaf922b"
+  }
+}
