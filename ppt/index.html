@@ -5,7 +5,56 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>店巡 VeriPatrol｜面向物理实体流程的可验证多智能体运行时 (逐光团队 · GOAI 决赛)</title>
 <style>
+  @font-face {
+    font-family: 'OPPOSans';
+    src: url('fonts/OPPOSans-R.ttf') format('truetype');
+    font-weight: 400;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'OPPOSans';
+    src: url('fonts/OPPOSans-M.ttf') format('truetype');
+    font-weight: 500;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'OPPOSans';
+    src: url('fonts/OPPOSans-B.ttf') format('truetype');
+    font-weight: 700;
+    font-display: swap;
+  }
+
   :root{
+    
+  /* 官方大赛 PPT 模板背景融合 */
+  body {
+    background: #070d18 url('official_assets/bg_content.jpeg') no-repeat center center fixed !important;
+    background-size: cover !important;
+  }
+  .slide {
+    background: transparent !important;
+  }
+  .slide:first-of-type {
+    background: #070d18 url('official_assets/bg_cover.jpeg') no-repeat center center !important;
+    background-size: cover !important;
+  }
+  .slide.accent:last-of-type, .slide:last-of-type {
+    background: #070d18 url('official_assets/bg_closing.jpeg') no-repeat center center !important;
+    background-size: cover !important;
+  }
+  .canvas-card {
+    background: rgba(14, 23, 38, 0.72) !important;
+    backdrop-filter: blur(12px) !important;
+    -webkit-backdrop-filter: blur(12px) !important;
+    border: 1px solid rgba(56, 189, 248, 0.22) !important;
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45) !important;
+  }
+  /* 标题字体优先使用 OPPOSans */
+  :root {
+    --sans: "OPPOSans", "Inter", "Helvetica Neue", "Arial", sans-serif;
+    --sans-zh: "OPPOSans", "PingFang SC", "Microsoft YaHei", sans-serif;
+  }
+
     /* ============ 统一深邃科技深色体系 (Obsidian Tech Dark) ============
        全 12 页统一主底色与质感层级，与系统门户、大盘与 ModelScope Studio 风格高度统一 */
     --paper:#070d18;          /* 全局主底色: 曜石深蓝黑 */
@@ -1201,9 +1250,12 @@
 <section class="slide accent" data-animate="hero">
   <div class="canvas-card">
     <canvas class="ascii-bg" aria-hidden="true"></canvas>
-    <div class="chrome-min">
-      <div class="l">团队 逐光｜夏志强（浙江吉利控股）、马荣（OPPO）</div>
-      <div class="r">领域 零售连锁 / Agent Infra · 01 / 17</div>
+    <div class="chrome-min" style="margin-bottom:2vh">
+      <div class="l" style="display:flex;align-items:center;gap:12px">
+        <img src="official_assets/goai_logo.png" style="height:28px;vertical-align:middle;display:inline-block" alt="GOAI"/>
+        <span style="color:var(--text-primary);font-weight:600;letter-spacing:.08em">世界人工智能开源大赛 (GOAI 2026) · 赛道四 决赛答辩</span>
+      </div>
+      <div class="r" style="color:var(--accent-bright);font-weight:700;letter-spacing:.1em">团队 逐光｜夏志强、马荣 · 01 / 10</div>
     </div>
     <div style="flex:1;display:grid;grid-template-rows:auto 1fr auto;gap:3vh">
       <div data-anim="kicker" class="t-meta" style="color:var(--accent-bright);letter-spacing:.2em">VERIFIABLE MULTI-AGENT RUNTIME · PHYSICAL-DIGITAL WORKFLOWS</div>
@@ -1222,8 +1274,7 @@
 
 <section class="slide dark" data-animate="statement">
   <div class="canvas-card">
-    <div class="chrome-min">
-      <div class="l">01 · 不可逆公理</div>
+    <div class="l" style="display:flex;align-items:center;gap:8px"><img src="official_assets/goai_logo.png" style="height:16px;opacity:0.85;vertical-align:middle" alt="GOAI"/><span>01 · 不可逆公理</span></div>
       <div class="r">02 / 10 · THREE IRREVERSIBILITY AXIOMS</div>
     </div>
     <div data-anim="kicker" class="t-meta" style="color:var(--accent-bright);letter-spacing:.2em">STORE OPERATOR DILEMMAS · 3 PHYSICAL AXIOMS · ANTI-SELF-VERIFICATION</div>
@@ -1276,8 +1327,7 @@
 
 <section class="slide" data-animate="grid-reveal">
   <div class="canvas-card">
-    <div class="chrome-min">
-      <div class="l">02 · 架构栈与 Agent 职责</div>
+    <div class="l" style="display:flex;align-items:center;gap:8px"><img src="official_assets/goai_logo.png" style="height:16px;opacity:0.85;vertical-align:middle" alt="GOAI"/><span>02 · 架构栈与 Agent 职责</span></div>
       <div class="r">03 / 10 · THE VERIPATROL STACK &amp; 5 KERNEL AGENTS</div>
     </div>
     <div data-anim="kicker" class="t-meta" style="color:var(--accent-bright);letter-spacing:.2em">THREE-LAYER KERNEL · STRICT PRIVILEGE ISOLATION · ORACLE ANTI-SELF-VERIFICATION</div>
@@ -1335,8 +1385,7 @@
 
 <section class="slide" data-animate="timeline-walk">
   <div class="canvas-card">
-    <div class="chrome-min">
-      <div class="l">03 · 五阶段闭环</div>
+    <div class="l" style="display:flex;align-items:center;gap:8px"><img src="official_assets/goai_logo.png" style="height:16px;opacity:0.85;vertical-align:middle" alt="GOAI"/><span>03 · 五阶段闭环</span></div>
       <div class="r">04 / 10 · 5-PHASE DETERMINISTIC LIFECYCLE</div>
     </div>
     <div data-anim="kicker" class="t-meta" style="color:var(--accent-bright);letter-spacing:.2em">UNIVERSAL 5-STAGE PHYSICAL-DIGITAL INTERACTION LIFECYCLE</div>
@@ -1377,8 +1426,7 @@
 
 <section class="slide dark" data-animate="grid-reveal">
   <div class="canvas-card">
-    <div class="chrome-min">
-      <div class="l">04 · 执行鲁棒性</div>
+    <div class="l" style="display:flex;align-items:center;gap:8px"><img src="official_assets/goai_logo.png" style="height:16px;opacity:0.85;vertical-align:middle" alt="GOAI"/><span>04 · 执行鲁棒性</span></div>
       <div class="r">05 / 10 · 6 ROBUSTNESS INVARIANTS A-F</div>
     </div>
     <div data-anim="kicker" class="t-meta" style="color:var(--accent-bright);letter-spacing:.2em">6 FORMAL EXECUTION INVARIANTS · PROVABLE BOUNDARY GATES</div>
@@ -1426,7 +1474,7 @@
   <div class="canvas-card" style="padding:4vh 4vw">
     <div class="split-half" style="gap:2vw">
       <div class="half" style="background:var(--surface-card);border:1px solid var(--border-subtle);border-top:3px solid var(--accent-bright);border-radius:8px;padding:3vh 2vw;justify-content:flex-start">
-        <div class="chrome-min" style="color:var(--text-helper);margin-bottom:1.2vh"><div class="l">05 · Skill 工程</div><div class="r">06 / 10 · 6 P0 CONTRACTS</div></div>
+        <div class="l" style="display:flex;align-items:center;gap:8px"><img src="official_assets/goai_logo.png" style="height:16px;opacity:0.85;vertical-align:middle" alt="GOAI"/><span>05 · Skill 工程</span></div><div class="r">06 / 10 · 6 P0 CONTRACTS</div></div>
         <div class="t-meta" style="color:var(--accent-bright);letter-spacing:.2em;margin-bottom:1vh">SEMVER · JSON SCHEMA · HOT-PLUGGABLE</div>
         <h2 style="font-family:var(--sans),var(--sans-zh);font-weight:200;font-size:min(2.8vw,4.8vh);line-height:1.06;color:#fff;margin-bottom:1.5vh">六 P0 Skill 语义化契约治理</h2>
         <div style="display:grid;grid-template-columns:1fr auto;row-gap:1vh;border-top:2px solid var(--accent-bright);padding-top:1.2vh;font-size:max(14px,.88vw)">
@@ -1442,7 +1490,7 @@
         </div>
       </div>
       <div class="half" style="background:var(--surface-card);border:1px solid var(--border-subtle);border-top:3px solid var(--accent-bright);border-radius:8px;padding:3vh 2vw;justify-content:flex-start">
-        <div class="chrome-min" style="color:var(--text-helper);margin-bottom:1.2vh"><div class="l">物理-数字原语</div><div class="r">5 QUERIES + 7 ACTIONS</div></div>
+        <div class="l" style="display:flex;align-items:center;gap:8px"><img src="official_assets/goai_logo.png" style="height:16px;opacity:0.85;vertical-align:middle" alt="GOAI"/><span>物理-数字原语</span></div><div class="r">5 QUERIES + 7 ACTIONS</div></div>
         <div class="t-meta" style="color:var(--accent-bright);letter-spacing:.2em;margin-bottom:1vh">先重查客观事实，再决定写动作</div>
         <div style="font-family:var(--mono);font-size:max(13px,.82vw);line-height:1.85;color:var(--text-secondary);background:rgba(0,0,0,.28);padding:1.4vh 1.2vw;border-radius:6px;border:1px solid rgba(255,255,255,0.06);margin-bottom:1.4vh">
           <span style="color:var(--accent-bright)">query_device_context</span> (物理真值重验)<br/>
@@ -1473,8 +1521,7 @@
 
 <section class="slide" data-animate="statement">
   <div class="canvas-card">
-    <div class="chrome-min">
-      <div class="l">06 · 评测证据</div>
+    <div class="l" style="display:flex;align-items:center;gap:8px"><img src="official_assets/goai_logo.png" style="height:16px;opacity:0.85;vertical-align:middle" alt="GOAI"/><span>06 · 评测证据</span></div>
       <div class="r">07 / 10 · TEST EVIDENCE &amp; ABLATION</div>
     </div>
     <div data-anim="kicker" class="t-meta" style="color:var(--accent-bright);letter-spacing:.2em">SAME-STORE COLD CHAIN ANOMALY · BEFORE vs AFTER QUANTIFIED · CASE A vs CASE E</div>
@@ -1557,8 +1604,7 @@
 
 <section class="slide" data-animate="grid-reveal">
   <div class="canvas-card">
-    <div class="chrome-min">
-      <div class="l">07 · 仿真数据</div>
+    <div class="l" style="display:flex;align-items:center;gap:8px"><img src="official_assets/goai_logo.png" style="height:16px;opacity:0.85;vertical-align:middle" alt="GOAI"/><span>07 · 仿真数据</span></div>
       <div class="r">08 / 10 · PHYSICS SIMULATION &amp; ML PREDICTIVE ENGINE</div>
     </div>
     <div data-anim="kicker" class="t-meta" style="color:var(--accent-bright);letter-spacing:.2em">FIRST-PRINCIPLES THERMODYNAMICS · POISSON CONVECTION · 6 FAULT INJECTIONS · ARRHENIUS KINETICS</div>
@@ -1710,8 +1756,7 @@
 
 <section class="slide" data-animate="grid-reveal">
   <div class="canvas-card">
-    <div class="chrome-min">
-      <div class="l">08 · 数据库架构</div>
+    <div class="l" style="display:flex;align-items:center;gap:8px"><img src="official_assets/goai_logo.png" style="height:16px;opacity:0.85;vertical-align:middle" alt="GOAI"/><span>08 · 数据库架构</span></div>
       <div class="r">09 / 10 · ENTERPRISE COLD-CHAIN DATABASE ARCHITECTURE</div>
     </div>
     <div data-anim="kicker" class="t-meta" style="color:var(--accent-bright);letter-spacing:.2em">POSTGRESQL 16 + PGVECTOR · 434,370+ TELEMETRY STREAM · HARD CIRCUIT BREAKER</div>
@@ -1832,8 +1877,7 @@
 <section class="slide accent" data-animate="grid-reveal">
   <div class="canvas-card">
     <canvas class="ascii-bg" aria-hidden="true"></canvas>
-    <div class="chrome-min">
-      <div class="l">09 · 基准矩阵与交付</div>
+    <div class="l" style="display:flex;align-items:center;gap:8px"><img src="official_assets/goai_logo.png" style="height:16px;opacity:0.85;vertical-align:middle" alt="GOAI"/><span>09 · 基准矩阵与交付</span></div>
       <div class="r">10 / 10 · UNIVERSAL BENCHMARK &amp; CLOSE WITH EVIDENCE</div>
     </div>
     <div data-anim="kicker" class="t-meta" style="color:var(--accent-bright);letter-spacing:.2em">ZERO CORE CODE MODIFICATION · EVIDENCE CLOSES EVERY EVENT</div>
@@ -1889,8 +1933,7 @@
 
 <section class="slide" data-animate="grid-reveal">
   <div class="canvas-card">
-    <div class="chrome-min">
-      <div class="l">附录 A · 场景矩阵</div>
+    <div class="l" style="display:flex;align-items:center;gap:8px"><img src="official_assets/goai_logo.png" style="height:16px;opacity:0.85;vertical-align:middle" alt="GOAI"/><span>附录 A · 场景矩阵</span></div>
       <div class="r">A · 36 SCENARIO MATRIX</div>
     </div>
     <div data-anim="kicker" class="t-meta" style="color:var(--accent-bright);letter-spacing:.2em">APPENDIX A · 36 RETAIL COLD-CHAIN & EQUIPMENT ANOMALY SCENARIOS</div>
@@ -1950,8 +1993,7 @@
 
 <section class="slide" data-animate="grid-reveal">
   <div class="canvas-card">
-    <div class="chrome-min">
-      <div class="l">附录 B · 状态机与错误码</div>
+    <div class="l" style="display:flex;align-items:center;gap:8px"><img src="official_assets/goai_logo.png" style="height:16px;opacity:0.85;vertical-align:middle" alt="GOAI"/><span>附录 B · 状态机与错误码</span></div>
       <div class="r">B · STATE MACHINE & P0001 ROLLBACK</div>
     </div>
     <div data-anim="kicker" class="t-meta" style="color:var(--accent-bright);letter-spacing:.2em">APPENDIX B · DETERMINISTIC STATE MACHINE TRANSITIONS & P0001 ERROR HANDLING</div>
@@ -1993,8 +2035,7 @@
 
 <section class="slide" data-animate="grid-reveal">
   <div class="canvas-card">
-    <div class="chrome-min">
-      <div class="l">附录 C · 12 MCP 契约定义</div>
+    <div class="l" style="display:flex;align-items:center;gap:8px"><img src="official_assets/goai_logo.png" style="height:16px;opacity:0.85;vertical-align:middle" alt="GOAI"/><span>附录 C · 12 MCP 契约定义</span></div>
       <div class="r">C · 12 MCP CONTRACTS & GATES</div>
     </div>
     <div data-anim="kicker" class="t-meta" style="color:var(--accent-bright);letter-spacing:.2em">APPENDIX C · 12 MCP TOOL CONTRACTS & 4-TIER ACCESS GATES</div>
