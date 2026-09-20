@@ -1232,7 +1232,7 @@
 </script>
 
 <canvas id="bg-grid" class="bg"></canvas>
-<div id="hint">← → 翻页 · F 全屏 · B 静态 · ESC 索引 · <a href="veripatrol_goai2026_finals.pptx" target="_blank" style="color:var(--accent-bright);text-decoration:none;font-weight:600">📥 下载官方 PPTX</a></div>
+<div id="hint">← → 翻页 · F 全屏 · B 静态 · A/B/C 附录速查 · <a href="veripatrol_goai2026_finals.pptx" target="_blank" style="color:var(--accent-bright);text-decoration:none;font-weight:600">📥 下载官方 PPTX</a></div>
 
 <div id="deck">
 
@@ -1246,7 +1246,7 @@
         <img src="official_assets/goai_logo.png" style="height:28px;vertical-align:middle;display:inline-block" alt="GOAI"/>
         <span style="color:var(--text-primary);font-weight:600;letter-spacing:.08em">世界人工智能开源大赛 (GOAI 2026) · 赛道一 决赛答辩</span>
       </div>
-      <div class="r" style="color:var(--accent-bright);font-weight:700;letter-spacing:.1em">团队 逐光｜夏志强、马荣 · 01 / 10</div>
+      <div class="r" style="color:var(--accent-bright);font-weight:700;letter-spacing:.08em">团队 逐光｜夏志强（浙江吉利控股）、马荣（OPPO） · 01 / 10</div>
     </div>
     <div style="flex:1;display:grid;grid-template-rows:auto 1fr auto;gap:3vh">
       <div data-anim="kicker" class="t-meta" style="color:var(--accent-bright);letter-spacing:.2em">VERIFIABLE MULTI-AGENT RUNTIME · PHYSICAL-DIGITAL WORKFLOWS</div>
@@ -2219,12 +2219,40 @@
           <div class="t-meta" style="color:var(--success)">LOCALLY VERIFIED</div>
           <div style="font-size:max(13px,.8vw);line-height:1.5;color:var(--text-primary);margin-top:.5vh">161项测试全绿 · 6场景A-F闭环 · 6 P0 Skill · 300店/1500台大盘</div>
         </div>
+        <div style="display:flex;gap:1vw;align-items:center;margin-top:.4vh">
+          <button onclick="window.openAppendix('A')" style="background:rgba(56,189,248,0.15);border:1px solid var(--accent-bright);color:#fff;padding:8px 14px;border-radius:6px;cursor:pointer;font-family:var(--sans);font-size:max(12px,.75vw);font-weight:600;display:inline-flex;align-items:center;gap:6px">
+            📑 评委问答技术附录 (按 A / B / C 键展开) ↗
+          </button>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
-<section class="slide" data-animate="grid-reveal">
+
+</div><!-- #deck end at exactly 10 slides -->
+
+
+<!-- ==================== 技术附录备查抽屉 (脱离主轮播, 按 A/B/C 呼出) ==================== -->
+<div id="appendix-drawer" style="display:none;position:fixed;inset:0;background:rgba(7,13,24,0.92);backdrop-filter:blur(20px);z-index:9999;overflow-y:auto;padding:4vh 6vw">
+  <div style="display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border-strong);padding-bottom:1.5vh;margin-bottom:3vh">
+    <div style="display:flex;align-items:center;gap:12px">
+      <img src="official_assets/goai_logo.png" style="height:24px" alt="GOAI"/>
+      <span style="font-size:20px;font-weight:700;color:#fff">世界人工智能开源大赛 · 决赛技术附录备查</span>
+      <span class="t-meta" style="color:var(--accent-bright);background:rgba(56,189,248,0.15);padding:2px 8px;border-radius:4px">评委尖锐提问答辩防御</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:1vw">
+      <div style="display:flex;gap:6px">
+        <button onclick="showAppTab('A')" id="btn-app-A" class="app-tab-btn active" style="padding:6px 14px;background:var(--accent);color:#fff;border:none;border-radius:4px;cursor:pointer;font-weight:600">附录 A (36场景)</button>
+        <button onclick="showAppTab('B')" id="btn-app-B" class="app-tab-btn" style="padding:6px 14px;background:var(--surface-card);color:var(--text-secondary);border:1px solid var(--border-subtle);border-radius:4px;cursor:pointer">附录 B (状态机与P0001)</button>
+        <button onclick="showAppTab('C')" id="btn-app-C" class="app-tab-btn" style="padding:6px 14px;background:var(--surface-card);color:var(--text-secondary);border:1px solid var(--border-subtle);border-radius:4px;cursor:pointer">附录 C (12 MCP契约)</button>
+      </div>
+      <button onclick="closeAppendix()" style="background:rgba(239,68,68,0.2);color:var(--danger);border:1px solid var(--danger);padding:6px 14px;border-radius:4px;cursor:pointer;font-weight:700">✕ 关闭 (ESC)</button>
+    </div>
+  </div>
+  
+  <div id="app-tab-A" class="app-tab-content">
+    <section class="slide" data-animate="grid-reveal">
   <div class="canvas-card">
     <div class="chrome-min">
       <div class="l" style="display:flex;align-items:center;gap:8px"><img src="official_assets/goai_logo.png" style="height:16px;opacity:0.85;vertical-align:middle" alt="GOAI"/><span>附录 A · 场景矩阵</span></div>
@@ -2284,8 +2312,9 @@
     </div>
   </div>
 </section>
-
-<section class="slide" data-animate="grid-reveal">
+  </div>
+  <div id="app-tab-B" class="app-tab-content" style="display:none">
+    <section class="slide" data-animate="grid-reveal">
   <div class="canvas-card">
     <div class="chrome-min">
       <div class="l" style="display:flex;align-items:center;gap:8px"><img src="official_assets/goai_logo.png" style="height:16px;opacity:0.85;vertical-align:middle" alt="GOAI"/><span>附录 B · 状态机与错误码</span></div>
@@ -2327,8 +2356,9 @@
     </div>
   </div>
 </section>
-
-<section class="slide" data-animate="grid-reveal">
+  </div>
+  <div id="app-tab-C" class="app-tab-content" style="display:none">
+    <section class="slide" data-animate="grid-reveal">
   <div class="canvas-card">
     <div class="chrome-min">
       <div class="l" style="display:flex;align-items:center;gap:8px"><img src="official_assets/goai_logo.png" style="height:16px;opacity:0.85;vertical-align:middle" alt="GOAI"/><span>附录 C · 12 MCP 契约定义</span></div>
@@ -2366,8 +2396,9 @@
     </div>
   </div>
 </section>
-
+  </div>
 </div>
+
 <div id="nav"></div>
 
 <script>
