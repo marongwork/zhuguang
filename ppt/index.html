@@ -1357,18 +1357,18 @@
           </div>
         </div>
       </div>
-      <!-- RIGHT: 两张真实架构图 -->
-      <div style="display:flex;flex-direction:column;gap:1.2vh;overflow:hidden">
-        <div style="flex:1.15;border-radius:8px;overflow:hidden;border:1px solid var(--border-subtle);position:relative">
-          <img src="agent-flow.png" alt="Agent 多 Agent 闭环架构动态流向" style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block"/>
-          <div style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(7,13,24,0.85));padding:.8vh 1vw">
-            <div class="t-meta" style="color:var(--accent-bright)">AGENT 多 Agent 闭环架构 · 动态流向</div>
+      <!-- RIGHT: 高清实时矢量拓扑 (来自 Agent 集群基座原生动态拓扑) -->
+      <div style="display:flex;flex-direction:column;gap:1.2vh;flex:1.6;min-height:0">
+        <div style="flex:1;border-radius:10px;overflow:hidden;border:1px solid var(--border-strong);background:#070d18;position:relative;box-shadow:0 16px 48px rgba(0,0,0,0.6);display:flex;flex-direction:column">
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:1vh 1.4vw;background:rgba(15,23,42,0.9);border-bottom:1px solid var(--border-subtle);flex:0 0 auto">
+            <div style="display:flex;align-items:center;gap:8px">
+              <span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--accent-bright);box-shadow:0 0 8px var(--accent-bright)"></span>
+              <span style="font-size:max(13px,.82vw);font-weight:700;color:#fff;letter-spacing:.05em">店巡 AGENT · 多 AGENT 闭环架构动态流向 (实时矢量拓扑)</span>
+            </div>
+            <div class="t-meta" style="color:var(--accent-bright)">5 WORKERS · 职责硬隔离 · 外部预言机一票否决</div>
           </div>
-        </div>
-        <div style="flex:1;border-radius:8px;overflow:hidden;border:1px solid var(--border-subtle);position:relative">
-          <img src="agent-identity.png" alt="Agent Identity 角色清单" style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block"/>
-          <div style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(7,13,24,0.85));padding:.8vh 1vw">
-            <div class="t-meta" style="color:var(--accent-bright)">AGENT IDENTITY · 5 Workers 职责边界 + 决策权限矩阵</div>
+          <div style="flex:1;position:relative;min-height:0;background:#070d18">
+            <iframe src="architecture-flow.html" style="width:100%;height:100%;border:none;display:block;background:#070d18" loading="eager"></iframe>
           </div>
         </div>
       </div>
